@@ -2,8 +2,8 @@ from decimal import Decimal
 from typing import Annotated
 from uuid import UUID
 
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Numeric
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 numeric_10_2 = Annotated[Decimal, mapped_column(Numeric(precision=10, scale=2))]
 numeric_10_3 = Annotated[Decimal, mapped_column(Numeric(precision=10, scale=3))]

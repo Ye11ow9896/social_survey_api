@@ -1,9 +1,8 @@
+import functools
+from typing import TypeVar
 from urllib.parse import quote_plus
 
 import dotenv
-import functools
-from typing import TypeVar
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _TSetting = TypeVar("_TSetting", bound=BaseSettings)

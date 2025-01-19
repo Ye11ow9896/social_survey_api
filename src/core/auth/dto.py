@@ -1,7 +1,9 @@
 from typing import Annotated
 
-from src.core.dto import BaseDataclass, snake_to_camel
 from litestar.dto import DataclassDTO
+
+from src.core.dto import BaseDataclass, snake_to_camel
+
 
 class AuthDataclass(BaseDataclass):
     username: str
