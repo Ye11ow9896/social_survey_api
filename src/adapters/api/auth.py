@@ -1,7 +1,7 @@
 from litestar import get, post
 from litestar.controller import Controller
 
-from src.core.auth.dto import AuthDTO, AuthDataclass
+from core.domain.auth.dto import AuthDTO, AuthDataclass
 
 
 class AuthController(Controller):
