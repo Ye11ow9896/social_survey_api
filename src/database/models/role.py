@@ -1,5 +1,5 @@
 import enum
-from src.database.models.base import Base
+from .base import Base
 from sqlalchemy.orm import Mapped
 
 class RoleCodeEnum(str, enum.Enum):

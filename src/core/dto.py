@@ -1,16 +1,6 @@
-from dataclasses import dataclass
-
-from litestar.dto import DTOConfig
-
-snake_to_camel = DTOConfig(rename_strategy="camel")
+from lib.base_model import AppBaseModel
+from pydantic import ConfigDict
 
 
-@dataclass(slots=True, frozen=True)
-class BaseFrozenDataclass:
-    ...
-
-
-@dataclass(slots=True)
-class BaseDataclass:
-    ...
-
+class BaseDTO(AppBaseModel):
+    model_config = ConfigDict(from_attributes=True)

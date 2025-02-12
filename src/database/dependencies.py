@@ -1,7 +1,5 @@
 import contextlib
-from abc import abstractmethod
 from collections.abc import AsyncIterator
-from typing import Protocol
 
 from sqlalchemy.ext.asyncio import AsyncSession
 

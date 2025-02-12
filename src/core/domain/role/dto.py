@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from core.dto import BaseDTO
 from database.models.role import RoleCodeEnum
+from src.core.dto import BaseDTO
 
 
 class RoleDTO(BaseDTO):

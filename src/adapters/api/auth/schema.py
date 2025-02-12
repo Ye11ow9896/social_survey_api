@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from core.dto import BaseDTO
+from adapters.api.schema import BaseSchema
 from database.models.role import RoleCodeEnum
 
 
-class RoleDTO(BaseDTO):
+class RoleSchema(BaseSchema):
     id: UUID
     name: str
     code: RoleCodeEnum

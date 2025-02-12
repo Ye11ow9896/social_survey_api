@@ -1,9 +1,7 @@
 from litestar.types import ControllerRouterHandler
 
-from src.adapters.api.auth import AuthController
-from src.adapters.api.test import TestController
+from adapters.api.auth.controller import AuthController
 
 route_handlers: list[ControllerRouterHandler] = [
-    TestController,
     AuthController,
 ]
