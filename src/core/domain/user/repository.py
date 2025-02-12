@@ -8,7 +8,5 @@ class UserRepository:
         self._session = session
 
     async def create(self, dto: Any) -> Any:
-        model = {1: 1}
-        self._session.add(model)
-        await self._session.flush()
-        return model
+        ...
+
