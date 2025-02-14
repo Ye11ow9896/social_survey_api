@@ -7,6 +7,4 @@ class UserRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def create(self, dto: Any) -> Any:
-        ...
-
+    async def create(self, dto: Any) -> Any: ...

@@ -3,9 +3,8 @@ import aioinject
 import importlib
 import pkgutil
 
-from collections.abc import Sequence
+from collections.abc import Sequence, Iterable
 from types import ModuleType
-from typing import TYPE_CHECKING, Iterable
 
 from database.dependencies import create_session
 from settings import get_settings, PostgresqlSettings
@@ -14,9 +13,8 @@ from . import _modules
 
 from aioinject import Provider
 
-SETTINGS = (
-    PostgresqlSettings,
-)
+SETTINGS = (PostgresqlSettings,)
+
 
 def autodiscover_providers(
     module: ModuleType,
@@ -25,18 +23,19 @@ def autodiscover_providers(
     raise_error: bool = True,
 ) -> Sequence[Provider[object]]:
     result: list[Provider[object]] = []
-    for submodule_info in pkgutil.walk_packages(module.__path__, f"{module.__name__}."):
+    for submodule_info in pkgutil.walk_packages(
+        module.__path__, f"{module.__name__}."
+    ):
         submodule = importlib.import_module(submodule_info.name)
         module_providers = getattr(submodule, attr_name, None)
         if module_providers is None:
             if raise_error:
-                msg = (
-                    f"Module {submodule_info.name} does not have {attr_name} attribute"
-                )
+                msg = f"Module {submodule_info.name} does not have {attr_name} attribute"  # noqa: E501
                 raise ValueError(msg)
             continue
         result.extend(module_providers)
     return result
+
 
 def _register_settings(
     container: aioinject.Container,
@@ -46,6 +45,7 @@ def _register_settings(
     for settings_cls in settings_classes:
         factory = functools.partial(get_settings, settings_cls)
         container.register(aioinject.Singleton(factory, type_=settings_cls))
+
 
 @functools.lru_cache
 def create_container() -> aioinject.Container:
@@ -58,5 +58,3 @@ def create_container() -> aioinject.Container:
     _register_settings(container, settings_classes=SETTINGS)
 
     return container
-
-

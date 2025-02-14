@@ -5,7 +5,9 @@ from uuid import UUID
 from sqlalchemy import Numeric
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-numeric_10_2 = Annotated[Decimal, mapped_column(Numeric(precision=10, scale=2))]
+numeric_10_2 = Annotated[
+    Decimal, mapped_column(Numeric(precision=10, scale=2))
+]
 str_16 = Annotated[str, 16]
 
 

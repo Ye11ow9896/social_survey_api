@@ -16,3 +16,29 @@ dependencies = [
     "sqlalchemy>=2.0.36",
     "uvicorn>=0.32.1",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.6",
+]
+
+[tool.ruff]
+exclude = ["src/ignored/*.py", "t.py"]
+line-length = 79
+
+[tool.ruff.lint]
+extend-select = [
+    "E501",
+    "UP",
+]
+[tool.ruff.lint.per-file-ignores]
+"alembic/*" = ["TID251"]
+
+[tool.uv.workspace]
+members = ["venv"]
+
+[scripts]
+lint = """
+ruff check .
+ruff format .
+"""

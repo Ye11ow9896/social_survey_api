@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _TSetting = TypeVar("_TSetting", bound=BaseSettings)
 
+
 def get_settings(cls: type[_TSetting]) -> _TSetting:
     dotenv.load_dotenv()
     return cls()
@@ -14,8 +15,11 @@ def get_settings(cls: type[_TSetting]) -> _TSetting:
 
 get_settings = functools.lru_cache(get_settings)
 
+
 class PostgresqlSettings(BaseSettings):
-    model_config = SettingsConfigDict(str_strip_whitespace=True, env_prefix="database_")
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, env_prefix="database_"
+    )
 
     driver: str = "postgresql+asyncpg"
     name: str

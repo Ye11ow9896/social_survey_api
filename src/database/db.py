@@ -11,7 +11,6 @@ T = TypeVar("T", bound=DeclarativeBase)
 
 
 class DBContext(Protocol):
-
     def add(self, model: T) -> None: ...
 
     def add_all(self, models: Iterable[Base]) -> None: ...

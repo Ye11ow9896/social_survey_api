@@ -1,4 +1,5 @@
-from typing import Self, Iterable, Any
+from collections.abc import Iterable
+from typing import Any, Self
 
 from pydantic import BaseModel
 

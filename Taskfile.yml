@@ -1,0 +1,26 @@
+version: "3"
+
+vars:
+  RUNNER:
+    sh: 'echo {{ .RUNNER | default "" }}'
+  SOURCES: src main.py
+  SOURCES_ROOT: src
+
+tasks:
+  ruff-lint:
+    desc: Run ruff check
+    cmds:
+      - "{{.RUNNER}} ruff check --fix {{.SOURCES}}"
+  format:
+    desc: Run ruff format
+    cmds:
+      - "{{.RUNNER}} ruff format {{.SOURCES}}"
+  typecheck:
+    desc: Perform type-checking
+    silent: true
+    cmd: "{{.RUNNER}} mypy {{.SOURCES}}"
+  lint:
+    desc: Run all linters and format files
+    cmds:
+      - task: ruff-lint
+      - task: format

@@ -17,4 +17,3 @@ class AuthController(Controller):
     async def test(self, service: Injected[AuthService]) -> list[RoleSchema]:
         result = await service.test()
         return RoleSchema.model_validate_list(result)
-

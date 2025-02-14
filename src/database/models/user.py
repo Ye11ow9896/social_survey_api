@@ -22,7 +22,9 @@ class User(Base):
     first_name: Mapped[str | None]
     second_name: Mapped[str | None]
     hash_password: Mapped[str]
-    updated_at: Mapped[datetime] = mapped_column(default=utc_now, onupdate=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(
+        default=utc_now, onupdate=utc_now
+    )
 
     role: Mapped["Role"] = relationship()
     surveys: Mapped[list["Survey"] | None] = relationship(
