@@ -9,6 +9,4 @@ PROVIDERS: Providers = [
     aioinject.Scoped(JWTAuthenticator),
     aioinject.Scoped(AuthRepository),
     aioinject.Scoped(AuthenticationService),
-
-
 ]

@@ -1,4 +1,4 @@
-from typing import assert_never
+from typing import assert_never, Annotated
 
 from adapters.api.auth.exceptions import (
     UnauthorizedHTTPError,
@@ -9,8 +9,9 @@ from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
 from core.domain.auth.service import AuthenticationService
 from core.exceptions import ObjectNotFoundError
 
-from litestar import get
+from litestar import post
 from litestar.controller import Controller
+from litestar.params import Body
 
 from adapters.api.auth.schema import LoginCredentialsSchema
 from aioinject import Injected
@@ -22,17 +23,15 @@ class AuthController(Controller):
     path = ""
     tags = ("Auth endpoints",)
 
-    @get("/authorization", status_code=200)
+    @post("/auth/login", status_code=200)
     @inject
     async def test(
         self,
-            id: int,
         service: Injected[AuthenticationService],
-
-        #schema: LoginCredentialsSchema,
+        data: Annotated[LoginCredentialsSchema, Body()],
     ) -> dict[str, str]:
         dto = LoginCredentialsDTO(
-            service_name="schema.login", password="schema.password"
+            service_name=data.login, password=data.password
         )
         result = await service.login(dto)
         if isinstance(result, Err):

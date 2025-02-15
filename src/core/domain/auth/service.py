@@ -48,7 +48,9 @@ class AuthenticationService:
         return Err(TokenEncodeError())
 
     def _verify_password(
-        self, password: str, hash_password: str
+        self,
+        password: str,
+        hash_password: str,
     ) -> Result[None, BadPasswordError]:
         hashed_password = self._get_hashed_password(password=password)
         if hashed_password == hash_password:
