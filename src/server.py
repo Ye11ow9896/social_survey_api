@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager, aclosing
 
+from adapters.api.exceptions import app_exception_handler, BaseHTTPError
 from litestar import Litestar
 
 from core.di import create_container
@@ -8,7 +9,7 @@ from aioinject.ext.litestar import AioInjectPlugin
 
 
 @asynccontextmanager
-async def lifespan(app: Litestar):
+async def lifespan(app: Litestar):  # type: ignore[no-untyped-def]
     async with aclosing(create_container()):
         yield
 
@@ -18,4 +19,5 @@ def create_app() -> Litestar:
         route_handlers=route_handlers,
         lifespan=[lifespan],
         plugins=[AioInjectPlugin(create_container())],
+        exception_handlers={BaseHTTPError: app_exception_handler},
     )

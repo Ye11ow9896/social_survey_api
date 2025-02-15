@@ -11,3 +11,8 @@ class BaseSchema(AppBaseModel):
         populate_by_name=True,
         alias_generator=_snake_to_camel,
     )
+
+
+class APIErrorSchema(AppBaseModel):
+    code: str
+    message: str

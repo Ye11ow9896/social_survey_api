@@ -1,10 +1,13 @@
-from uuid import UUID
-
+from typing import Annotated
+from pydantic import BeforeValidator
 from core.dto import BaseDTO
-from database.models.role import RoleCodeEnum
 
 
-class RoleDTO(BaseDTO):
-    id: UUID
-    name: str
-    code: RoleCodeEnum
+class TokenPayloadDTO(BaseDTO):
+    service_name: str
+    expire: Annotated[str, BeforeValidator(lambda value: str(value))]
+
+
+class LoginCredentialsDTO(BaseDTO):
+    service_name: str
+    password: str

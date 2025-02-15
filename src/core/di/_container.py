@@ -7,13 +7,16 @@ from collections.abc import Sequence, Iterable
 from types import ModuleType
 
 from database.dependencies import create_session
-from settings import get_settings, PostgresqlSettings
+from settings import get_settings, PostgresqlSettings, AuthSettings
 from pydantic_settings import BaseSettings
 from . import _modules
 
 from aioinject import Provider
 
-SETTINGS = (PostgresqlSettings,)
+SETTINGS = (
+    PostgresqlSettings,
+    AuthSettings,
+)
 
 
 def autodiscover_providers(

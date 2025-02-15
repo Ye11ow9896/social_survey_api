@@ -1,6 +1,6 @@
 from typing import Any
 
-from src.core.domain.user.repository import UserRepository
+from core.domain.user.repository import UserRepository
 
 
 class UserService:

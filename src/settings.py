@@ -32,3 +32,14 @@ class PostgresqlSettings(BaseSettings):
     def url(self) -> str:
         password = quote_plus(self.password)
         return f"{self.driver}://{self.username}:{password}@{self.host}/{self.name}"
+
+
+class AuthSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, env_prefix="auth_"
+    )
+
+    secret: str
+    jwt_crypt_algorythm: str
+    access_token_expire: int
+    salt: str
