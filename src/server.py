@@ -8,7 +8,7 @@ from aioinject.ext.litestar import AioInjectPlugin
 
 
 @asynccontextmanager
-async def lifespan(app: Litestar):
+async def lifespan(app: Litestar):  # type: ignore[no-untyped-def]
     async with aclosing(create_container()):
         yield
 

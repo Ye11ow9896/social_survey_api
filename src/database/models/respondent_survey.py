@@ -4,19 +4,27 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.schema import ForeignKey
 
-from src.database.models.base import Base
+from .base import Base, create_comment
 from src.lib.utils import utc_now
 
 
 class RespondentSurvey(Base):
-    __tablename__ = "respondent__survey"
+    __tablename__ = "telegram_respondent__survey"
+    __table_args__ = create_comment("Таблица для хранения респондентов")
 
-    user_id: Mapped[UUID] = mapped_column(
-        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+    telegram_user_id: Mapped[UUID] = mapped_column(
+        ForeignKey("telegram_user.id", ondelete="CASCADE"),
+        primary_key=True,
+        comment="Ключ таблицы telegram_user",
     )
     survey_id: Mapped[UUID] = mapped_column(
-        ForeignKey("survey.id", ondelete="CASCADE"), primary_key=True
+        ForeignKey("survey.id", ondelete="CASCADE"),
+        primary_key=True,
+        comment="Ключ таблицы исследования",
     )
-    updated_at: Mapped[datetime] = mapped_column(
-        default=utc_now, onupdate=utc_now
+    created_at: Mapped[datetime] = mapped_column(
+        default=utc_now,
+        onupdate=utc_now,
+        comment="Дата назначения респондента на исследование",
     )
+    is_deleted: Mapped[bool] = mapped_column(default=False)
