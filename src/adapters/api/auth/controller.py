@@ -25,7 +25,7 @@ class AuthController(Controller):
 
     @post("/auth/login", status_code=200)
     @inject
-    async def test(
+    async def login(
         self,
         service: Injected[AuthenticationService],
         data: Annotated[LoginCredentialsSchema, Body()],
