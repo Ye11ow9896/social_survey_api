@@ -13,6 +13,7 @@ class BaseSchema(AppBaseModel):
     )
 
 
-class APIErrorSchema(AppBaseModel):
+class APIDetailSchema(AppBaseModel):
+    status_code: int
     code: str
     message: str
