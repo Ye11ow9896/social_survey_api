@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 
-from database.models.survey import Survey
+from src.database.models.survey import Survey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 
@@ -63,7 +63,7 @@ class TelegramUser(AbstractUserModel):
     )
 
     role: Mapped["Role"] = relationship()
-    surveys: Mapped[list["Survey"] | None] = relationship(
-        viewonly=True,
-        secondary=RespondentSurvey.__table__,
-    )
+    #surveys: Mapped[list["Survey"] | None] = relationship(
+    #    viewonly=True,
+    #    secondary=RespondentSurvey.__table__,
+    #)

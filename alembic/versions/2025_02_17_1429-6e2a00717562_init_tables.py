@@ -1,8 +1,8 @@
 """init tables
 
-Revision ID: a97dd6eca1df
+Revision ID: 6e2a00717562
 Revises: 
-Create Date: 2025-02-15 20:28:14.285139
+Create Date: 2025-02-17 14:29:24.425785
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'a97dd6eca1df'
+revision: str = '6e2a00717562'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -84,4 +84,3 @@ def downgrade() -> None:
     op.drop_table('telegram_user')
     op.drop_table('role')
     op.drop_table('auth_service')
-    op.execute('DROP TYPE rolecodeenum;')
