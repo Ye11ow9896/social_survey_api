@@ -1,18 +1,13 @@
 from datetime import datetime
-from typing import TYPE_CHECKING
 from uuid import UUID
 
 
-from src.database.models.survey import Survey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 
 from src.database.models.base import Base, create_comment
 from src.lib.utils import utc_now
 from src.database.models.role import Role
-
-if TYPE_CHECKING:
-    from database.models.respondent_survey import RespondentSurvey
 
 
 class AbstractUserModel(Base):
@@ -63,7 +58,7 @@ class TelegramUser(AbstractUserModel):
     )
 
     role: Mapped["Role"] = relationship()
-    #surveys: Mapped[list["Survey"] | None] = relationship(
+    # surveys: Mapped[list["Survey"] | None] = relationship(
     #    viewonly=True,
     #    secondary=RespondentSurvey.__table__,
-    #)
+    # )
