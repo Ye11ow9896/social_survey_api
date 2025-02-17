@@ -1,7 +1,7 @@
 import hashlib
 from datetime import timedelta
 
-from core.domain.auth.dto import LoginCredentialsDTO
+from adapters.api.auth.dto import LoginCredentialsDTO
 from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
 from core.domain.auth.jwt import JWTAuthenticator
 from core.domain.auth.repository import AuthRepository

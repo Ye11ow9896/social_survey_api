@@ -4,7 +4,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
-
+from sqlalchemy import DateTime
 from src.database.models.base import Base, create_comment
 from src.lib.utils import utc_now
 from src.database.models.role import Role
@@ -25,7 +25,9 @@ class AbstractUserModel(Base):
     real_middle_name: Mapped[str | None]
     real_last_name: Mapped[str | None]
     updated_at: Mapped[datetime] = mapped_column(
-        default=utc_now, onupdate=utc_now
+        DateTime(timezone=True),
+        default=utc_now,
+        onupdate=utc_now,
     )
 
 
@@ -48,7 +50,7 @@ class TelegramUser(AbstractUserModel):
         comment="last_name. Одноименно переменной в aiogram"
     )
     url: Mapped[str] = mapped_column(
-        "Cсылка типа tg://user?id=54763794. Одноименно переменной в aiogram"
+        comment="Cсылка типа tg://user?id=54763794. Одноименно переменной в aiogram"
     )
     is_bot: Mapped[bool] = mapped_column(
         comment="Одноименно переменной в aiogram"
