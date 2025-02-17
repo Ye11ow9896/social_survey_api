@@ -8,6 +8,7 @@ from sqlalchemy.sql.schema import ForeignKey
 from .respondent_survey import RespondentSurvey
 from .base import Base, create_comment
 from src.lib.utils import utc_now
+from sqlalchemy import DateTime
 
 
 if TYPE_CHECKING:
@@ -23,10 +24,14 @@ class Survey(Base):
         comment="Ключ таблицы респондентов с тг. Аналогичное добавление планируется для других источников трафика",
     )
     name: Mapped[str | None]
-    created_at: Mapped[datetime] = mapped_column(default=utc_now)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now
+    )
     description: Mapped[str | None]
     updated_at: Mapped[datetime] = mapped_column(
-        default=utc_now, onupdate=utc_now
+        DateTime(timezone=True),
+        default=utc_now,
+        onupdate=utc_now,
     )
 
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(

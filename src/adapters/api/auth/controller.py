@@ -1,10 +1,10 @@
 from typing import assert_never, Annotated
 
+from adapters.api.auth.dto import LoginCredentialsDTO
 from adapters.api.auth.exceptions import (
     UnauthorizedHTTPError,
     TokenCreateHTTPError,
 )
-from core.domain.auth.dto import LoginCredentialsDTO
 from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
 from core.domain.auth.service import AuthenticationService
 from core.exceptions import ObjectNotFoundError
