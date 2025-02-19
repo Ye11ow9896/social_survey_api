@@ -29,5 +29,7 @@ ENV PYTHONPATH=$PYTHONPATH:/app/src \
 
 COPY --from=build --chown=app:app /app/.venv /app/.venv
 COPY ./src ./src
+COPY ./alembic ./alembic
 COPY alembic.ini ./
-ENTRYPOINT ["uvicorn", "src.server:create_app", "--factory", "--loop", "uvloop", "--host", "0.0.0.0"]
+
+CMD ["sh","-c","alembic upgrade head && uvicorn src.server:create_app --factory --loop uvloop --host 0.0.0.0"]
