@@ -13,3 +13,7 @@ class RoleCodeEnum(str, enum.Enum):
                 return RoleIdConstant.ADMIN
             case self.RESPONDENT:
                 return RoleIdConstant.RESPONDENT
+
+class SexEnum(str, enum.Enum):
+    MALE = "MALE"
+    FEMALE = "FEMALE"

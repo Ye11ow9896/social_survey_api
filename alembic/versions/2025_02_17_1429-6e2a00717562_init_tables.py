@@ -44,7 +44,7 @@ def upgrade() -> None:
     sa.Column('is_premium', sa.Boolean(), nullable=False, comment='Одноименно переменной в aiogram'),
     sa.Column('role_id', sa.Uuid(), nullable=False),
     sa.Column('age', sa.Integer(), nullable=True),
-    sa.Column('sex', sa.Integer(), nullable=True),
+    sa.Column('sex', sa.Enum('MALE', 'FEMALE', name='sexenum'), nullable=True),
     sa.Column('real_first_name', sa.String(), nullable=True),
     sa.Column('real_middle_name', sa.String(), nullable=True),
     sa.Column('real_last_name', sa.String(), nullable=True),

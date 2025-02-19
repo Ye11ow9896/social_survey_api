@@ -39,5 +39,5 @@ class CheckAccessTokenMiddleware(AbstractAuthenticationMiddleware):
             jwt_authenticator = await ctx.resolve(JWTAuthenticator)
             result = jwt_authenticator.check_token_expired(token)
         if isinstance(result, Err):
-            Err(result)
+            return result
         return Ok(None)
