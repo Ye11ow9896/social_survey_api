@@ -2,7 +2,7 @@ from typing import assert_never, Annotated
 
 from adapters.api.auth.dto import LoginCredentialsDTO
 from adapters.api.auth.exceptions import (
-    UnauthorizedHTTPError,
+    UnauthorizedBadCredentialsHTTPError,
     TokenCreateHTTPError,
 )
 from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
@@ -15,15 +15,14 @@ from litestar.params import Body
 
 from adapters.api.auth.schema import LoginCredentialsSchema
 from aioinject import Injected
-from aioinject.ext.fastapi import inject
+from aioinject.ext.litestar import inject
 from result import Err
 
 
 class AuthController(Controller):
     path = ""
     tags = ("Auth endpoints",)
-
-    @post("/auth/login", status_code=200)
+    @post("/auth/login", status_code=200, exclude_from_auth=True)
     @inject
     async def login(
         self,
@@ -37,7 +36,7 @@ class AuthController(Controller):
         if isinstance(result, Err):
             match result.err_value:
                 case ObjectNotFoundError() | BadPasswordError():
-                    raise UnauthorizedHTTPError()
+                    raise UnauthorizedBadCredentialsHTTPError()
                 case TokenEncodeError():
                     raise TokenCreateHTTPError()
                 case _ as never:

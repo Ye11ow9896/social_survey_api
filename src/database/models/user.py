@@ -5,6 +5,8 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy import DateTime
+
+from src.database.enums import SexEnum
 from src.database.models.base import Base, create_comment
 from src.lib.utils import utc_now
 from src.database.models.role import Role
@@ -20,7 +22,7 @@ class AbstractUserModel(Base):
 
     role_id: Mapped[UUID] = mapped_column(ForeignKey("role.id"))
     age: Mapped[int | None]
-    sex: Mapped[int | None]
+    sex: Mapped[SexEnum | None]
     real_first_name: Mapped[str | None]
     real_middle_name: Mapped[str | None]
     real_last_name: Mapped[str | None]
@@ -38,6 +40,7 @@ class TelegramUser(AbstractUserModel):
     )
 
     tg_id: Mapped[int] = mapped_column(
+        unique=True,
         comment="Идентификатор в тг. в aiogram - id"
     )
     username: Mapped[str | None] = mapped_column(

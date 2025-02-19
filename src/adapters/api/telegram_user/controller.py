@@ -3,13 +3,14 @@ from typing import Any
 
 from adapters.api.schema import APIDetailSchema
 from adapters.api.telegram_user.schema import TelegramUserCreateSchema
+from core.domain.auth.middleware import CheckAccessTokenMiddleware
 from core.domain.user.service import TelegramUserService
 from litestar import Response
 
 from litestar import post
 from litestar.controller import Controller
 from aioinject import Injected
-from aioinject.ext.fastapi import inject
+from aioinject.ext.litestar import inject
 
 from database.enums import RoleCodeEnum
 
@@ -17,7 +18,7 @@ from database.enums import RoleCodeEnum
 class TelegramUserController(Controller):
     path = "/telegram-user"
     tags = ("Telegram user endpoints",)
-
+    middleware = [CheckAccessTokenMiddleware]
     @post("/create", status_code=200)
     @inject
     async def create(

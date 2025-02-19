@@ -63,3 +63,4 @@ class AuthenticationService:
             password + self._settings.salt, encoding="utf-8"
         )
         return hashlib.md5(convert_password).hexdigest()
+

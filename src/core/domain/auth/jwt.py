@@ -6,14 +6,11 @@ from pydantic_core._pydantic_core import ValidationError
 from core.domain.auth.dto import TokenPayloadDTO
 from jose import jwt, JOSEError
 
+from core.domain.auth.exceptions import TokenDecodeError, TokenExpiredError
 from lib.contexmanagers import Suppress
 from result import Ok, Result, Err
 from lib.utils import utc_now
 from settings import AuthSettings
-
-
-class TokenExpiredError:
-    pass
 
 
 class JWTAuthenticator:
@@ -25,11 +22,13 @@ class JWTAuthenticator:
 
     def check_token_expired(
         self,
-        payload_dto: TokenPayloadDTO,
-        expire_delta: timedelta,
-    ) -> Result[None, TokenExpiredError]:
+        token: str,
+    ) -> Result[None, TokenExpiredError | TokenDecodeError]:
+        payload_dto = self._decode(token)
+        if isinstance(payload_dto, Err):
+            return Err(TokenDecodeError())
         token_expire = (
-            datetime.fromisoformat(payload_dto.expire) + expire_delta
+            datetime.fromisoformat(payload_dto.expire)
         )
         if token_expire <= utc_now():
             return Err(TokenExpiredError())
@@ -56,17 +55,20 @@ class JWTAuthenticator:
 
         return access_token
 
-    def _decode(self, token: str) -> TokenPayloadDTO | None:
+    def _decode(self, token: str) -> Result[TokenPayloadDTO, None]:
         payload_dto = None
-        with Suppress(ValidationError, JOSEError):
+        #with Suppress(ValidationError, JOSEError):
+        try:
             payload: dict[str, Any] = jwt.decode(
                 token,
                 self._settings.secret,
-                self._settings.jwt_crypt_algorythm,
+                [self._settings.jwt_crypt_algorythm],
             )
             payload_dto = TokenPayloadDTO(
                 service_name=payload.get("service_name"),
                 expire=payload.get("expire"),
             )
+            return Ok(payload_dto)
+        except Exception as e:
+            return Err(None)
 
-        return payload_dto
