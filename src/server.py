@@ -12,11 +12,11 @@ from core.domain.auth.middleware import CheckAccessTokenMiddleware
 from src.adapters.api import route_handlers
 from aioinject.ext.litestar import AioInjectPlugin
 
+
 @asynccontextmanager
 async def lifespan(app: Litestar):  # type: ignore[no-untyped-def]
     async with aclosing(create_container()):
         yield
-
 
 
 def create_app() -> Litestar:
@@ -24,12 +24,11 @@ def create_app() -> Litestar:
         title="My API",
         version="1.0.0",
         security=[{"BearerToken": []}],
-        components=Components(security_schemes={"BearerToken": SecurityScheme(
-            type="http",
-            scheme="bearer"
-            )
-        }
-        )
+        components=Components(
+            security_schemes={
+                "BearerToken": SecurityScheme(type="http", scheme="bearer")
+            }
+        ),
     )
 
     return Litestar(
@@ -37,6 +36,8 @@ def create_app() -> Litestar:
         lifespan=[lifespan],
         plugins=[AioInjectPlugin(create_container())],
         exception_handlers={BaseHTTPError: app_exception_handler},
-        middleware=[DefineMiddleware(CheckAccessTokenMiddleware, exclude="schema")],
+        middleware=[
+            DefineMiddleware(CheckAccessTokenMiddleware, exclude="schema")
+        ],
         openapi_config=openapi_config,
     )

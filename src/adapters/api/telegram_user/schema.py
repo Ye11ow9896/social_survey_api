@@ -5,6 +5,7 @@ from adapters.api.telegram_user.dto import TelegramUserCreateDTO
 from database.enums import RoleCodeEnum
 from litestar.params import Parameter
 
+
 class TelegramUserCreateSchema(BaseSchema):
     age: int | None
     sex: int | None
@@ -36,6 +37,7 @@ class TelegramUserCreateSchema(BaseSchema):
             first_name=self.first_name,
             last_name=self.last_name,
         )
+
 
 class TelegramUserFilterSchema(BaseSchema):
     tg_id: Annotated[int, Parameter()]

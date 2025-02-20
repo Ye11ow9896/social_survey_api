@@ -8,9 +8,11 @@ from core.dto import BaseDTO
 
 _T = TypeVar("_T")
 
+
 class PaginationDTO(BaseDTO):
     page: int
     page_size: int
+
 
 @dataclass(frozen=True, slots=True)
 class PaginationResultDTO(Generic[_T]):
@@ -33,7 +35,9 @@ class PagePaginator:
         *,
         pagination: PaginationDTO,
     ) -> PaginationResultDTO[_T]:
-        paginated = stmt.offset((pagination.page - 1) * pagination.page_size).limit(
+        paginated = stmt.offset(
+            (pagination.page - 1) * pagination.page_size
+        ).limit(
             pagination.page_size,
         )
 

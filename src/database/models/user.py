@@ -40,8 +40,7 @@ class TelegramUser(AbstractUserModel):
     )
 
     tg_id: Mapped[int] = mapped_column(
-        unique=True,
-        comment="Идентификатор в тг. в aiogram - id"
+        unique=True, comment="Идентификатор в тг. в aiogram - id"
     )
     username: Mapped[str | None] = mapped_column(
         comment="Акк в тг. Одноименно переменной в aiogram"

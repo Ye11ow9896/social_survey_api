@@ -22,15 +22,13 @@ class UnauthorizedBadTokenHTTPError(BaseHTTPError):
     status_code = HTTPStatus.UNAUTHORIZED
     code = "bad_token_authorization"
 
-    def __init__(
-        self,
-        message: str
-    ) -> None:
+    def __init__(self, message: str) -> None:
         self.detail_schema = APIDetailSchema(
             status_code=self.status_code,
             code=self.code,
             message=message,
         )
+
 
 class TokenCreateHTTPError(BaseHTTPError):
     status_code = HTTPStatus.UNPROCESSABLE_ENTITY
@@ -39,7 +37,7 @@ class TokenCreateHTTPError(BaseHTTPError):
     def __init__(
         self,
     ) -> None:
-        self.error_schema = APIDetailSchema(
+        self.detail_schema = APIDetailSchema(
             status_code=self.status_code,
             code=self.code,
             message="Возникла ошибка при создании токена. Обратитесь в поддержку",

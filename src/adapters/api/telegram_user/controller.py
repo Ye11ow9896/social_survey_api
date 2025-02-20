@@ -22,6 +22,7 @@ class TelegramUserController(Controller):
     path = "/telegram-user"
     tags = ("Telegram user endpoints",)
     middleware = [CheckAccessTokenMiddleware]
+
     @post("/create", status_code=200)
     @inject
     async def create(
@@ -51,7 +52,9 @@ class TelegramUserController(Controller):
         tg_id: Annotated[int | None, Parameter(query="tgId")],
         is_bot: Annotated[bool | None, Parameter(query="isBot")],
         service: Injected[TelegramUserService],
-        page_size: Annotated[int, Parameter(ge=1, le=1_000, query="pageSize")] = 100,
+        page_size: Annotated[
+            int, Parameter(ge=1, le=1_000, query="pageSize")
+        ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
     ) -> PaginationResultDTO:
         filter_dto = TelegramUserFilterDTO(
@@ -63,4 +66,3 @@ class TelegramUserController(Controller):
             page=page,
         )
         return await service.get_all(filter_dto, pagination=pagination_dto)
-

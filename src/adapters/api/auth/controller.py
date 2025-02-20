@@ -22,6 +22,7 @@ from result import Err
 class AuthController(Controller):
     path = ""
     tags = ("Auth endpoints",)
+
     @post("/auth/login", status_code=200, exclude_from_auth=True)
     @inject
     async def login(
