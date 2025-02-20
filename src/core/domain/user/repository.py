@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from adapters.api.telegram_user.dto import TelegramUserCreateDTO
+from sqlalchemy import select, Select
+from adapters.api.telegram_user.dto import TelegramUserCreateDTO, TelegramUserFilterDTO
 from database.models import TelegramUser
 
 
@@ -13,6 +13,13 @@ class TelegramUserRepository:
         self._session.add(model)
         await self._session.flush()
         return model
+
+    async def get_all_stmt(
+        self,
+        filter_: TelegramUserFilterDTO
+    ) -> Select[tuple[TelegramUser]]:
+        stmt = select(TelegramUser)
+        return filter_.apply(stmt)
 
     def _build_model(self, dto: TelegramUserCreateDTO) -> TelegramUser:
         return TelegramUser(
@@ -30,3 +37,5 @@ class TelegramUserRepository:
             first_name=dto.first_name,
             last_name=dto.last_name,
         )
+
+

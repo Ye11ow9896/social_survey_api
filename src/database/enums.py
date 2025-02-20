@@ -1,4 +1,5 @@
 import enum
+from uuid import UUID
 
 from src.core.domain.role.contants import RoleIdConstant
 
@@ -7,7 +8,8 @@ class RoleCodeEnum(str, enum.Enum):
     ADMIN = "ADMIN"
     RESPONDENT = "RESPONDENT"
 
-    def get_id(self) -> RoleIdConstant:
+    @property
+    def identifier(self) -> UUID:
         match self:
             case self.ADMIN:
                 return RoleIdConstant.ADMIN
