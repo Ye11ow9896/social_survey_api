@@ -1,11 +1,15 @@
 from dataclasses import dataclass
+from typing import Annotated
+from uuid import UUID
+from sqla_filter import UNSET, BaseFilter, FilterField, Unset
+from sqlalchemy.sql.operators import eq
 
-from database.enums import RoleCodeEnum
+from database.models import TelegramUser
 
 
-@dataclass
+@dataclass(slots=True, frozen=True)
 class TelegramUserCreateDTO:
-    role_id: RoleCodeEnum
+    role_id: UUID
     url: str
     is_bot: bool
     is_premium: bool
@@ -18,3 +22,14 @@ class TelegramUserCreateDTO:
     username: str | None
     first_name: str | None
     last_name: str | None
+
+
+class TelegramUserFilterDTO(BaseFilter):
+    tg_id: Annotated[
+        int | Unset,
+        FilterField(TelegramUser.tg_id, operator=eq),
+    ] = UNSET
+    is_bot: Annotated[
+        bool | Unset,
+        FilterField(TelegramUser.is_bot, operator=eq),
+    ] = UNSET

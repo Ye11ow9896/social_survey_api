@@ -27,9 +27,7 @@ class JWTAuthenticator:
         payload_dto = self._decode(token)
         if isinstance(payload_dto, Err):
             return Err(TokenDecodeError())
-        token_expire = (
-            datetime.fromisoformat(payload_dto.expire)
-        )
+        token_expire = datetime.fromisoformat(payload_dto.expire)
         if token_expire <= utc_now():
             return Err(TokenExpiredError())
         return Ok(None)
@@ -57,8 +55,7 @@ class JWTAuthenticator:
 
     def _decode(self, token: str) -> Result[TokenPayloadDTO, None]:
         payload_dto = None
-        #with Suppress(ValidationError, JOSEError):
-        try:
+        with Suppress(ValidationError, JOSEError):
             payload: dict[str, Any] = jwt.decode(
                 token,
                 self._settings.secret,
@@ -69,6 +66,4 @@ class JWTAuthenticator:
                 expire=payload.get("expire"),
             )
             return Ok(payload_dto)
-        except Exception as e:
-            return Err(None)
-
+        return Err(None)

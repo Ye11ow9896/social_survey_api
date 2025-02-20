@@ -7,12 +7,14 @@ class RoleCodeEnum(str, enum.Enum):
     ADMIN = "ADMIN"
     RESPONDENT = "RESPONDENT"
 
-    def get_id(self) -> RoleIdConstant:
+    @property
+    def identifier(self) -> RoleIdConstant:
         match self:
             case self.ADMIN:
                 return RoleIdConstant.ADMIN
             case self.RESPONDENT:
                 return RoleIdConstant.RESPONDENT
+
 
 class SexEnum(str, enum.Enum):
     MALE = "MALE"

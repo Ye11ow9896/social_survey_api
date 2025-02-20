@@ -1,6 +1,9 @@
+from typing import Annotated
+
 from adapters.api.schema import BaseSchema
 from adapters.api.telegram_user.dto import TelegramUserCreateDTO
 from database.enums import RoleCodeEnum
+from litestar.params import Parameter
 
 
 class TelegramUserCreateSchema(BaseSchema):
@@ -18,7 +21,7 @@ class TelegramUserCreateSchema(BaseSchema):
     is_premium: bool
 
     def to_dto(self, role: RoleCodeEnum) -> TelegramUserCreateDTO:
-        role_id = role.get_id()
+        role_id = role.identifier
         return TelegramUserCreateDTO(
             role_id=role_id,
             url=self.url,
@@ -34,3 +37,7 @@ class TelegramUserCreateSchema(BaseSchema):
             first_name=self.first_name,
             last_name=self.last_name,
         )
+
+
+class TelegramUserFilterSchema(BaseSchema):
+    tg_id: Annotated[int, Parameter()]

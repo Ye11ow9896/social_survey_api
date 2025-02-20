@@ -770,6 +770,7 @@ dependencies = [
     { name = "pytest" },
     { name = "python-jose" },
     { name = "result" },
+    { name = "sqla-filter" },
     { name = "sqlalchemy" },
     { name = "uuid-utils" },
     { name = "uvicorn" },
@@ -796,6 +797,7 @@ requires-dist = [
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "python-jose", specifier = ">=3.3.0" },
     { name = "result", specifier = ">=0.17.0" },
+    { name = "sqla-filter", specifier = ">=0.3.2" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "uuid-utils", specifier = ">=0.10.0" },
     { name = "uvicorn", specifier = ">=0.32.1" },
@@ -806,6 +808,18 @@ requires-dist = [
 dev = [
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "ruff", specifier = ">=0.9.6" },
+]
+
+[[package]]
+name = "sqla-filter"
+version = "0.3.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sqlalchemy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ed/86/4e381b32f1472887f50dd0ca525d4a6e37e530ffbe6bb6ca0d7e9b0972e8/sqla_filter-0.3.2.tar.gz", hash = "sha256:0cc0c0daee07dcf43826ad9486366f6105dbf66ba28b77831cad50770d61b315", size = 10651 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8c/3a/c97ee1e72b587eef5124da6628d1d1d6f88611f319e592b96a420f0aab98/sqla_filter-0.3.2-py3-none-any.whl", hash = "sha256:3638f8bd4136ec938ade59e5c1a2680bbc10d2d7ef6388fb38a5ca4a04f2735c", size = 9831 },
 ]
 
 [[package]]
