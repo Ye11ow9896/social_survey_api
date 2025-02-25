@@ -33,7 +33,6 @@ class TelegramUserController(Controller):
     ) -> Response[Any]:
         dto = data.to_dto(role=role)
         await service.create(dto)
-
         return Response(
             content={
                 "detail": APIDetailSchema(
@@ -45,7 +44,7 @@ class TelegramUserController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @get("/all", status_code=200, exclude_from_auth=True)
+    @get("/all", status_code=200)
     @inject
     async def get_all(
         self,
