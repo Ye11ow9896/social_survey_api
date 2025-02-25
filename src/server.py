@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager, aclosing
 
+
 from adapters.api.exceptions import app_exception_handler, BaseHTTPError
 from litestar import Litestar
-
 from core.di import create_container
 from litestar.middleware.base import DefineMiddleware
 from litestar.openapi.config import OpenAPIConfig
