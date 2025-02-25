@@ -25,4 +25,3 @@ class CommonController(Controller):
             },
             status_code=HTTPStatus.OK,
         )
-

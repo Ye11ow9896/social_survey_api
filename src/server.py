@@ -19,7 +19,6 @@ async def lifespan(app: Litestar):  # type: ignore[no-untyped-def]
         yield
 
 
-
 def create_app() -> Litestar:
     openapi_config = OpenAPIConfig(
         title="My API",
