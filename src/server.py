@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager, aclosing
 
+
 from adapters.api.exceptions import app_exception_handler, BaseHTTPError
 from litestar import Litestar
-
 from core.di import create_container
 from litestar.middleware.base import DefineMiddleware
 from litestar.openapi.config import OpenAPIConfig
@@ -17,6 +17,7 @@ from aioinject.ext.litestar import AioInjectPlugin
 async def lifespan(app: Litestar):  # type: ignore[no-untyped-def]
     async with aclosing(create_container()):
         yield
+
 
 
 def create_app() -> Litestar:
