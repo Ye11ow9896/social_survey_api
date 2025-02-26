@@ -3,11 +3,12 @@ from typing import TypeVar, Generic, Sequence, Self
 
 from sqlalchemy import Select, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from core.dto import BaseDTO
 
-_T = TypeVar("_T")
+from lib.base_model import AppBaseModel
 
+_T = TypeVar("_T")
+_T_Model = TypeVar("_T_Model", bound=AppBaseModel)
 
 class PaginationDTO(BaseDTO):
     page: int
@@ -15,8 +16,8 @@ class PaginationDTO(BaseDTO):
 
 
 @dataclass(frozen=True, slots=True)
-class PaginationResultDTO(Generic[_T]):
-    items: Sequence[_T]
+class PaginationResultDTO(Generic[_T_Model]):
+    items: Sequence[_T_Model]
     has_next_page: bool
     count: int
 
@@ -33,8 +34,9 @@ class PagePaginator:
         self,
         stmt: Select[tuple[_T]],
         *,
+        dto_model: Generic[_T_Model],
         pagination: PaginationDTO,
-    ) -> PaginationResultDTO[_T]:
+    ) -> PaginationResultDTO[_T_Model]:
         paginated = stmt.offset(
             (pagination.page - 1) * pagination.page_size
         ).limit(
@@ -49,7 +51,7 @@ class PagePaginator:
         )
         items = (await self._session.scalars(paginated)).unique().all()
         return PaginationResultDTO(
-            items=items,
+            items=dto_model.sqlalchemy_model_validate_list(items),
             has_next_page=pagination.page * pagination.page_size < count,
             count=count,
         )

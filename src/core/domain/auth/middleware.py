@@ -23,7 +23,7 @@ class CheckAccessTokenMiddleware(AbstractAuthenticationMiddleware):
         result = await self._check_token(token)
         if isinstance(result, Err):
             raise UnauthorizedBadTokenHTTPError(
-                "Ошибка доступа. Сервис не авторизован в системе"
+                "Ошибка доступа. Не авторизован"
             )
         return AuthenticationResult(user="user", auth=token)
 

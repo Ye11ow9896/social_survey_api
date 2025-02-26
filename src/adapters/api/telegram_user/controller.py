@@ -5,6 +5,7 @@ from adapters.api.schema import APIDetailSchema
 from adapters.api.telegram_user.dto import TelegramUserFilterDTO
 from adapters.api.telegram_user.schema import TelegramUserCreateSchema
 from core.domain.auth.middleware import CheckAccessTokenMiddleware
+from core.domain.user.dto import TelegramUserDTO
 from core.domain.user.service import TelegramUserService
 from litestar import Response
 from sqla_filter import or_unset
@@ -13,8 +14,8 @@ from litestar.params import Parameter
 from litestar.controller import Controller
 from aioinject import Injected
 from aioinject.ext.litestar import inject
-
 from database.enums import RoleCodeEnum
+from database.models import TelegramUser
 from lib.paginator import PaginationResultDTO, PaginationDTO
 
 
@@ -55,7 +56,7 @@ class TelegramUserController(Controller):
             int, Parameter(ge=1, le=1_000, query="pageSize")
         ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
-    ) -> PaginationResultDTO:
+    ) -> PaginationResultDTO[TelegramUserDTO]:
         filter_dto = TelegramUserFilterDTO(
             tg_id=or_unset(tg_id),
             is_bot=or_unset(is_bot),

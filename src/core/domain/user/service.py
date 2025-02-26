@@ -2,6 +2,7 @@ from adapters.api.telegram_user.dto import (
     TelegramUserCreateDTO,
     TelegramUserFilterDTO,
 )
+from core.domain.user.dto import TelegramUserDTO
 from core.domain.user.repository import TelegramUserRepository
 from database.models import TelegramUser
 from lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
@@ -22,6 +23,6 @@ class TelegramUserService:
 
     async def get_all(
         self, filter_dto: TelegramUserFilterDTO, *, pagination: PaginationDTO
-    ) -> PaginationResultDTO:
+    ) -> PaginationResultDTO[TelegramUserDTO]:
         stmt = await self._repository.get_all_stmt(filter_=filter_dto)
-        return await self._paginator.paginate(stmt, pagination=pagination)
+        return await self._paginator.paginate(stmt, dto_model=TelegramUserDTO, pagination=pagination)
