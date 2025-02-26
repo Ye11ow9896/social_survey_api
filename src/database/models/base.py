@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Annotated
+from typing import Annotated, Any
 from collections.abc import Mapping
 from uuid import UUID
 
@@ -24,8 +24,9 @@ uuid_pk = Annotated[
 class Base(DeclarativeBase):
     id: Mapped[uuid_pk] = mapped_column(primary_key=True)
 
-    def as_dict(self):
+    def as_dict(self) -> dict[str, Any]:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 def create_comment(comment: str) -> Mapping[str, str]:
     return {"comment": comment}

@@ -25,4 +25,6 @@ class TelegramUserService:
         self, filter_dto: TelegramUserFilterDTO, *, pagination: PaginationDTO
     ) -> PaginationResultDTO[TelegramUserDTO]:
         stmt = await self._repository.get_all_stmt(filter_=filter_dto)
-        return await self._paginator.paginate(stmt, dto_model=TelegramUserDTO, pagination=pagination)
+        return await self._paginator.paginate(
+            stmt, dto_model=TelegramUserDTO, pagination=pagination
+        )

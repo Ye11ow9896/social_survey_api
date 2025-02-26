@@ -15,7 +15,6 @@ from litestar.controller import Controller
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from database.enums import RoleCodeEnum
-from database.models import TelegramUser
 from lib.paginator import PaginationResultDTO, PaginationDTO
 
 

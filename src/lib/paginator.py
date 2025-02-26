@@ -10,6 +10,7 @@ from lib.base_model import AppBaseModel
 _T = TypeVar("_T")
 _T_Model = TypeVar("_T_Model", bound=AppBaseModel)
 
+
 class PaginationDTO(BaseDTO):
     page: int
     page_size: int
@@ -34,7 +35,7 @@ class PagePaginator:
         self,
         stmt: Select[tuple[_T]],
         *,
-        dto_model: Generic[_T_Model],
+        dto_model: _T_Model,
         pagination: PaginationDTO,
     ) -> PaginationResultDTO[_T_Model]:
         paginated = stmt.offset(

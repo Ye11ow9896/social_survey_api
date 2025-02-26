@@ -1,5 +1,4 @@
 from datetime import datetime, UTC, date
-from inspect import isclass
 
 
 def _snake_to_camel(name: str) -> str:
