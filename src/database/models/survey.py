@@ -19,10 +19,6 @@ class Survey(Base):
     __tablename__ = "survey"
     __table_args__ = create_comment("Таблица для хранения исследований")
 
-    telegram_respondent_id: Mapped[UUID] = mapped_column(
-        ForeignKey("telegram_user.id"),
-        comment="Ключ таблицы респондентов с тг. Аналогичное добавление планируется для других источников трафика",
-    )
     name: Mapped[str | None]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now
