@@ -6,8 +6,7 @@ class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
         username, password = form["username"], form["password"]  # noqa: F841 Будет использоваться когда будет таблица админа
-
-        request.session.update({"token": ""})
+        request.session.update({"token": "..."})
 
         return True
 

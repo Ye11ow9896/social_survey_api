@@ -39,7 +39,7 @@ line-length = 79
 
 [tool.ruff.lint]
 fixable = [
-  "UP",
+  "UP", "F401"
 ]
 
 
