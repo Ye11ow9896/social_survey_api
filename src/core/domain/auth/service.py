@@ -1,13 +1,13 @@
 import hashlib
 from datetime import timedelta
 
-from adapters.api.auth.dto import LoginCredentialsDTO
-from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
-from core.domain.auth.jwt import JWTAuthenticator
-from core.domain.auth.repository import AuthRepository
-from core.exceptions import ObjectNotFoundError
-from database.models.auth_service import AuthService
-from settings import AuthSettings
+from src.adapters.api.auth.dto import LoginCredentialsDTO
+from src.core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
+from src.core.domain.auth.jwt import JWTAuthenticator
+from src.core.domain.auth.repository import AuthRepository
+from src.core.exceptions import ObjectNotFoundError
+from src.database.models.auth_service import AuthService
+from src.settings import AuthSettings
 from result import Ok, Result, Err
 
 

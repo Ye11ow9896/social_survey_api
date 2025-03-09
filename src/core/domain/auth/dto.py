@@ -1,6 +1,6 @@
 from typing import Annotated
 from pydantic import BeforeValidator
-from core.dto import BaseDTO
+from src.core.dto import BaseDTO
 
 
 class TokenPayloadDTO(BaseDTO):

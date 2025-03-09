@@ -1,11 +1,11 @@
 from contextlib import asynccontextmanager, aclosing
 
 
-from adapters.api.exceptions import app_exception_handler, BaseHTTPError
+from src.adapters.api.exceptions import app_exception_handler, BaseHTTPError
 from litestar import Litestar
 
-from admin.admin import get_admin_plugin
-from core.di import create_container
+from src.admin.admin import get_admin_plugin
+from src.core.di import create_container
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.spec.components import Components
 from litestar.openapi.spec.security_scheme import SecurityScheme

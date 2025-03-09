@@ -1,9 +1,9 @@
 import aioinject
 
-from core.di.di import Providers
-from core.domain.auth.jwt import JWTAuthenticator
-from core.domain.auth.repository import AuthRepository
-from core.domain.auth.service import AuthenticationService
+from src.core.di.di import Providers
+from src.core.domain.auth.jwt import JWTAuthenticator
+from src.core.domain.auth.repository import AuthRepository
+from src.core.domain.auth.service import AuthenticationService
 
 PROVIDERS: Providers = [
     aioinject.Scoped(JWTAuthenticator),

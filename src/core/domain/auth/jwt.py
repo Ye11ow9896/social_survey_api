@@ -3,14 +3,14 @@ from typing import Any
 
 from pydantic_core._pydantic_core import ValidationError
 
-from core.domain.auth.dto import TokenPayloadDTO
+from src.core.domain.auth.dto import TokenPayloadDTO
 from jose import jwt, JOSEError
 
-from core.domain.auth.exceptions import TokenDecodeError, TokenExpiredError
-from lib.contexmanagers import Suppress
+from src.core.domain.auth.exceptions import TokenDecodeError, TokenExpiredError
+from src.lib.contexmanagers import Suppress
 from result import Ok, Result, Err
-from lib.utils import utc_now
-from settings import AuthSettings
+from src.lib.utils import utc_now
+from src.settings import AuthSettings
 
 
 class JWTAuthenticator:

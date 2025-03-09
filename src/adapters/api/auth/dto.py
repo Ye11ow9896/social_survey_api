@@ -1,4 +1,4 @@
-from core.dto import BaseDTO
+from src.core.dto import BaseDTO
 
 
 class LoginCredentialsDTO(BaseDTO):

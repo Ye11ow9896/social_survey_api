@@ -1,10 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Select
-from adapters.api.telegram_user.dto import (
+from src.adapters.api.telegram_user.dto import (
     TelegramUserCreateDTO,
     TelegramUserFilterDTO,
 )
-from database.models import TelegramUser
+from src.database.models import TelegramUser
 
 
 class TelegramUserRepository:

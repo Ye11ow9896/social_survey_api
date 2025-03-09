@@ -1,4 +1,4 @@
-from database.models.auth_service import AuthService
+from src.database.models.auth_service import AuthService
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 

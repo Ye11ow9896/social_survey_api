@@ -1,4 +1,4 @@
-from adapters.api.schema import BaseSchema
+from src.adapters.api.schema import BaseSchema
 
 
 class LoginCredentialsSchema(BaseSchema):

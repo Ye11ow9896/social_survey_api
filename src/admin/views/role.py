@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from database.models import Role
+from src.database.models import Role
 
 
 class RoleView(ModelView, model=Role):

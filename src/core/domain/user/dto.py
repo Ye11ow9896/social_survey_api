@@ -1,8 +1,8 @@
 from datetime import datetime
 from uuid import UUID
 
-from database.enums import SexEnum
-from lib.base_model import AppBaseModel
+from src.database.enums import SexEnum
+from src.lib.base_model import AppBaseModel
 
 
 class TelegramUserDTO(AppBaseModel):

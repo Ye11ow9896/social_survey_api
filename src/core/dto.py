@@ -1,4 +1,4 @@
-from lib.base_model import AppBaseModel
+from src.lib.base_model import AppBaseModel
 from pydantic import ConfigDict
 
 
