@@ -16,7 +16,5 @@ class AuthRepository:
         return (await self._session.scalars(stmt)).one_or_none()
 
     async def get_useradmin_by_username(self, username) -> UserAdminSchema:
-        stmt = select(UserAdmin).where(
-            UserAdmin.username == username
-        )
-        return (await self._session.scalars(stmt)).one_or_none() 
+        stmt = select(UserAdmin).where(UserAdmin.username == username)
+        return (await self._session.scalars(stmt)).one_or_none()

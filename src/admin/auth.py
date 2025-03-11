@@ -1,33 +1,32 @@
-import hashlib
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
+
+from core.di.di import INJECTED
 from database.models.user_admin import UserAdmin
 from src.core.domain.auth.repository import AuthRepository
 from src.core.domain.auth.service import AuthenticationService
-from src.adapters.api.auth.schema import UserAdminSchema
 from src.settings import AuthSettings
-
+from aioinject import Injected
+from aioinject.ext.litestar import inject
 
 
 class AdminAuth(AuthenticationBackend):
-    def __init__(
-        self,
-        auth_repository: AuthRepository,
-        settings: AuthSettings,
-    ) -> None:
-        self._auth_repository = auth_repository
-        self._settings = settings
-
+    @inject
     async def login(
-            self, request: Request,
-            # auth_service: AuthenticationService,
-            ) -> bool:
+        self,
+        request: Request,
+        auth_repository: Injected[AuthRepository] = INJECTED,
+        settings: Injected[AuthSettings] = INJECTED,
+        service: Injected[AuthenticationService] = INJECTED,
+    ) -> bool:
         form = await request.form()
         username, password = form["username"], form["password"]  # noqa: F841 Будет использоваться когда будет таблица админа
         request.session.update({"token": "..."})
-        auth_data = self._auth_repository.get_useradmin_by_username(username=username)
+        auth_data = await auth_repository.get_useradmin_by_username(
+            username=username
+        )
         if isinstance(auth_data, UserAdmin):
-            hashed_password = self._get_hashed_password(password=password)
+            hashed_password = service.get_hashed_password(password=password)
             if auth_data.hashed_password == hashed_password:
                 return True
         return False
@@ -43,10 +42,3 @@ class AdminAuth(AuthenticationBackend):
             return False
 
         return True
-
-    # Либо взять напрямую из AuthenticationService, либо вынести куда-то
-    def _get_hashed_password(self, password: str) -> str:
-        convert_password = str.encode(
-            password + self._settings.salt, encoding="utf-8"
-        )
-        return hashlib.md5(convert_password).hexdigest()

@@ -1,9 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
-from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.sql.schema import ForeignKey
 
 from .respondent_survey import RespondentSurvey
 from .base import Base, create_comment

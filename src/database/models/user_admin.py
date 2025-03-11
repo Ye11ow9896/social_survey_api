@@ -11,5 +11,5 @@ class UserAdmin(Base):
         "Таблица для авторицации с паролем и пользователем"
     )
 
-    username : Mapped[uuid.UUID]
-    hashed_password : Mapped[str] = mapped_column(String(16))
+    username: Mapped[uuid.UUID]
+    hashed_password: Mapped[str] = mapped_column(String(16))

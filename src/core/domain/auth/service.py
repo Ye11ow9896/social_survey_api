@@ -52,13 +52,13 @@ class AuthenticationService:
         password: str,
         hash_password: str,
     ) -> Result[None, BadPasswordError]:
-        hashed_password = self._get_hashed_password(password=password)
+        hashed_password = self.get_hashed_password(password=password)
         if hashed_password == hash_password:
             return Ok(None)
 
         return Err(BadPasswordError())
 
-    def _get_hashed_password(self, password: str) -> str:
+    def get_hashed_password(self, password: str) -> str:
         convert_password = str.encode(
             password + self._settings.salt, encoding="utf-8"
         )

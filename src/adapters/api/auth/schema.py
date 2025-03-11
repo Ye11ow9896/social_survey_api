@@ -6,6 +6,7 @@ class LoginCredentialsSchema(BaseSchema):
     login: str
     password: str
 
+
 class UserAdminSchema(BaseSchema):
     username: uuid.UUID
     hashed_password: str

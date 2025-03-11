@@ -8,5 +8,5 @@ class TelegramUserView(ModelView, model=TelegramUser):
         TelegramUser.id,
         TelegramUser.role_id,
         TelegramUser.role,
-        TelegramUser.surveys
+        TelegramUser.surveys,
     ]
