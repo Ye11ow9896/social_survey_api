@@ -1,6 +1,5 @@
 from src.database.models.auth_service import AuthService
 from src.database.models.user_admin import UserAdmin
-from src.adapters.api.auth.schema import UserAdminSchema
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -15,6 +14,6 @@ class AuthRepository:
         )
         return (await self._session.scalars(stmt)).one_or_none()
 
-    async def get_useradmin_by_username(self, username) -> UserAdminSchema:
+    async def get_useradmin_by_username(self, username) -> UserAdmin | None:
         stmt = select(UserAdmin).where(UserAdmin.username == username)
         return (await self._session.scalars(stmt)).one_or_none()

@@ -18,14 +18,14 @@ class AdminAuth(AuthenticationBackend):
         auth_repository: Injected[AuthRepository] = INJECTED,
         settings: Injected[AuthSettings] = INJECTED,
         service: Injected[AuthenticationService] = INJECTED,
-    ) -> bool:
+    ) -> UserAdmin | None:
         form = await request.form()
         username, password = form["username"], form["password"]  # noqa: F841 Будет использоваться когда будет таблица админа
         request.session.update({"token": "..."})
         auth_data = await auth_repository.get_useradmin_by_username(
             username=username
         )
-        if isinstance(auth_data, UserAdmin):
+        if auth_data is not None:
             hashed_password = service.get_hashed_password(password=password)
             if auth_data.hashed_password == hashed_password:
                 return True
