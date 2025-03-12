@@ -21,7 +21,8 @@ class TelegramUserRepository:
         self, filter_: TelegramUserFilterDTO
     ) -> Select[tuple[TelegramUser]]:
         stmt = select(TelegramUser)
-        return filter_.apply(stmt)
+        stmt = filter_.apply(stmt)
+        return stmt
 
     def _build_model(self, dto: TelegramUserCreateDTO) -> TelegramUser:
         return TelegramUser(

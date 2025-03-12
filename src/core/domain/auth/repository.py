@@ -14,6 +14,6 @@ class AuthRepository:
         )
         return (await self._session.scalars(stmt)).one_or_none()
 
-    async def get_useradmin(self, username) -> UserAdmin | None:
+    async def get_useradmin(self, username: str) -> UserAdmin | None:
         stmt = select(UserAdmin).where(UserAdmin.username == username)
         return (await self._session.scalars(stmt)).one_or_none()

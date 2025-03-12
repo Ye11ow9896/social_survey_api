@@ -2,7 +2,6 @@ from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 
 from src.core.di.di import INJECTED
-from src.database.models.user_admin import UserAdmin
 from src.core.domain.auth.repository import AuthRepository
 from src.core.domain.auth.service import AuthenticationService
 from src.settings import AuthSettings
@@ -16,9 +15,8 @@ class AdminAuth(AuthenticationBackend):
         self,
         request: Request,
         auth_repository: Injected[AuthRepository] = INJECTED,
-        settings: Injected[AuthSettings] = INJECTED,
         service: Injected[AuthenticationService] = INJECTED,
-    ) -> UserAdmin | None:
+    ) -> bool:
         form = await request.form()
         username, password = form["username"], form["password"]
         request.session.update({"token": "..."})
