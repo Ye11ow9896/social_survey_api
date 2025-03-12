@@ -1,7 +1,7 @@
 from sqladmin_litestar_plugin import SQLAdminPlugin
 
-from admin.auth import AdminAuth
-from database.engine import engine
+from src.admin.auth import AdminAuth
+from src.database.engine import engine
 from src.admin.views import _VIEWS
 
 

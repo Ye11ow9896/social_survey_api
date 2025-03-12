@@ -1,9 +1,9 @@
 from litestar import Response
-from adapters.api.schema import APIDetailSchema
+from src.adapters.api.schema import APIDetailSchema
 from http import HTTPStatus
 from typing import Any
 
-from core.domain.auth.middleware import CheckAccessTokenMiddleware
+from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from litestar import get
 from litestar.controller import Controller
 

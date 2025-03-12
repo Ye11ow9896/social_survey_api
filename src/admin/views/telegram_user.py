@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from database.models import TelegramUser
+from src.database.models import TelegramUser
 
 
 class TelegramUserView(ModelView, model=TelegramUser):
@@ -8,5 +8,5 @@ class TelegramUserView(ModelView, model=TelegramUser):
         TelegramUser.id,
         TelegramUser.role_id,
         TelegramUser.role,
-        TelegramUser.surveys
+        TelegramUser.surveys,
     ]

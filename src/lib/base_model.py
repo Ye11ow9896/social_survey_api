@@ -3,7 +3,7 @@ from typing import Any, Self, TypeVar
 
 from pydantic import BaseModel
 
-from database.models.base import Base
+from src.database.models.base import Base
 
 _T_Base = TypeVar("_T_Base", bound=Base)
 

@@ -1,13 +1,13 @@
 import hashlib
 from datetime import timedelta
 
-from adapters.api.auth.dto import LoginCredentialsDTO
-from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
-from core.domain.auth.jwt import JWTAuthenticator
-from core.domain.auth.repository import AuthRepository
-from core.exceptions import ObjectNotFoundError
-from database.models.auth_service import AuthService
-from settings import AuthSettings
+from src.adapters.api.auth.dto import LoginCredentialsDTO
+from src.core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
+from src.core.domain.auth.jwt import JWTAuthenticator
+from src.core.domain.auth.repository import AuthRepository
+from src.core.exceptions import ObjectNotFoundError
+from src.database.models.auth_service import AuthService
+from src.settings import AuthSettings
 from result import Ok, Result, Err
 
 
@@ -52,13 +52,13 @@ class AuthenticationService:
         password: str,
         hash_password: str,
     ) -> Result[None, BadPasswordError]:
-        hashed_password = self._get_hashed_password(password=password)
+        hashed_password = self.get_hashed_password(password=password)
         if hashed_password == hash_password:
             return Ok(None)
 
         return Err(BadPasswordError())
 
-    def _get_hashed_password(self, password: str) -> str:
+    def get_hashed_password(self, password: str) -> str:
         convert_password = str.encode(
             password + self._settings.salt, encoding="utf-8"
         )

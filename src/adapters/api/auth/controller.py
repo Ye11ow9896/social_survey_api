@@ -1,19 +1,19 @@
 from typing import assert_never, Annotated
 
-from adapters.api.auth.dto import LoginCredentialsDTO
-from adapters.api.auth.exceptions import (
+from src.adapters.api.auth.dto import LoginCredentialsDTO
+from src.adapters.api.auth.exceptions import (
     UnauthorizedBadCredentialsHTTPError,
     TokenCreateHTTPError,
 )
-from core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
-from core.domain.auth.service import AuthenticationService
-from core.exceptions import ObjectNotFoundError
+from src.core.domain.auth.exceptions import BadPasswordError, TokenEncodeError
+from src.core.domain.auth.service import AuthenticationService
+from src.core.exceptions import ObjectNotFoundError
 
 from litestar import post
 from litestar.controller import Controller
 from litestar.params import Body
 
-from adapters.api.auth.schema import LoginCredentialsSchema
+from src.adapters.api.auth.schema import LoginCredentialsSchema
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from result import Err

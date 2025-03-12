@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from database.models import Survey
+from src.database.models import Survey
 
 
 class SurveyView(ModelView, model=Survey):

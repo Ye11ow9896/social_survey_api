@@ -1,12 +1,12 @@
 from http import HTTPStatus
 from typing import Any, Annotated
 
-from adapters.api.schema import APIDetailSchema
-from adapters.api.telegram_user.dto import TelegramUserFilterDTO
-from adapters.api.telegram_user.schema import TelegramUserCreateSchema
-from core.domain.auth.middleware import CheckAccessTokenMiddleware
-from core.domain.user.dto import TelegramUserDTO
-from core.domain.user.service import TelegramUserService
+from src.adapters.api.schema import APIDetailSchema
+from src.adapters.api.telegram_user.dto import TelegramUserFilterDTO
+from src.adapters.api.telegram_user.schema import TelegramUserCreateSchema
+from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
+from src.core.domain.user.dto import TelegramUserDTO
+from src.core.domain.user.service import TelegramUserService
 from litestar import Response
 from sqla_filter import or_unset
 from litestar import post, get
@@ -14,8 +14,8 @@ from litestar.params import Parameter
 from litestar.controller import Controller
 from aioinject import Injected
 from aioinject.ext.litestar import inject
-from database.enums import RoleCodeEnum
-from lib.paginator import PaginationResultDTO, PaginationDTO
+from src.database.enums import RoleCodeEnum
+from src.lib.paginator import PaginationResultDTO, PaginationDTO
 
 
 class TelegramUserController(Controller):

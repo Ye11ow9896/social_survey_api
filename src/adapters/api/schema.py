@@ -1,8 +1,8 @@
-from lib.base_model import AppBaseModel
+from src.lib.base_model import AppBaseModel
 
 from pydantic import ConfigDict
 
-from lib.utils import _snake_to_camel
+from src.lib.utils import _snake_to_camel
 
 
 class BaseSchema(AppBaseModel):

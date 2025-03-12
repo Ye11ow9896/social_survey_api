@@ -1,11 +1,11 @@
-from adapters.api.telegram_user.dto import (
+from src.adapters.api.telegram_user.dto import (
     TelegramUserCreateDTO,
     TelegramUserFilterDTO,
 )
-from core.domain.user.dto import TelegramUserDTO
-from core.domain.user.repository import TelegramUserRepository
-from database.models import TelegramUser
-from lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
+from src.core.domain.user.dto import TelegramUserDTO
+from src.core.domain.user.repository import TelegramUserRepository
+from src.database.models import TelegramUser
+from src.lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
 
 
 class TelegramUserService:

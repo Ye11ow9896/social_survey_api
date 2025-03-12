@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from settings import PostgresqlSettings, get_settings
+from src.settings import PostgresqlSettings, get_settings
 
 _settings = get_settings(PostgresqlSettings)
 

@@ -1,8 +1,8 @@
 from typing import Annotated
 
-from adapters.api.schema import BaseSchema
-from adapters.api.telegram_user.dto import TelegramUserCreateDTO
-from database.enums import RoleCodeEnum
+from src.adapters.api.schema import BaseSchema
+from src.adapters.api.telegram_user.dto import TelegramUserCreateDTO
+from src.database.enums import RoleCodeEnum
 from litestar.params import Parameter
 
 

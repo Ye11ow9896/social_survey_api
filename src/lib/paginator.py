@@ -3,9 +3,9 @@ from typing import TypeVar, Generic, Sequence, Self
 
 from sqlalchemy import Select, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.dto import BaseDTO
+from src.core.dto import BaseDTO
 
-from lib.base_model import AppBaseModel
+from src.lib.base_model import AppBaseModel
 
 _T = TypeVar("_T")
 _T_Model = TypeVar("_T_Model", bound=AppBaseModel)

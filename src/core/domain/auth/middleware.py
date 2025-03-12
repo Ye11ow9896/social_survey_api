@@ -1,11 +1,11 @@
-from adapters.api.auth.exceptions import UnauthorizedBadTokenHTTPError
-from core.di import create_container
-from core.domain.auth.exceptions import (
+from src.adapters.api.auth.exceptions import UnauthorizedBadTokenHTTPError
+from src.core.di import create_container
+from src.core.domain.auth.exceptions import (
     TokenNotFoundInHeaders,
     TokenExpiredError,
     TokenDecodeError,
 )
-from core.domain.auth.jwt import JWTAuthenticator
+from src.core.domain.auth.jwt import JWTAuthenticator
 from litestar.connection import ASGIConnection
 from litestar.middleware import (
     AbstractAuthenticationMiddleware,

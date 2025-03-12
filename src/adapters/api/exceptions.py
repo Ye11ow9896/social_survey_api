@@ -1,6 +1,6 @@
 from typing import Protocol, Any
 from litestar import Request, Response
-from adapters.api.schema import APIDetailSchema
+from src.adapters.api.schema import APIDetailSchema
 from http import HTTPStatus
 
 

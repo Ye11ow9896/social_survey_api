@@ -1,7 +1,7 @@
 import aioinject
 
-from core.di.di import Providers
-from core.domain.role.repository import RoleRepository
+from src.core.di.di import Providers
+from src.core.domain.role.repository import RoleRepository
 
 
 PROVIDERS: Providers = [

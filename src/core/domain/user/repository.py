@@ -1,10 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Select
-from adapters.api.telegram_user.dto import (
+from src.adapters.api.telegram_user.dto import (
     TelegramUserCreateDTO,
     TelegramUserFilterDTO,
 )
-from database.models import TelegramUser
+from src.database.models import TelegramUser
 
 
 class TelegramUserRepository:
@@ -21,7 +21,8 @@ class TelegramUserRepository:
         self, filter_: TelegramUserFilterDTO
     ) -> Select[tuple[TelegramUser]]:
         stmt = select(TelegramUser)
-        return filter_.apply(stmt)
+        stmt = filter_.apply(stmt)
+        return stmt
 
     def _build_model(self, dto: TelegramUserCreateDTO) -> TelegramUser:
         return TelegramUser(
