@@ -1,8 +1,8 @@
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 
-from core.di.di import INJECTED
-from database.models.user_admin import UserAdmin
+from src.core.di.di import INJECTED
+from src.database.models.user_admin import UserAdmin
 from src.core.domain.auth.repository import AuthRepository
 from src.core.domain.auth.service import AuthenticationService
 from src.settings import AuthSettings
@@ -20,11 +20,9 @@ class AdminAuth(AuthenticationBackend):
         service: Injected[AuthenticationService] = INJECTED,
     ) -> UserAdmin | None:
         form = await request.form()
-        username, password = form["username"], form["password"]  # noqa: F841 Будет использоваться когда будет таблица админа
+        username, password = form["username"], form["password"]
         request.session.update({"token": "..."})
-        auth_data = await auth_repository.get_useradmin_by_username(
-            username=username
-        )
+        auth_data = await auth_repository.get_useradmin(username=username)
         if auth_data is not None:
             hashed_password = service.get_hashed_password(password=password)
             if auth_data.hashed_password == hashed_password:
