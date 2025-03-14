@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
+lint = [
     "ruff>=0.9.6",
     "mypy>=1.15.0",
 ]
