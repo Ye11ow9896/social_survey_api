@@ -30,7 +30,6 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    # op.drop_constraint(None, 'survey', type_='foreignkey')
     op.drop_column('survey', 'questionnaire_id')
     op.drop_table('questionnaire')
 
