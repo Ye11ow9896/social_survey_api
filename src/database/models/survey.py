@@ -28,10 +28,11 @@ class Survey(Base):
         default=utc_now,
         onupdate=utc_now,
     )
-    questionnaire: Mapped[uuid.UUID | None] = mapped_column(ForeignKey('questionnaire.id'))
+    questionnaire: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("questionnaire.id")
+    )
 
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(
         viewonly=True,
         secondary=RespondentSurvey.__table__,
     )
-
