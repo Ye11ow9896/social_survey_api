@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
+import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .respondent_survey import RespondentSurvey
 from .base import Base, create_comment
 from src.lib.utils import utc_now
-from sqlalchemy import DateTime
+from sqlalchemy import DateTime, ForeignKey
 
 
 if TYPE_CHECKING:
@@ -26,6 +27,9 @@ class Survey(Base):
         DateTime(timezone=True),
         default=utc_now,
         onupdate=utc_now,
+    )
+    questionnaire_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("questionnaire.id")
     )
 
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(
