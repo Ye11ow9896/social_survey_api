@@ -28,7 +28,7 @@ class Survey(Base):
         default=utc_now,
         onupdate=utc_now,
     )
-    questionnaire: Mapped[uuid.UUID | None] = mapped_column(
+    questionnaire_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("questionnaire.id")
     )
 

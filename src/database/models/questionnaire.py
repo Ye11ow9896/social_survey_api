@@ -1,4 +1,4 @@
-from sqlalchemy import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from .base import Base, create_comment, uuid_pk
 
@@ -9,4 +9,4 @@ class Questionnaire(Base):
 
     id: Mapped[uuid_pk]
     name: Mapped[str | None]
-    data: Mapped[JSON] = mapped_column(JSON)
+    data: Mapped[dict] = mapped_column(JSONB)
