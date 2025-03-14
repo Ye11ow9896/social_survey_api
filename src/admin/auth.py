@@ -4,7 +4,6 @@ from starlette.requests import Request
 from src.core.di.di import INJECTED
 from src.core.domain.auth.repository import AuthRepository
 from src.core.domain.auth.service import AuthenticationService
-from src.settings import AuthSettings
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 
