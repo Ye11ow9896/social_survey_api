@@ -1,4 +1,6 @@
 from contextlib import asynccontextmanager, aclosing
+import logging
+from litestar.logging import LoggingConfig
 
 
 from src.adapters.api.exceptions import app_exception_handler, BaseHTTPError
@@ -38,4 +40,10 @@ def create_app() -> Litestar:
         plugins=[AioInjectPlugin(create_container()), get_admin_plugin()],
         exception_handlers={BaseHTTPError: app_exception_handler},
         openapi_config=openapi_config,
-    )
+        logging_config=LoggingConfig(
+        root={"level": "INFO", "handlers": ["queue_listener"]},
+        formatters={
+            "standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}
+        },
+        log_exceptions="always",
+))
