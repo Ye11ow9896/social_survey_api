@@ -1,9 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Select
-from src.adapters.api.telegram_user.dto import (
-    TelegramUserCreateDTO,
-    TelegramUserFilterDTO,
-)
+
+from core.domain.user.dto import TelegramUserFilterDTO
+from src.adapters.api.telegram_user.dto import TelegramUserCreateDTO
 from src.database.models import TelegramUser
 
 
