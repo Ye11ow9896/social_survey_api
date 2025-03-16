@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.database.models.survey import Survey
 from src.adapters.api.survey.dto import SurveyCreateDTO
 
+
 class SurveyRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
@@ -12,10 +13,9 @@ class SurveyRepository:
         self._session.add(model)
         await self._session.flush()
         return model
-    
+
     def _build_model(self, dto: SurveyCreateDTO) -> Survey:
         return Survey(
             name=dto.name,
             description=dto.description,
-            questionnaire_id="4f584b91-572d-48c2-8226-2f7753a62293",
         )

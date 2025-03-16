@@ -1,7 +1,7 @@
 from typing import Any
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
-from .base import Base, create_comment, uuid_pk
+from .base import Base, create_comment
 
 
 class Questionnaire(Base):
