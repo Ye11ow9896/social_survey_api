@@ -8,6 +8,7 @@ from src.lib.base_model import AppBaseModel
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
 
+
 class TelegramUserDTO(AppBaseModel):
     role_id: UUID
     age: int | None
@@ -23,6 +24,7 @@ class TelegramUserDTO(AppBaseModel):
     url: str
     is_bot: bool
     is_premium: bool
+
 
 class TelegramUserFilterDTO(BaseFilter):
     tg_id: Annotated[

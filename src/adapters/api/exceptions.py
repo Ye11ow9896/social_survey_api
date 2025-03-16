@@ -22,7 +22,5 @@ class ObjectNotFoundHTTPError(BaseHTTPError):
         message: str,
     ):
         self.detail_schema = APIDetailSchema(
-            status_code=self.status_code,
-            code=self.code,
-            message=message
+            status_code=self.status_code, code=self.code, message=message
         )

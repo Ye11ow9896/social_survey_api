@@ -26,8 +26,8 @@ class TelegramUserService:
         self,
         pagination: PaginationDTO,
         *,
-            tg_id: int | None,
-            is_bot: bool | None,
+        tg_id: int | None,
+        is_bot: bool | None,
     ) -> PaginationResultDTO[TelegramUserDTO]:
         filter_dto = TelegramUserFilterDTO(
             tg_id=or_unset(tg_id),

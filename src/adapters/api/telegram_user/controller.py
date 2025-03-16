@@ -9,7 +9,10 @@ from litestar.controller import Controller
 from src.adapters.api.exceptions import ObjectNotFoundHTTPError
 from src.core.domain.role.service import RoleService
 from src.adapters.api.schema import APIDetailSchema
-from src.adapters.api.telegram_user.schema import TelegramUserCreateSchema, TelegramUserRoleSchema
+from src.adapters.api.telegram_user.schema import (
+    TelegramUserCreateSchema,
+    TelegramUserRoleSchema,
+)
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from src.core.domain.user.dto import TelegramUserDTO
 from src.core.domain.user.service import TelegramUserService
@@ -18,7 +21,6 @@ from aioinject import Injected
 from aioinject.ext.litestar import inject
 from src.database.enums import RoleCodeEnum
 from src.lib.paginator import PaginationResultDTO, PaginationDTO
-
 
 
 class TelegramUserController(Controller):
@@ -59,12 +61,13 @@ class TelegramUserController(Controller):
         ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
     ) -> PaginationResultDTO[TelegramUserDTO]:
-
         pagination_dto = PaginationDTO(
             page_size=page_size,
             page=page,
         )
-        return await service.get_all(pagination_dto, tg_id=tg_id, is_bot=is_bot)
+        return await service.get_all(
+            pagination_dto, tg_id=tg_id, is_bot=is_bot
+        )
 
     @get("/token/{tg_id:int}", status_code=200)
     @inject
