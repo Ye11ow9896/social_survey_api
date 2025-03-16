@@ -69,7 +69,7 @@ class TelegramUserController(Controller):
             pagination_dto, tg_id=tg_id, is_bot=is_bot
         )
 
-    @get("/token/{tg_id:int}", status_code=200)
+    @get("/role/{tg_id:int}", status_code=200)
     @inject
     async def get_user_role(
         self,
