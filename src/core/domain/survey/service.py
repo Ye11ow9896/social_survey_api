@@ -2,6 +2,7 @@ from src.core.domain.survey.repository import SurveyRepository
 from src.adapters.api.survey.dto import SurveyCreateDTO
 from src.database.models import Survey
 
+
 class SurveyService:
     def __init__(
         self,

@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager, aclosing
-import logging
 from litestar.logging import LoggingConfig
 
 
@@ -41,9 +40,12 @@ def create_app() -> Litestar:
         exception_handlers={BaseHTTPError: app_exception_handler},
         openapi_config=openapi_config,
         logging_config=LoggingConfig(
-        root={"level": "INFO", "handlers": ["queue_listener"]},
-        formatters={
-            "standard": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}
-        },
-        log_exceptions="always",
-))
+            root={"level": "INFO", "handlers": ["queue_listener"]},
+            formatters={
+                "standard": {
+                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+                }
+            },
+            log_exceptions="always",
+        ),
+    )
