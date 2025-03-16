@@ -4,6 +4,7 @@ from src.core.exceptions import ObjectNotFoundError
 from src.database.models import TelegramUser
 from result import Ok, Result, Err
 
+
 class RoleService:
     def __init__(
         self,
@@ -15,9 +16,7 @@ class RoleService:
         self,
         tg_id: int,
     ) -> Result[RoleDTO, ObjectNotFoundError]:
-        role = await self._repository.get(
-            RoleFilterDTO(tg_id=tg_id)
-        )
+        role = await self._repository.get(RoleFilterDTO(tg_id=tg_id))
         if role is None:
             return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
 

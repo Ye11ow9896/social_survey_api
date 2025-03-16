@@ -24,6 +24,7 @@ route_handlers: list[ControllerRouterHandler] = [
     TelegramUserController,
 ]
 
+
 @asynccontextmanager
 async def lifespan(app: Litestar):  # type: ignore[no-untyped-def]
     async with aclosing(create_container()):
