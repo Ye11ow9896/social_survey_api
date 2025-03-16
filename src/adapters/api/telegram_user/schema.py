@@ -39,5 +39,6 @@ class TelegramUserCreateSchema(BaseSchema):
         )
 
 
-class TelegramUserFilterSchema(BaseSchema):
-    tg_id: Annotated[int, Parameter()]
+class TelegramUserRoleSchema(BaseSchema):
+    name: str
+    code: RoleCodeEnum

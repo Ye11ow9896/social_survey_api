@@ -1,5 +1,4 @@
-from typing import Protocol, Any
-from litestar import Request, Response
+from typing import Protocol
 from src.adapters.api.schema import APIDetailSchema
 from http import HTTPStatus
 
@@ -14,15 +13,6 @@ class BaseHTTPError(BaseHTTPErrorProtocol, Exception):
     pass
 
 
-def app_exception_handler(
-    request: Request[Any, Any, Any], exc: BaseHTTPError
-) -> Response[Any]:
-    return Response(
-        content={"path": request.url.path, "detail": exc.detail_schema},
-        status_code=exc.status_code,
-    )
-
-
 class ObjectNotFoundHTTPError(BaseHTTPError):
     status_code = HTTPStatus.NOT_FOUND
     code = "object_not_found"
@@ -32,5 +22,7 @@ class ObjectNotFoundHTTPError(BaseHTTPError):
         message: str,
     ):
         self.detail_schema = APIDetailSchema(
-            status_code=self.status_code, code=self.code, message=message
+            status_code=self.status_code,
+            code=self.code,
+            message=message
         )
