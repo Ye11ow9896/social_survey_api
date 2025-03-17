@@ -41,12 +41,7 @@ class SurveyRepository:
             description=dto.description,
         )
 
-    def _assign_model(
-        self,
-        model: Survey,
-        *,
-        dto: SurveyUpdateDTO
-    ) -> Survey:
+    def _assign_model(self, model: Survey, *, dto: SurveyUpdateDTO) -> Survey:
         if dto.name is not None:
             model.name = dto.name
         if dto.questionnaire_id is not None:

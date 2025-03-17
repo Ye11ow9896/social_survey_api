@@ -2,9 +2,13 @@ from http import HTTPStatus
 from typing import Any
 from uuid import UUID
 
-from src.adapters.api.questionnaire.exceptions import QuestionnaireCreateUpdateHTTPError
-from src.core.domain.questionnaire.exceptions import QuestionnaireCreateUpdateQuestionError, \
-    QuestionnaireCreateUpdateMismatchError
+from src.adapters.api.questionnaire.exceptions import (
+    QuestionnaireCreateUpdateHTTPError,
+)
+from src.core.domain.questionnaire.exceptions import (
+    QuestionnaireCreateUpdateQuestionError,
+    QuestionnaireCreateUpdateMismatchError,
+)
 from src.adapters.api.exceptions import ObjectNotFoundHTTPError
 from src.adapters.api.questionnaire.schema import QuestionnaireCreateSchema
 from src.core.exceptions import ObjectNotFoundError
@@ -15,7 +19,7 @@ from litestar import Response, post
 from litestar.controller import Controller
 from aioinject import Injected
 from aioinject.ext.litestar import inject
-from result import Ok, Result, Err
+from result import Err
 
 
 class QuestionnaireController(Controller):
@@ -37,8 +41,13 @@ class QuestionnaireController(Controller):
             match exc := result.err_value:
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
-                case QuestionnaireCreateUpdateQuestionError() | QuestionnaireCreateUpdateMismatchError():
-                    raise QuestionnaireCreateUpdateHTTPError(message=exc.message)
+                case (
+                    QuestionnaireCreateUpdateQuestionError()
+                    | QuestionnaireCreateUpdateMismatchError()
+                ):
+                    raise QuestionnaireCreateUpdateHTTPError(
+                        message=exc.message
+                    )
         return Response(
             content={
                 "detail": APIDetailSchema(
