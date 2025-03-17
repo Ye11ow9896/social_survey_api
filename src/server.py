@@ -1,18 +1,29 @@
 from contextlib import asynccontextmanager, aclosing
 from litestar.logging import LoggingConfig
 
-
-from src.adapters.api.exceptions import app_exception_handler, BaseHTTPError
+from adapters.api.auth.controller import AuthController
+from adapters.api.common.controller import CommonController
+from adapters.api.handlers import app_exception_handler
+from adapters.api.telegram_user.controller import TelegramUserController
+from src.adapters.api.exceptions import BaseHTTPError
 from litestar import Litestar
+from litestar.logging import LoggingConfig
+from litestar.types import ControllerRouterHandler
 
-from src.admin.admin import get_admin_plugin
+
+from adapters.admin.admin import get_admin_plugin
 from src.core.di import create_container
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.spec.components import Components
 from litestar.openapi.spec.security_scheme import SecurityScheme
 
-from src.adapters.api import route_handlers
 from aioinject.ext.litestar import AioInjectPlugin
+
+route_handlers: list[ControllerRouterHandler] = [
+    CommonController,
+    AuthController,
+    TelegramUserController,
+]
 
 
 @asynccontextmanager

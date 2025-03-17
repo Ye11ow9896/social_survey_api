@@ -1,9 +1,6 @@
-from typing import Annotated
-
 from src.adapters.api.schema import BaseSchema
 from src.adapters.api.telegram_user.dto import TelegramUserCreateDTO
 from src.database.enums import RoleCodeEnum
-from litestar.params import Parameter
 
 
 class TelegramUserCreateSchema(BaseSchema):
@@ -39,5 +36,6 @@ class TelegramUserCreateSchema(BaseSchema):
         )
 
 
-class TelegramUserFilterSchema(BaseSchema):
-    tg_id: Annotated[int, Parameter()]
+class TelegramUserRoleSchema(BaseSchema):
+    name: str
+    code: RoleCodeEnum

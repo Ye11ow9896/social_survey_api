@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = ">=3.12"
 
 [[package]]
@@ -131,7 +130,7 @@ name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "platform_system == 'Windows'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de", size = 336121 }
 wheels = [
@@ -170,22 +169,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/1e/9f/012fd6049fc86029951cba5112d32c7ba076c4290d7e8873b0413655b808/faker-33.1.0.tar.gz", hash = "sha256:1c925fc0e86a51fc46648b504078c88d0cd48da1da2595c4e712841cab43a1e4", size = 1850515 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/08/9c/2bba87fbfa42503ddd9653e3546ffc4ed18b14ecab7a07ee86491b886486/Faker-33.1.0-py3-none-any.whl", hash = "sha256:d30c5f0e2796b8970de68978365247657486eb0311c5abe88d0b895b68dff05d", size = 1889127 },
-]
-
-[[package]]
-name = "go-task-bin"
-version = "3.42.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8f/e3/9a4555c38b1204a31576d2638c032493b621f4bc6fc9a1fabd54c3d9409a/go_task_bin-3.42.1.tar.gz", hash = "sha256:9ac9c0f4b09a50be922c40f9de749e968eef0b2031eab4e3954c59113b7b42a4", size = 544826 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/6b/8e8d5007455c14a5e118f6e9c044582e566aea7ea292af798856eadf0f93/go_task_bin-3.42.1-py3-none-macosx_10_7_x86_64.whl", hash = "sha256:7a14ac852b3ba5a0021bf06421e57e1bd69e17e9ef5f084b85c2d3807ce8fc42", size = 6689381 },
-    { url = "https://files.pythonhosted.org/packages/c6/2c/81e9a76e5ed6723fc9dd80c95e6a0d2a3566f0ba0abbf8012be03f7cf0ba/go_task_bin-3.42.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:2687ae4f937499fe9025aadd8a5eb8dd4aa865cb07c7b50e38f88448152ead08", size = 6245105 },
-    { url = "https://files.pythonhosted.org/packages/58/f9/129c08462efd1a4c1a623c9692a1c0e786302efeedafaed7bf5beaaa8276/go_task_bin-3.42.1-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:6e6601ebf5fd5ec2f52906fe9c2ab5a49ffd55754b3bc3e6c3f064b5f68b6ded", size = 6012291 },
-    { url = "https://files.pythonhosted.org/packages/37/b8/77daa94b9d2225e63ec2d1d2725221e40841c9efefe5bbddcaf5e75badd8/go_task_bin-3.42.1-py3-none-manylinux2014_ppc64le.manylinux_2_17_ppc64le.musllinux_1_1_ppc64le.whl", hash = "sha256:df4e1708623220a1ac6160677348127494552024850efcb8cf7b6466fe58f282", size = 5988876 },
-    { url = "https://files.pythonhosted.org/packages/4d/0e/4e977b0ed4e60cc115629ed3a981c30f05efbff3b3879945c7c6b4d20281/go_task_bin-3.42.1-py3-none-manylinux2014_s390x.manylinux_2_17_s390x.musllinux_1_1_s390x.whl", hash = "sha256:72c2d9e7954403a910a994c89d2014710f77e0a630d1442e834fc1ebfe6b0513", size = 6456991 },
-    { url = "https://files.pythonhosted.org/packages/ed/5d/104b5a865d31a2fb2b5dd457ac6a8eb73b9228d9564d55fd219b03de6d4a/go_task_bin-3.42.1-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.musllinux_1_1_x86_64.whl", hash = "sha256:b93b184564a508bb2591e8810cf177797cfd1c40765cd8e0c7fef9456ac83738", size = 6589494 },
-    { url = "https://files.pythonhosted.org/packages/e0/9d/9f33c379bbaf27889ad94a2edb3f587833743bbf504ee8093ab6f0e48b8c/go_task_bin-3.42.1-py3-none-win_amd64.whl", hash = "sha256:c511b203154ae27f44ac0d174e8327fe11670dbff774a4c30c151127104495e9", size = 6776876 },
-    { url = "https://files.pythonhosted.org/packages/06/a1/44cd1abc378dab68c07166e2ec23446ec32b3d9edcdfb4d274699a27fab0/go_task_bin-3.42.1-py3-none-win_arm64.whl", hash = "sha256:b60b11f48ef8999d9d4d7a499eb3fb7de48868e668b5ad43a1b61162621357d3", size = 6116001 },
 ]
 
 [[package]]
@@ -825,7 +808,6 @@ dependencies = [
     { name = "alembic" },
     { name = "apitally", extra = ["litestar"] },
     { name = "asyncpg" },
-    { name = "go-task-bin" },
     { name = "greenlet" },
     { name = "itsdangerous" },
     { name = "jose" },
@@ -843,7 +825,7 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
-dev = [
+lint = [
     { name = "mypy" },
     { name = "ruff" },
 ]
@@ -855,7 +837,6 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "apitally", extras = ["litestar"], specifier = ">=0.14.2" },
     { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "go-task-bin", specifier = ">=3.42.1" },
     { name = "greenlet", specifier = ">=3.1.1" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jose", specifier = ">=1.0.0" },
@@ -873,7 +854,7 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [
+lint = [
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "ruff", specifier = ">=0.9.6" },
 ]

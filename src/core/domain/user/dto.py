@@ -1,8 +1,12 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
+from database.models import TelegramUser
 from src.database.enums import SexEnum
 from src.lib.base_model import AppBaseModel
+from sqla_filter import UNSET, BaseFilter, FilterField, Unset
+from sqlalchemy.sql.operators import eq
 
 
 class TelegramUserDTO(AppBaseModel):
@@ -20,3 +24,14 @@ class TelegramUserDTO(AppBaseModel):
     url: str
     is_bot: bool
     is_premium: bool
+
+
+class TelegramUserFilterDTO(BaseFilter):
+    tg_id: Annotated[
+        int | Unset,
+        FilterField(TelegramUser.tg_id, operator=eq),
+    ] = UNSET
+    is_bot: Annotated[
+        bool | Unset,
+        FilterField(TelegramUser.is_bot, operator=eq),
+    ] = UNSET
