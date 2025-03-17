@@ -1,13 +1,7 @@
-from collections.abc import Sequence
-
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 
 from core.domain.questionnaire.dto import QuestionnaireCreateDTO
-from core.domain.role.dto import RoleFilterDTO
-from database.models import TelegramUser
 from database.models.questionnaire import Questionnaire
-from src.database.models.role import Role
 
 
 class QuestionnaireRepository:
@@ -22,6 +16,5 @@ class QuestionnaireRepository:
 
     def _build_model(self, dto: QuestionnaireCreateDTO) -> Questionnaire:
         return Questionnaire(
-            name=dto.name,
-            data=dto.data.model_dump(mode="json")
+            name=dto.name, data=dto.data.model_dump(mode="json")
         )
