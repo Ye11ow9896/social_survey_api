@@ -4,6 +4,8 @@ import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src.database.models.questionnaire import Questionnaire
+
 from .respondent_survey import RespondentSurvey
 from .base import Base, create_comment
 from src.lib.utils import utc_now
@@ -32,6 +34,7 @@ class Survey(Base):
         ForeignKey("questionnaire.id")
     )
 
+    questionnaire: Mapped[Questionnaire | None] = relationship()
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(
         viewonly=True,
         secondary=RespondentSurvey.__table__,

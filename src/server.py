@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager, aclosing
+from litestar.logging import LoggingConfig
 
 from adapters.api.auth.controller import AuthController
 from adapters.api.common.controller import CommonController
