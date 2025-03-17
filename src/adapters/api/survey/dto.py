@@ -5,3 +5,4 @@ from dataclasses import dataclass
 class SurveyCreateDTO:
     name: str
     description: str | None
+
