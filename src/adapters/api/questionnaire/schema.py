@@ -1,21 +1,22 @@
-from typing import Annotated
+from typing import Literal
 
 from pydantic import Field
 
-from adapters.api.survey.dto import SurveyCreateDTO
 from core.domain.questionnaire.dto import QuestionnaireCreateDTO
 from src.adapters.api.schema import BaseSchema
 
-class QuestionnaireOptionsSchema(BaseSchema):
-    is_choice_radiobutton: bool = Field(alias="isChoiceRadiobutton", default=False)
-    is_text_answer: bool = Field(alias="isTextAnswer", default=False)
 
 
 class QuestionSchema(BaseSchema):
+    """
+    Вопрос.
+    Если тип вопроса one_choice или multiple_choice - поле choice_text is not None
+    Если тип вопроса written - заполняем поле text_answer is not None
+    """
     question_text: str = Field(alias="questionText")
-    text_answer: str | None = Field(alias="textAnswer", default=None)
-    radio_button_answer_choices: list[str] | None = Field(alias="radioButtonAnswerChoices", default=None)
-    options: QuestionnaireOptionsSchema
+    written_text: str | None = Field(alias="writtenText", default=None)
+    choice_text: list[str] | None = Field(alias="choiceText", default=None)
+    question_type: Literal["written", "multiple_choice", "one_choice"] = Field(alias="questionType")
 
 
 class QuestionnaireSchema(BaseSchema):
