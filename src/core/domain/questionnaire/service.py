@@ -4,7 +4,7 @@ from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
 from src.core.domain.questionnaire.exceptions import (
     QuestionnaireCreateUpdateMismatchError,
-    QuestionnaireCreateUpdateQuestionError,
+    QuestionnaireCreateUpdateQuestionError, QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
@@ -32,7 +32,8 @@ class QuestionnaireService:
         None,
         ObjectNotFoundError
         | QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError,
+        | QuestionnaireCreateUpdateMismatchError
+        | QuestionnaireCreateUpdateNumberExistsError,
     ]:
         validation_result = self._business_validation(dto)
         if isinstance(validation_result, Err):
@@ -60,8 +61,10 @@ class QuestionnaireService:
     ) -> Result[
         None,
         QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError,
+        | QuestionnaireCreateUpdateMismatchError
+        | QuestionnaireCreateUpdateNumberExistsError,
     ]:
+        exists_numbers = []
         for question in dto.questionnaire_questions:
             if bool(question.choice_text) == bool(question.written_text):
                 return Err(
@@ -69,6 +72,8 @@ class QuestionnaireService:
                         question_name=question.question_text
                     )
                 )
+            if question.number in exists_numbers:
+                return Err(QuestionnaireCreateUpdateNumberExistsError(question.written_text))
             if (
                 question.question_type
                 in (QuestionType.ONE_CHOICE, QuestionType.MULTIPLE_CHOICE)
@@ -88,5 +93,6 @@ class QuestionnaireService:
                         question_name=question.question_text
                     )
                 )
+            exists_numbers.append(question.number)
 
         return Ok(None)
