@@ -1,7 +1,7 @@
 from uuid import UUID
 
+from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
-from src.core.domain.questionnaire.enum import QuestionType
 from src.core.domain.questionnaire.exceptions import (
     QuestionnaireCreateUpdateMismatchError,
     QuestionnaireCreateUpdateQuestionError,
@@ -10,7 +10,7 @@ from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import QuestionnaireCreateDTO
 from src.core.domain.survey.repository import SurveyRepository
-from src.core.domain.questionnaire.repository import QuestionnaireRepository
+from src.core.domain.questionnaire.repository import QuestionnaireRepository, QuestionnaireQuestionRepository
 from src.core.exceptions import ObjectNotFoundError
 from result import Ok, Result, Err
 
@@ -19,9 +19,11 @@ class QuestionnaireService:
     def __init__(
         self,
         questionnaire_repository: QuestionnaireRepository,
+        questionnaire_question_repository: QuestionnaireQuestionRepository,
         survey_repository: SurveyRepository,
     ) -> None:
         self._questionnaire_repository = questionnaire_repository
+        self._questionnaire_question_repository = questionnaire_question_repository
         self._survey_repository = survey_repository
 
     async def create(
@@ -45,6 +47,9 @@ class QuestionnaireService:
         if survey.questionnaire_id is not None:
             ...  # Добавить обработку already exists
         questionnaire = await self._questionnaire_repository.create(dto)
+        await self._questionnaire_question_repository.create_questions(
+            questionnaire.id, dtos=dto.questionnaire_questions
+        )
         await self._survey_repository.update(
             survey, dto=SurveyUpdateDTO(questionnaire_id=questionnaire.id)
         )
@@ -57,7 +62,7 @@ class QuestionnaireService:
         QuestionnaireCreateUpdateQuestionError
         | QuestionnaireCreateUpdateMismatchError,
     ]:
-        for question in dto.data.questions:
+        for question in dto.questionnaire_questions:
             if bool(question.choice_text) == bool(question.written_text):
                 return Err(
                     QuestionnaireCreateUpdateQuestionError(
