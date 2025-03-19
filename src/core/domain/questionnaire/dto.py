@@ -1,8 +1,8 @@
 from typing import Annotated
 from pydantic import BeforeValidator
 
-from adapters.api.schema import BaseSchema
-from core.domain.questionnaire.enum import QuestionType
+from src.adapters.api.schema import BaseSchema
+from src.database.enums import QuestionType
 
 
 class QuestionDTO(BaseSchema):
