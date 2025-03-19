@@ -4,13 +4,17 @@ from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
 from src.core.domain.questionnaire.exceptions import (
     QuestionnaireCreateUpdateMismatchError,
-    QuestionnaireCreateUpdateQuestionError, QuestionnaireCreateUpdateNumberExistsError,
+    QuestionnaireCreateUpdateQuestionError,
+    QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import QuestionnaireCreateDTO
 from src.core.domain.survey.repository import SurveyRepository
-from src.core.domain.questionnaire.repository import QuestionnaireRepository, QuestionnaireQuestionRepository
+from src.core.domain.questionnaire.repository import (
+    QuestionnaireRepository,
+    QuestionnaireQuestionRepository,
+)
 from src.core.exceptions import ObjectNotFoundError
 from result import Ok, Result, Err
 
@@ -23,7 +27,9 @@ class QuestionnaireService:
         survey_repository: SurveyRepository,
     ) -> None:
         self._questionnaire_repository = questionnaire_repository
-        self._questionnaire_question_repository = questionnaire_question_repository
+        self._questionnaire_question_repository = (
+            questionnaire_question_repository
+        )
         self._survey_repository = survey_repository
 
     async def create(
@@ -73,7 +79,11 @@ class QuestionnaireService:
                     )
                 )
             if question.number in exists_numbers:
-                return Err(QuestionnaireCreateUpdateNumberExistsError(question.written_text))
+                return Err(
+                    QuestionnaireCreateUpdateNumberExistsError(
+                        question.written_text
+                    )
+                )
             if (
                 question.question_type
                 in (QuestionType.ONE_CHOICE, QuestionType.MULTIPLE_CHOICE)

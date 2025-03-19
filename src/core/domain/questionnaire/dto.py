@@ -25,5 +25,7 @@ class QuestionnaireCreateDTO(BaseSchema):
     name: str
     questionnaire_questions: Annotated[
         list[QuestionDTO],
-        BeforeValidator(lambda dtos: [QuestionDTO.model_validate(dto) for dto in dtos]),
+        BeforeValidator(
+            lambda dtos: [QuestionDTO.model_validate(dto) for dto in dtos]
+        ),
     ]

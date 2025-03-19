@@ -21,6 +21,7 @@ class QuestionSchema(BaseSchema):
         alias="questionType"
     )
 
+
 class QuestionnaireCreateSchema(BaseSchema):
     name: str
     questionnaire_questions: list[QuestionSchema]
