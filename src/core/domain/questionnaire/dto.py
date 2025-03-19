@@ -1,8 +1,8 @@
 from typing import Annotated
 from pydantic import BeforeValidator
 
-from adapters.api.schema import BaseSchema
-from core.domain.questionnaire.enum import QuestionType
+from src.adapters.api.schema import BaseSchema
+from src.database.enums import QuestionType
 
 
 class QuestionDTO(BaseSchema):
@@ -13,6 +13,7 @@ class QuestionDTO(BaseSchema):
     """
 
     question_text: str
+    number: int
     written_text: str | None
     choice_text: list[str] | None
     question_type: Annotated[
@@ -20,19 +21,11 @@ class QuestionDTO(BaseSchema):
     ]
 
 
-class QuestionnaireDataDTO(BaseSchema):
-    description: str
-    questions: Annotated[
+class QuestionnaireCreateDTO(BaseSchema):
+    name: str
+    questionnaire_questions: Annotated[
         list[QuestionDTO],
         BeforeValidator(
             lambda dtos: [QuestionDTO.model_validate(dto) for dto in dtos]
         ),
-    ]
-
-
-class QuestionnaireCreateDTO(BaseSchema):
-    name: str
-    data: Annotated[
-        QuestionnaireDataDTO,
-        BeforeValidator(lambda dto: QuestionnaireDataDTO.model_validate(dto)),
     ]

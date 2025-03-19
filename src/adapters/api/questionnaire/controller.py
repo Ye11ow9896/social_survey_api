@@ -8,6 +8,7 @@ from src.adapters.api.questionnaire.exceptions import (
 from src.core.domain.questionnaire.exceptions import (
     QuestionnaireCreateUpdateQuestionError,
     QuestionnaireCreateUpdateMismatchError,
+    QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.adapters.api.exceptions import ObjectNotFoundHTTPError
 from src.adapters.api.questionnaire.schema import QuestionnaireCreateSchema
@@ -44,6 +45,7 @@ class QuestionnaireController(Controller):
                 case (
                     QuestionnaireCreateUpdateQuestionError()
                     | QuestionnaireCreateUpdateMismatchError()
+                    | QuestionnaireCreateUpdateNumberExistsError()
                 ):
                     raise QuestionnaireCreateUpdateHTTPError(
                         message=exc.message
@@ -52,8 +54,8 @@ class QuestionnaireController(Controller):
             content={
                 "detail": APIDetailSchema(
                     status_code=HTTPStatus.OK,
-                    code="survey_create_success",
-                    message="Опрос создан успешно",
+                    code="questionnaire_create_success",
+                    message=f"Анкета опроса `{survey_id}` успешно создана",
                 )
             },
             status_code=HTTPStatus.OK,

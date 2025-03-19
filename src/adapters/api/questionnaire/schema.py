@@ -14,6 +14,7 @@ class QuestionSchema(BaseSchema):
     """
 
     question_text: str = Field(alias="questionText")
+    number: int
     written_text: str | None = Field(alias="writtenText", default=None)
     choice_text: list[str] | None = Field(alias="choiceText", default=None)
     question_type: Literal["written", "multiple_choice", "one_choice"] = Field(
@@ -21,17 +22,12 @@ class QuestionSchema(BaseSchema):
     )
 
 
-class QuestionnaireSchema(BaseSchema):
-    description: str
-    questions: list[QuestionSchema]
-
-
 class QuestionnaireCreateSchema(BaseSchema):
     name: str
-    questionnaire: QuestionnaireSchema
+    questionnaire_questions: list[QuestionSchema]
 
     def to_dto(self) -> QuestionnaireCreateDTO:
         return QuestionnaireCreateDTO(
             name=self.name,
-            data=self.questionnaire,
+            questionnaire_questions=self.questionnaire_questions,
         )
