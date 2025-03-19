@@ -7,7 +7,8 @@ from src.adapters.api.questionnaire.exceptions import (
 )
 from src.core.domain.questionnaire.exceptions import (
     QuestionnaireCreateUpdateQuestionError,
-    QuestionnaireCreateUpdateMismatchError, QuestionnaireCreateUpdateNumberExistsError,
+    QuestionnaireCreateUpdateMismatchError,
+    QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.adapters.api.exceptions import ObjectNotFoundHTTPError
 from src.adapters.api.questionnaire.schema import QuestionnaireCreateSchema

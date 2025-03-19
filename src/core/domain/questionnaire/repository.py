@@ -2,8 +2,14 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.domain.questionnaire.dto import QuestionnaireCreateDTO, QuestionDTO
-from src.database.models.questionnaire import Questionnaire, QuestionnaireQuestion
+from src.core.domain.questionnaire.dto import (
+    QuestionnaireCreateDTO,
+    QuestionDTO,
+)
+from src.database.models.questionnaire import (
+    Questionnaire,
+    QuestionnaireQuestion,
+)
 
 
 class QuestionnaireRepository:
@@ -17,19 +23,15 @@ class QuestionnaireRepository:
         return model
 
     def _build_model(self, dto: QuestionnaireCreateDTO) -> Questionnaire:
-        return Questionnaire(
-            name=dto.name
-        )
+        return Questionnaire(name=dto.name)
+
 
 class QuestionnaireQuestionRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
     async def create_questions(
-        self,
-        questionnaire_id: UUID,
-        *,
-        dtos: list[QuestionDTO]
+        self, questionnaire_id: UUID, *, dtos: list[QuestionDTO]
     ) -> None:
         models = [
             QuestionnaireQuestion(
@@ -44,7 +46,3 @@ class QuestionnaireQuestionRepository:
         ]
         self._session.add_all(models)
         await self._session.flush()
-
-
-
-
