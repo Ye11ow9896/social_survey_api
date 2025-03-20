@@ -1,8 +1,8 @@
 from sqladmin_litestar_plugin import SQLAdminPlugin
 
-from adapters.admin.auth import AdminAuth
+from src.adapters.admin.auth import AdminAuth
 from src.database.engine import engine
-from adapters.admin.views import _VIEWS
+from src.adapters.admin.views import _VIEWS
 
 
 def get_admin_plugin() -> SQLAdminPlugin:

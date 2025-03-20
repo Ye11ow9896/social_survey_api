@@ -24,3 +24,16 @@ class ObjectNotFoundHTTPError(BaseHTTPError):
         self.detail_schema = APIDetailSchema(
             status_code=self.status_code, code=self.code, message=message
         )
+
+
+class ObjectAlreadyExistsHTTPError(BaseHTTPError):
+    status_code = HTTPStatus.BAD_REQUEST
+    code = "object_already_exists"
+
+    def __init__(
+        self,
+        message: str,
+    ):
+        self.detail_schema = APIDetailSchema(
+            status_code=self.status_code, code=self.code, message=message
+        )
