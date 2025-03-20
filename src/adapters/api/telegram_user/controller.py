@@ -1,19 +1,22 @@
 from http import HTTPStatus
 from typing import Any, Annotated
-from result import Err
+from result import Err, Result
 from litestar import Response
 from litestar import post, get
 from litestar.params import Parameter
 from litestar.controller import Controller
 
-from src.adapters.api.exceptions import ObjectNotFoundHTTPError
-from src.core.domain.role.service import RoleService
 from src.adapters.api.schema import APIDetailSchema
+from src.adapters.api.exceptions import (
+    ObjectNotFoundHTTPError,
+    ObjectAlreadyExistsHTTPError,
+)
 from src.adapters.api.telegram_user.schema import (
     TelegramUserCreateSchema,
     TelegramUserRoleSchema,
 )
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
+from src.core.domain.role.service import RoleService
 from src.core.domain.user.dto import TelegramUserDTO
 from src.core.domain.user.service import TelegramUserService
 
@@ -35,9 +38,11 @@ class TelegramUserController(Controller):
         role: RoleCodeEnum,
         data: TelegramUserCreateSchema,
         service: Injected[TelegramUserService],
-    ) -> Response[Any]:
+    ) -> Result[Response[Any], ObjectAlreadyExistsHTTPError]:
         dto = data.to_dto(role=role)
-        await service.create(dto)
+        user = await service.create(dto)
+        if isinstance(user, Err):
+            raise ObjectAlreadyExistsHTTPError(message=user.err_value.message)
         return Response(
             content={
                 "detail": APIDetailSchema(
@@ -65,9 +70,12 @@ class TelegramUserController(Controller):
             page_size=page_size,
             page=page,
         )
-        return await service.get_all(
+        result = await service.get_all(
             pagination_dto, tg_id=tg_id, is_bot=is_bot
         )
+        if isinstance(result, Err):
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
+        return result
 
     @get("/role/{tg_id:int}", status_code=200)
     @inject

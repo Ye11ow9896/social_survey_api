@@ -3,8 +3,8 @@ from collections.abc import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from core.domain.role.dto import RoleFilterDTO
-from database.models import TelegramUser
+from src.core.domain.role.dto import RoleFilterDTO
+from src.database.models import TelegramUser
 from src.database.models.role import Role
 
 
