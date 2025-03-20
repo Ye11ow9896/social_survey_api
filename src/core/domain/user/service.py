@@ -43,9 +43,9 @@ class TelegramUserService:
             is_bot=or_unset(is_bot),
         )
         stmt = await self._user_repository.get_all_stmt(filter_=filter_dto)
-        res = await self._paginator.paginate(
+        result = await self._paginator.paginate(
             stmt, dto_model=TelegramUserDTO, pagination=pagination
         )
-        if res.items == []:
+        if not result.items:
             return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
-        return Ok(res)
+        return Ok(result)

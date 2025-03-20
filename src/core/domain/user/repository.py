@@ -28,11 +28,6 @@ class TelegramUserRepository:
         stmt = filter_.apply(stmt)
         return stmt
 
-    # не забыть удалить
-    # async def does_user_exists(self, tg_id: int):
-    #     stmt = select(TelegramUser).where(TelegramUser.tg_id == tg_id)
-    #     return (await self._session.scalars(stmt)).one_or_none()
-
     def _build_model(self, dto: TelegramUserCreateDTO) -> TelegramUser:
         return TelegramUser(
             role_id=dto.role_id,
