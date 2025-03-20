@@ -1,6 +1,6 @@
 from http import HTTPStatus
 from typing import Any, Annotated
-from result import Err, Result
+from result import Err
 from litestar import Response
 from litestar import post, get
 from litestar.params import Parameter
@@ -38,7 +38,7 @@ class TelegramUserController(Controller):
         role: RoleCodeEnum,
         data: TelegramUserCreateSchema,
         service: Injected[TelegramUserService],
-    ) -> Result[Response[Any], ObjectAlreadyExistsHTTPError]:
+    ) -> Response[Any]:
         dto = data.to_dto(role=role)
         user = await service.create(dto)
         if isinstance(user, Err):
