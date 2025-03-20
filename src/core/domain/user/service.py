@@ -1,4 +1,4 @@
-from result import Err, Result
+from result import Err, Ok, Result
 
 from sqla_filter import or_unset
 from src.adapters.api.telegram_user.dto import (
@@ -23,13 +23,13 @@ class TelegramUserService:
     async def create(
         self, dto: TelegramUserCreateDTO
     ) -> Result[TelegramUser, ObjectAlreadyExistsError]:
-        user = self._user_repository.get(
+        user = await self._user_repository.get(
             filter_=TelegramUserFilterDTO(tg_id=dto.tg_id)
         )
         if user is not None:
             return Err(ObjectAlreadyExistsError(obj=TelegramUser.__name__))
-        new_user = await self._user_repository.create(dto=dto)
-        return new_user
+        created_user = await self._user_repository.create(dto=dto)
+        return Ok(created_user)
 
     async def get_all(
         self,
@@ -48,4 +48,4 @@ class TelegramUserService:
         )
         if res.items == []:
             return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
-        return res
+        return Ok(res)
