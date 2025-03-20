@@ -2,7 +2,7 @@ from typing import Literal
 
 from pydantic import Field
 
-from core.domain.questionnaire.dto import QuestionnaireCreateDTO
+from src.core.domain.questionnaire.dto import QuestionnaireCreateDTO
 from src.adapters.api.schema import BaseSchema
 
 
