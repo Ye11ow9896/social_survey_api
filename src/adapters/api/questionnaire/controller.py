@@ -10,9 +10,12 @@ from src.core.domain.questionnaire.exceptions import (
     QuestionnaireCreateUpdateMismatchError,
     QuestionnaireCreateUpdateNumberExistsError,
 )
-from src.adapters.api.exceptions import ObjectNotFoundHTTPError
+from src.adapters.api.exceptions import (
+    ObjectNotFoundHTTPError,
+    ObjectAlreadyExistsHTTPError,
+)
 from src.adapters.api.questionnaire.schema import QuestionnaireCreateSchema
-from src.core.exceptions import ObjectNotFoundError
+from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
 from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
@@ -40,6 +43,8 @@ class QuestionnaireController(Controller):
         result = await service.create(survey_id, dto=dto)
         if isinstance(result, Err):
             match exc := result.err_value:
+                case ObjectAlreadyExistsError():
+                    raise ObjectAlreadyExistsHTTPError(message=exc.message)
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
                 case (

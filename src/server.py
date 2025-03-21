@@ -1,18 +1,18 @@
 from contextlib import asynccontextmanager, aclosing
 
-from adapters.api.questionnaire.controller import QuestionnaireController
+from src.adapters.api.questionnaire.controller import QuestionnaireController
 from src.adapters.api.auth.controller import AuthController
 from src.adapters.api.common.controller import CommonController
-from src.adapters.api.handlers import app_exception_handler
-from src.adapters.api.survey.controller import SurveyController
 from src.adapters.api.telegram_user.controller import TelegramUserController
+from src.adapters.api.survey.controller import SurveyController
 from src.adapters.api.exceptions import BaseHTTPError
+from src.adapters.api.handlers import app_exception_handler
 from litestar import Litestar
 from litestar.logging import LoggingConfig
 from litestar.types import ControllerRouterHandler
 
 
-from adapters.admin.admin import get_admin_plugin
+from src.adapters.admin.admin import get_admin_plugin
 from src.core.di import create_container
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.spec.components import Components

@@ -6,6 +6,7 @@ from src.core.domain.role.contants import RoleIdConstant
 class RoleCodeEnum(str, enum.Enum):
     ADMIN = "ADMIN"
     RESPONDENT = "RESPONDENT"
+    OWNER = "OWNER"
 
     @property
     def identifier(self) -> RoleIdConstant:

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.sql.base import ExecutableOption
 
-from core.domain.survey.dto import SurveyFilterDTO
+from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models.survey import Survey
 from src.adapters.api.survey.dto import SurveyCreateDTO, SurveyUpdateDTO
 

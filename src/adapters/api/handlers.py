@@ -2,7 +2,7 @@ from typing import Any
 
 from litestar import Request, Response
 
-from adapters.api.exceptions import BaseHTTPError
+from src.adapters.api.exceptions import BaseHTTPError
 
 
 def app_exception_handler(

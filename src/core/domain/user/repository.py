@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Select
 
-from core.domain.user.dto import TelegramUserFilterDTO
+from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.adapters.api.telegram_user.dto import TelegramUserCreateDTO
 from src.database.models import TelegramUser
 
@@ -15,6 +15,11 @@ class TelegramUserRepository:
         self._session.add(model)
         await self._session.flush()
         return model
+
+    async def get(self, filter_: TelegramUserFilterDTO) -> TelegramUser:
+        stmt = select(TelegramUser)
+        stmt = filter_.apply(stmt)
+        return (await self._session.scalars(stmt)).one_or_none()
 
     async def get_all_stmt(
         self, filter_: TelegramUserFilterDTO

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated
 from uuid import UUID
 
-from database.models import TelegramUser
+from src.database.models import TelegramUser
 from src.database.enums import SexEnum
 from src.lib.base_model import AppBaseModel
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
