@@ -5,7 +5,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy import DateTime
+from sqlalchemy import DateTime, BigInteger
 
 
 from src.database.enums import SexEnum
@@ -45,7 +45,7 @@ class TelegramUser(AbstractUserModel):
     )
 
     tg_id: Mapped[int] = mapped_column(
-        unique=True, comment="Идентификатор в тг. в aiogram - id"
+        BigInteger, unique=True, comment="Идентификатор в тг. в aiogram - id"
     )
     username: Mapped[str | None] = mapped_column(
         comment="Акк в тг. Одноименно переменной в aiogram"
