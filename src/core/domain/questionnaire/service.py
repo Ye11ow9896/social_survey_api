@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from src.database.models.questionnaire import Questionnaire
 from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
 from src.core.domain.questionnaire.exceptions import (
@@ -15,7 +16,7 @@ from src.core.domain.questionnaire.repository import (
     QuestionnaireRepository,
     QuestionnaireQuestionRepository,
 )
-from src.core.exceptions import ObjectNotFoundError
+from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
 from result import Ok, Result, Err
 
 
@@ -52,7 +53,7 @@ class QuestionnaireService:
         if survey is None:
             return Err(ObjectNotFoundError(obj=Survey.__name__))
         if survey.questionnaire_id is not None:
-            ...  # Добавить обработку already exists
+            return Err(ObjectAlreadyExistsError(obj=Questionnaire.__name__))
         questionnaire = await self._questionnaire_repository.create(dto)
         await self._questionnaire_question_repository.create_questions(
             questionnaire.id, dtos=dto.questionnaire_questions
