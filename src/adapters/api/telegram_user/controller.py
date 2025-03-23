@@ -1,6 +1,6 @@
 from http import HTTPStatus
 from typing import Any, Annotated
-from result import Err, Ok
+from result import Err
 from litestar import Response
 from litestar import post, get
 from litestar.params import Parameter

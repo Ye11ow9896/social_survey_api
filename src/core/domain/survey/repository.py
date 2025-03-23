@@ -22,7 +22,7 @@ class SurveyRepository:
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).one_or_none()
-    
+
     async def get_all_stmt(
         self, filter_: SurveyFilterDTO
     ) -> Select[tuple[Survey]]:

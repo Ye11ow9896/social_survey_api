@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from inspect import Parameter
 from typing import Annotated, Any
 from result import Err
 
@@ -38,9 +37,7 @@ class SurveyController(Controller):
             page_size=page_size,
             page=page,
         )
-        result = await service.get_all(
-            pagination_dto, name
-        )
+        result = await service.get_all(pagination_dto, name)
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return result.ok()
