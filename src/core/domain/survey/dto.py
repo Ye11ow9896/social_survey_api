@@ -1,14 +1,23 @@
+from datetime import datetime
 from typing import Annotated
 from uuid import UUID
+import uuid
 
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
 
+from src.lib.base_model import AppBaseModel
 from src.database.models import Survey
 
+class SurveyDTO(AppBaseModel):
+    name: str | None
+    created_at: datetime
+    description: str | None
+    updated_at: datetime
+    questionnaire_id: uuid.UUID | None
 
 class SurveyFilterDTO(BaseFilter):
-    id: Annotated[
-        UUID | Unset,
-        FilterField(Survey.id, operator=eq),
+    name: Annotated[
+        str | Unset,
+        FilterField(Survey.name, operator=eq),
     ] = UNSET
