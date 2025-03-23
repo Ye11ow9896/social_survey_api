@@ -4,7 +4,7 @@ from uuid import UUID
 import uuid
 
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
-from sqlalchemy.sql.operators import eq
+from sqlalchemy.sql.operators import ilike_op
 
 from src.lib.base_model import AppBaseModel
 from src.database.models import Survey
@@ -19,5 +19,5 @@ class SurveyDTO(AppBaseModel):
 class SurveyFilterDTO(BaseFilter):
     name: Annotated[
         str | Unset,
-        FilterField(Survey.name, operator=eq),
+        FilterField(Survey.name, operator=ilike_op),
     ] = UNSET

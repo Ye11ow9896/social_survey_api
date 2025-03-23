@@ -28,7 +28,7 @@ class SurveyService:
         name: str | None,
     ) -> Result[PaginationResultDTO[SurveyDTO], ObjectNotFoundError]:
         filter_dto = SurveyFilterDTO(
-            name=or_unset(name),
+            name=or_unset('%'+name+'%'),
         )
         stmt = await self._survey_repository.get_all_stmt(filter_=filter_dto)
         result = await self._paginator.paginate(
