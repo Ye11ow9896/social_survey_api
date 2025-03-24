@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager, aclosing
+from pathlib import Path
 
 from src.adapters.api.questionnaire.controller import QuestionnaireController
 from src.adapters.api.auth.controller import AuthController
@@ -17,6 +18,8 @@ from src.core.di import create_container
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.spec.components import Components
 from litestar.openapi.spec.security_scheme import SecurityScheme
+from litestar.template.config import TemplateConfig
+from litestar.contrib.jinja import JinjaTemplateEngine
 
 from aioinject.ext.litestar import AioInjectPlugin
 
@@ -46,13 +49,16 @@ def create_app() -> Litestar:
             }
         ),
     )
-
     return Litestar(
         route_handlers=route_handlers,
         lifespan=[lifespan],
         plugins=[AioInjectPlugin(create_container()), get_admin_plugin()],
         exception_handlers={BaseHTTPError: app_exception_handler},
         openapi_config=openapi_config,
+        template_config=TemplateConfig(
+            directory=Path(__file__).parent.parent / "static",
+            engine=JinjaTemplateEngine,
+        ),
         logging_config=LoggingConfig(
             root={"level": "INFO", "handlers": ["queue_listener"]},
             formatters={

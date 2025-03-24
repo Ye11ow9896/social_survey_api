@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from pathlib import Path
 from typing import Any
 from uuid import UUID
 
@@ -19,11 +20,13 @@ from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
 from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
-from litestar import Response, post
+from litestar import Response, post, get
 from litestar.controller import Controller
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from result import Err
+from litestar.plugins.htmx import HTMXTemplate
+from litestar.response import Template
 
 
 class QuestionnaireController(Controller):
@@ -65,3 +68,10 @@ class QuestionnaireController(Controller):
             },
             status_code=HTTPStatus.OK,
         )
+
+    @get("/static", exclude_from_auth=True)
+    async def get_questionnaire_form(self) -> Template:
+        return HTMXTemplate(
+            template_name="index.html",
+        )
+
