@@ -15,7 +15,7 @@ class TelegramUserCreateSchema(BaseSchema):
     last_name: str | None
     url: str
     is_bot: bool
-    is_premium: bool
+    is_premium: bool | None
 
     def to_dto(self, role: RoleCodeEnum) -> TelegramUserCreateDTO:
         role_id = role.identifier
