@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from pathlib import Path
 from typing import Any
 from uuid import UUID
 
@@ -74,4 +73,3 @@ class QuestionnaireController(Controller):
         return HTMXTemplate(
             template_name="index.html",
         )
-
