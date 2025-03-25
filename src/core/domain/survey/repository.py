@@ -1,7 +1,7 @@
 from typing import Sequence
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import Select, select
 from sqlalchemy.sql.base import ExecutableOption
 
 from src.core.domain.survey.dto import SurveyFilterDTO
@@ -22,6 +22,13 @@ class SurveyRepository:
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).one_or_none()
+
+    async def get_all_stmt(
+        self, filter_: SurveyFilterDTO
+    ) -> Select[tuple[Survey]]:
+        stmt = select(Survey)
+        stmt = filter_.apply(stmt)
+        return stmt
 
     async def create(self, dto: SurveyCreateDTO) -> Survey:
         model = self._build_model(dto)

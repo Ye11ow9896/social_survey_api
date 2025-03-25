@@ -75,7 +75,7 @@ class TelegramUserController(Controller):
         )
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
-        return result
+        return result.ok()
 
     @get("/role/{tg_id:int}", status_code=200)
     @inject
