@@ -74,9 +74,9 @@ class QuestionnaireController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @post("/question/create", status_code=200)
+    @post("/add_question", status_code=200)
     @inject
-    async def question_create(
+    async def add_question(
         self,
         questionnaire_id: UUID,
         data: CreateQuestionSchema,
