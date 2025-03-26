@@ -14,7 +14,6 @@ from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
     QuestionDTO,
-    QuestionFilterDTO,
     QuestionnaireCreateDTO,
     QuestionnaireFilterDTO,
 )
