@@ -70,7 +70,7 @@ class QuestionnaireService:
         )
         return Ok(None)
 
-    async def create_question(
+    async def add_question(
         self, questionnaire_id: UUID, *, dto: QuestionDTO
     ) -> Result[
         None,
