@@ -2,11 +2,11 @@ from typing import Literal
 
 from pydantic import Field
 
-from src.core.domain.questionnaire.dto import QuestionnaireCreateDTO
+from src.core.domain.questionnaire.dto import QuestionDTO, QuestionnaireCreateDTO
 from src.adapters.api.schema import BaseSchema
 
 
-class QuestionSchema(BaseSchema):
+class CreateQuestionSchema(BaseSchema):
     """
     Вопрос.
     Если тип вопроса one_choice или multiple_choice - поле choice_text is not None
@@ -21,10 +21,19 @@ class QuestionSchema(BaseSchema):
         alias="questionType"
     )
 
+    def to_dto(self) -> QuestionDTO:
+        return QuestionDTO(
+            question_text=self.question_text,
+            number=self.number,
+            written_text=self.written_text,
+            choice_text=self.choice_text,
+            question_type=self.question_type,
+        )
+
 
 class QuestionnaireCreateSchema(BaseSchema):
     name: str
-    questionnaire_questions: list[QuestionSchema]
+    questionnaire_questions: list[CreateQuestionSchema]
 
     def to_dto(self) -> QuestionnaireCreateDTO:
         return QuestionnaireCreateDTO(

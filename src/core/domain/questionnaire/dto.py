@@ -1,8 +1,16 @@
+import uuid
+
 from typing import Annotated
 from pydantic import BeforeValidator
+from sqla_filter import UNSET, BaseFilter, FilterField, Unset
+from sqlalchemy.sql.operators import eq
 
 from src.adapters.api.schema import BaseSchema
 from src.database.enums import QuestionType
+from src.database.models.questionnaire import (
+    Questionnaire,
+    QuestionnaireQuestion,
+)
 
 
 class QuestionDTO(BaseSchema):
@@ -29,3 +37,17 @@ class QuestionnaireCreateDTO(BaseSchema):
             lambda dtos: [QuestionDTO.model_validate(dto) for dto in dtos]
         ),
     ]
+
+
+class QuestionnaireFilterDTO(BaseFilter):
+    id: Annotated[
+        uuid.UUID | Unset,
+        FilterField(Questionnaire.id, operator=eq),
+    ] = UNSET
+
+
+class QuestionFilterDTO(BaseFilter):
+    id: Annotated[
+        str | Unset,
+        FilterField(QuestionnaireQuestion.questionnaire_id, operator=eq),
+    ] = UNSET
