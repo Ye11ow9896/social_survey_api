@@ -47,7 +47,7 @@ class QuestionnaireFilterDTO(BaseFilter):
 
 
 class QuestionFilterDTO(BaseFilter):
-    id: Annotated[
+    number: Annotated[
         str | Unset,
-        FilterField(QuestionnaireQuestion.questionnaire_id, operator=eq),
+        FilterField(QuestionnaireQuestion.number, operator=eq),
     ] = UNSET

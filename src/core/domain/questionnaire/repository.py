@@ -55,7 +55,7 @@ class QuestionnaireQuestionRepository:
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).one_or_none()
 
-    async def create_question(
+    async def add_question(
         self,
         questionnaire_id: UUID,
         dto: QuestionDTO,
@@ -65,7 +65,7 @@ class QuestionnaireQuestionRepository:
         await self._session.flush()
         return model
 
-    async def create_questions(
+    async def add_questions(
         self, questionnaire_id: UUID, *, dtos: list[QuestionDTO]
     ) -> None:
         models = []
