@@ -1,4 +1,5 @@
 from typing import Literal
+from uuid import UUID
 
 from pydantic import Field
 
@@ -15,7 +16,7 @@ class CreateQuestionSchema(BaseSchema):
     Если тип вопроса one_choice или multiple_choice - поле choice_text is not None
     Если тип вопроса written - заполняем поле text_answer is not None
     """
-
+    survey_id: UUID
     question_text: str = Field(alias="questionText")
     number: int
     written_text: str | None = Field(alias="writtenText", default=None)
@@ -35,11 +36,13 @@ class CreateQuestionSchema(BaseSchema):
 
 
 class QuestionnaireCreateSchema(BaseSchema):
+    survey_id: UUID
     name: str
     questionnaire_questions: list[CreateQuestionSchema]
 
     def to_dto(self) -> QuestionnaireCreateDTO:
         return QuestionnaireCreateDTO(
+            survey_id=self.survey_id,
             name=self.name,
             questionnaire_questions=self.questionnaire_questions,
         )
