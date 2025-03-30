@@ -16,6 +16,7 @@ class CreateQuestionSchema(BaseSchema):
     Если тип вопроса one_choice или multiple_choice - поле choice_text is not None
     Если тип вопроса written - заполняем поле text_answer is not None
     """
+
     survey_id: UUID
     question_text: str = Field(alias="questionText")
     number: int
