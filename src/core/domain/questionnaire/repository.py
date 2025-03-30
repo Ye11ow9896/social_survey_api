@@ -38,7 +38,7 @@ class QuestionnaireRepository:
         return model
 
     def _build_model(self, dto: QuestionnaireCreateDTO) -> Questionnaire:
-        return Questionnaire(name=dto.name)
+        return Questionnaire(name=dto.name, survey_id=dto.survey_id)
 
 
 class QuestionnaireQuestionRepository:

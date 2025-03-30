@@ -30,9 +30,6 @@ class Survey(Base):
         default=utc_now,
         onupdate=utc_now,
     )
-    questionnaire_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("questionnaire.id")
-    )
 
     questionnaire: Mapped[Questionnaire | None] = relationship()
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(

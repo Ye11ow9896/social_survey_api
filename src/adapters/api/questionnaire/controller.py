@@ -43,16 +43,13 @@ class QuestionnaireController(Controller):
     @inject
     async def create(
         self,
-        survey_id: UUID,
         data: QuestionnaireCreateSchema,
         service: Injected[QuestionnaireService],
     ) -> Response[Any]:
         dto = data.to_dto()
-        result = await service.create(survey_id, dto=dto)
+        result = await service.create(dto=dto)
         if isinstance(result, Err):
             match exc := result.err_value:
-                case ObjectAlreadyExistsError():
-                    raise ObjectAlreadyExistsHTTPError(message=exc.message)
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
                 case (
@@ -68,7 +65,7 @@ class QuestionnaireController(Controller):
                 "detail": APIDetailSchema(
                     status_code=HTTPStatus.OK,
                     code="questionnaire_create_success",
-                    message=f"Анкета опроса `{survey_id}` успешно создана",
+                    message=f"Анкета опроса `{dto.survey_id}` успешно создана",
                 )
             },
             status_code=HTTPStatus.OK,
@@ -83,11 +80,9 @@ class QuestionnaireController(Controller):
         service: Injected[QuestionnaireService],
     ) -> Response[Any]:
         dto = data.to_dto()
-        result = await service.create_question(questionnaire_id, dto=dto)
+        result = await service.add_question(questionnaire_id, dto=dto)
         if isinstance(result, Err):
             match exc := result.err_value:
-                case ObjectAlreadyExistsError():
-                    raise ObjectAlreadyExistsHTTPError(message=exc.message)
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
                 case (

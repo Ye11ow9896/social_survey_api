@@ -51,8 +51,6 @@ class SurveyRepository:
     def _assign_model(self, model: Survey, *, dto: SurveyUpdateDTO) -> Survey:
         if dto.name is not None:
             model.name = dto.name
-        if dto.questionnaire_id is not None:
-            model.questionnaire_id = dto.questionnaire_id
         if dto.description is not None:
             model.description = dto.description
         return model

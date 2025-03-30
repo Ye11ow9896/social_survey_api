@@ -14,8 +14,6 @@ class SurveyDTO(AppBaseModel):
     created_at: datetime
     description: str | None
     updated_at: datetime
-    questionnaire_id: uuid.UUID | None
-
 
 class SurveyFilterDTO(BaseFilter):
     id: Annotated[

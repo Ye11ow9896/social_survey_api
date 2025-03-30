@@ -11,5 +11,4 @@ class SurveyCreateDTO:
 @dataclass(slots=True, frozen=True)
 class SurveyUpdateDTO:
     name: str | None = None
-    questionnaire_id: UUID | None = None
     description: str | None = None
