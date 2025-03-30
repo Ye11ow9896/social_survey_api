@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
-import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -9,7 +8,7 @@ from src.database.models.questionnaire import Questionnaire
 from .respondent_survey import RespondentSurvey
 from .base import Base, create_comment
 from src.lib.utils import utc_now
-from sqlalchemy import DateTime, ForeignKey
+from sqlalchemy import DateTime
 
 
 if TYPE_CHECKING:

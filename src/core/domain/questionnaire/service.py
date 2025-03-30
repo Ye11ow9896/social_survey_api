@@ -22,7 +22,7 @@ from src.core.domain.questionnaire.repository import (
     QuestionnaireRepository,
     QuestionnaireQuestionRepository,
 )
-from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
+from src.core.exceptions import ObjectNotFoundError
 from result import Ok, Result, Err
 
 
@@ -62,9 +62,7 @@ class QuestionnaireService:
         await self._questionnaire_question_repository.create_questions(
             questionnaire.id, dtos=dto.questionnaire_questions
         )
-        await self._survey_repository.update(
-            survey, dto=SurveyUpdateDTO()
-        )
+        await self._survey_repository.update(survey, dto=SurveyUpdateDTO())
         return Ok(None)
 
     async def add_question(

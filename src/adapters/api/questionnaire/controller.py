@@ -15,13 +15,12 @@ from src.core.domain.questionnaire.exceptions import (
 )
 from src.adapters.api.exceptions import (
     ObjectNotFoundHTTPError,
-    ObjectAlreadyExistsHTTPError,
 )
 from src.adapters.api.questionnaire.schema import (
     CreateQuestionSchema,
     QuestionnaireCreateSchema,
 )
-from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
+from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
 from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
