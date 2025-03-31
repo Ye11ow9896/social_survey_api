@@ -22,7 +22,7 @@ from src.core.domain.questionnaire.repository import (
     QuestionnaireRepository,
     QuestionnaireQuestionRepository,
 )
-from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
+from src.core.exceptions import ObjectNotFoundError
 from result import Ok, Result, Err
 
 
@@ -40,11 +40,10 @@ class QuestionnaireService:
         self._survey_repository = survey_repository
 
     async def create(
-        self, survey_id: UUID, *, dto: QuestionnaireCreateDTO
+        self, *, dto: QuestionnaireCreateDTO
     ) -> Result[
         None,
         ObjectNotFoundError
-        | ObjectAlreadyExistsError
         | QuestionnaireCreateUpdateQuestionError
         | QuestionnaireCreateUpdateMismatchError
         | QuestionnaireCreateUpdateNumberExistsError,
@@ -54,20 +53,16 @@ class QuestionnaireService:
             return validation_result
         survey = await self._survey_repository.get(
             filter_=SurveyFilterDTO(
-                id=survey_id,
+                id=dto.survey_id,
             )
         )
         if survey is None:
             return Err(ObjectNotFoundError(obj=Survey.__name__))
-        if survey.questionnaire_id is not None:
-            return Err(ObjectAlreadyExistsError(obj=Questionnaire.__name__))
         questionnaire = await self._questionnaire_repository.create(dto)
         await self._questionnaire_question_repository.create_questions(
             questionnaire.id, dtos=dto.questionnaire_questions
         )
-        await self._survey_repository.update(
-            survey, dto=SurveyUpdateDTO(questionnaire_id=questionnaire.id)
-        )
+        await self._survey_repository.update(survey, dto=SurveyUpdateDTO())
         return Ok(None)
 
     async def add_question(
@@ -75,7 +70,6 @@ class QuestionnaireService:
     ) -> Result[
         None,
         ObjectNotFoundError
-        | ObjectAlreadyExistsError
         | QuestionCreateUpdateQuestionError
         | QuestionCreateUpdateMismatchError,
     ]:

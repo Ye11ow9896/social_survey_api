@@ -1,4 +1,5 @@
 from uuid import UUID
+import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
@@ -16,6 +17,10 @@ class Questionnaire(Base):
 
     questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
         relationship()
+    )
+
+    survey_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("survey.id")
     )
 
 

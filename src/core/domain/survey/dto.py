@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Annotated
-import uuid
 
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq, ilike_op
@@ -14,7 +13,6 @@ class SurveyDTO(AppBaseModel):
     created_at: datetime
     description: str | None
     updated_at: datetime
-    questionnaire_id: uuid.UUID | None
 
 
 class SurveyFilterDTO(BaseFilter):

@@ -30,6 +30,7 @@ class QuestionDTO(BaseSchema):
 
 
 class QuestionnaireCreateDTO(BaseSchema):
+    survey_id: uuid.UUID
     name: str
     questionnaire_questions: Annotated[
         list[QuestionDTO],
