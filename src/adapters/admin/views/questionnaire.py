@@ -1,6 +1,10 @@
 from sqladmin import ModelView
 
-from src.database.models.questionnaire import Questionnaire, QuestionnaireQuestion
+from src.database.models.questionnaire import (
+    Questionnaire,
+    QuestionnaireQuestion,
+)
+
 
 class QuestionnaireView(ModelView, model=Questionnaire):
     column_list = [
@@ -8,6 +12,7 @@ class QuestionnaireView(ModelView, model=Questionnaire):
         Questionnaire.name,
         Questionnaire.survey_id,
     ]
+
 
 class QuestionnaireQuestionView(ModelView, model=QuestionnaireQuestion):
     column_list = [
