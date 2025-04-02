@@ -30,7 +30,7 @@ class Survey(Base):
         onupdate=utc_now,
     )
 
-    questionnaire: Mapped[Questionnaire | None] = relationship()
+    questionnaires: Mapped[list[Questionnaire]] = relationship()
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(
         viewonly=True,
         secondary=RespondentSurvey.__table__,

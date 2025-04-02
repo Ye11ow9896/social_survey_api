@@ -5,7 +5,7 @@ from pydantic import BeforeValidator
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
 
-from src.adapters.api.schema import BaseSchema
+from src.core.dto import BaseDTO
 from src.database.enums import QuestionType
 from src.database.models.questionnaire import (
     Questionnaire,
@@ -13,7 +13,7 @@ from src.database.models.questionnaire import (
 )
 
 
-class QuestionDTO(BaseSchema):
+class QuestionDTO(BaseDTO):
     """
     Вопрос.
     Если тип вопроса one_choice или multiple_choice - поле choice_text is not None
@@ -29,7 +29,7 @@ class QuestionDTO(BaseSchema):
     ]
 
 
-class QuestionnaireCreateDTO(BaseSchema):
+class QuestionnaireCreateDTO(BaseDTO):
     survey_id: uuid.UUID
     name: str
     questionnaire_questions: Annotated[
@@ -50,5 +50,5 @@ class QuestionnaireFilterDTO(BaseFilter):
 class QuestionFilterDTO(BaseFilter):
     id: Annotated[
         str | Unset,
-        FilterField(QuestionnaireQuestion.questionnaire_id, operator=eq),
+        FilterField(QuestionnaireQuestion.id, operator=eq),
     ] = UNSET
