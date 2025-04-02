@@ -1,6 +1,8 @@
 from http import HTTPStatus
 from typing import Any, assert_never
 
+from src.adapters.api.answer.exceptions import WrittenAnswerCreateTypeHTTPError
+from src.core.domain.answer.exceptions import WrittenAnswerCreateTypeError
 from src.core.domain.answer.service import AnswerService
 from src.adapters.api.answer.schema import WrittenAnswerCreateSchema
 from src.adapters.api.exceptions import (
@@ -38,6 +40,8 @@ class AnswerController(Controller):
                     raise ObjectNotFoundHTTPError(message=exc.message)
                 case ObjectAlreadyExistsError():
                     raise ObjectAlreadyExistsHTTPError(message=exc.message)
+                case WrittenAnswerCreateTypeError():
+                    raise WrittenAnswerCreateTypeHTTPError(message=exc.message)
                 case _ as never:
                     assert_never(never)
 
