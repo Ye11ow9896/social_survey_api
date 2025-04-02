@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager, aclosing
 from pathlib import Path
 
+from src.adapters.api.answer.controller import AnswerController
 from src.adapters.api.questionnaire.controller import QuestionnaireController
 from src.adapters.api.auth.controller import AuthController
 from src.adapters.api.common.controller import CommonController
@@ -29,6 +30,7 @@ route_handlers: list[ControllerRouterHandler] = [
     TelegramUserController,
     SurveyController,
     QuestionnaireController,
+    AnswerController,
 ]
 
 

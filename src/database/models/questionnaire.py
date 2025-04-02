@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from uuid import UUID
 import uuid
 
@@ -5,8 +6,12 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy import String, ARRAY
 
+
 from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
+
+if TYPE_CHECKING:
+    from database.models import WrittenAnswer
 
 
 class Questionnaire(Base):
@@ -44,3 +49,5 @@ class QuestionnaireQuestion(Base):
         comment="Текст вопроса для письменного ответа. Зависит от типа"
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
+
+    written_answers: Mapped[list["WrittenAnswer"]] = relationship()
