@@ -1,3 +1,5 @@
+from src.core.domain.answer.exceptions import WrittenAnswerCreateTypeError
+from database.enums import QuestionType
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.core.domain.user.repository import TelegramUserRepository
 from src.database.models import TelegramUser, WrittenAnswer
@@ -30,7 +32,12 @@ class AnswerService:
 
     async def create_text_answer(
         self, dto: WrittenAnswerCreateDTO
-    ) -> Result[WrittenAnswer, ObjectNotFoundError | ObjectAlreadyExistsError]:
+    ) -> Result[
+        WrittenAnswer,
+        ObjectNotFoundError
+        | ObjectAlreadyExistsError
+        | WrittenAnswerCreateTypeError,
+    ]:
         telegram_user = await self._telegram_user_repository.get(
             filter_=TelegramUserFilterDTO(id=dto.telegram_user_id)
         )
@@ -51,6 +58,15 @@ class AnswerService:
                     field=str(dto.question_id),
                 )
             )
+
+        if question.question_type != QuestionType.WRITTEN.value:
+            return Err(
+                WrittenAnswerCreateTypeError(
+                    question_id=dto.question_id,
+                    current_type=question.question_type,
+                )
+            )
+
         answer_db = await self._repository.get(
             filter_=WrittenAnswerFilterDTO(
                 question_id=dto.question_id,
