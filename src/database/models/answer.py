@@ -30,4 +30,6 @@ class WrittenAnswer(AbstractAnswerModel):
 
     text: Mapped[str] = mapped_column(comment="Текст ответа на вопрос")
 
-    question: Mapped[QuestionnaireQuestion] = relationship()
+    question: Mapped[QuestionnaireQuestion] = relationship(
+        back_populates="written_answers"
+    )
