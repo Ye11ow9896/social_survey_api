@@ -5,14 +5,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models.questionnaire import Questionnaire
 
-from .respondent_survey import RespondentSurvey
-from .base import Base, create_comment
+from src.database.models.respondent_survey import RespondentSurvey
+from src.database.models.base import Base, create_comment
 from src.lib.utils import utc_now
 from sqlalchemy import DateTime
 
 
 if TYPE_CHECKING:
-    from .user import TelegramUser
+    from src.database.models.user import TelegramUser
 
 
 class Survey(Base):

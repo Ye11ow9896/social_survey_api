@@ -9,12 +9,12 @@ from src.database.models.questionnaire import (
 class QuestionnaireView(ModelView, model=Questionnaire):
     form_columns = [
         Questionnaire.name,
-        Questionnaire.survey_id,  
+        Questionnaire.survey,  
     ]
     column_list = [
         Questionnaire.id,
         Questionnaire.name,
-        Questionnaire.survey_id,
+        Questionnaire.survey,
         Questionnaire.questionnaire_questions,
     ]
     column_formatters = {
@@ -24,14 +24,14 @@ class QuestionnaireView(ModelView, model=Questionnaire):
     # "survey_id": {
     #     "fields": ("name", "description"),  # Поля Survey для поиска
     #     "order_by": "name",  # Сортировка
-    # }
+    #   }
     # }
 
 
 class QuestionnaireQuestionView(ModelView, model=QuestionnaireQuestion):
     column_list = [
         QuestionnaireQuestion.id,
-        QuestionnaireQuestion.questionnaire_id,
+        QuestionnaireQuestion.questionnaire,
         QuestionnaireQuestion.question_text,
         QuestionnaireQuestion.number,
         QuestionnaireQuestion.choice_text,

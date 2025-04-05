@@ -11,6 +11,7 @@ from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
 
 if TYPE_CHECKING:
+    from database.models.survey import Survey
     from database.models import WrittenAnswer
 
 
@@ -19,14 +20,16 @@ class Questionnaire(Base):
     __table_args__ = create_comment("Таблица для хранения анкеты")
 
     name: Mapped[str | None]
+    survey_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("survey.id")
+    )
 
+    survey: Mapped["Survey"] = relationship()
     questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
         relationship()
     )
 
-    survey_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("survey.id")
-    )
+
 
 
 class QuestionnaireQuestion(Base):
@@ -50,6 +53,7 @@ class QuestionnaireQuestion(Base):
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
+    questionnaire: Mapped["Questionnaire"] = (relationship())
     written_answers: Mapped[list["WrittenAnswer"]] = relationship(
         back_populates="question"
     )
