@@ -1,7 +1,6 @@
+from typing import TYPE_CHECKING
 from uuid import UUID
 import uuid
-
-from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
@@ -11,21 +10,22 @@ from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
 
 if TYPE_CHECKING:
-    from .survey import Survey
+    from src.database.models.survey import Survey
+    from src.database.models import WrittenAnswer
+
 
 class Questionnaire(Base):
     __tablename__ = "questionnaire"
     __table_args__ = create_comment("Таблица для хранения анкеты")
 
     name: Mapped[str | None]
-
-    survey: Mapped["Survey"] = relationship()
-    questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
-        relationship()
-    )
-
     survey_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("survey.id")
+    )
+
+    survey: Mapped["Survey"] = relationship(back_populates="questionnaires")
+    questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
+        relationship(back_populates="questionnaire")
     )
 
 
@@ -50,4 +50,9 @@ class QuestionnaireQuestion(Base):
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
-    questionnaire: Mapped["Questionnaire"] = (relationship())
+    questionnaire: Mapped["Questionnaire"] = relationship(
+        back_populates="questionnaire_questions"
+    )
+    written_answers: Mapped[list["WrittenAnswer"]] = relationship(
+        back_populates="question"
+    )

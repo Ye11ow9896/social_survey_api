@@ -35,3 +35,7 @@ class TelegramUserFilterDTO(BaseFilter):
         bool | Unset,
         FilterField(TelegramUser.is_bot, operator=eq),
     ] = UNSET
+    id: Annotated[
+        UUID | Unset,
+        FilterField(TelegramUser.id, operator=eq),
+    ] = UNSET

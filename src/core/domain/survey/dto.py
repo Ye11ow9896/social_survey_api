@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated
 
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
-from sqlalchemy.sql.operators import eq, ilike_op
+from sqlalchemy.sql.operators import eq, icontains_op
 
 from src.lib.base_model import AppBaseModel
 from src.database.models import Survey
@@ -22,5 +22,5 @@ class SurveyFilterDTO(BaseFilter):
     ] = UNSET
     name: Annotated[
         str | Unset,
-        FilterField(Survey.name, operator=ilike_op),
+        FilterField(Survey.name, operator=icontains_op),
     ] = UNSET
