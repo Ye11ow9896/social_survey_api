@@ -24,10 +24,8 @@ class Questionnaire(Base):
         ForeignKey("survey.id")
     )
 
-    survey: Mapped["Survey"] = relationship()
-    questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
-        relationship()
-    )
+    survey: Mapped["Survey"] = relationship(back_populates="questionnaires")
+    questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = relationship(back_populates="questionnaire")
 
 
 
@@ -53,7 +51,7 @@ class QuestionnaireQuestion(Base):
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
-    questionnaire: Mapped["Questionnaire"] = (relationship())
+    questionnaire: Mapped["Questionnaire"] = relationship(back_populates="questionnaire_questions")
     written_answers: Mapped[list["WrittenAnswer"]] = relationship(
         back_populates="question"
     )
