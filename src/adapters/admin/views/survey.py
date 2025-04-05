@@ -11,4 +11,3 @@ class SurveyView(ModelView, model=Survey):
         Survey.created_at,
         Survey.updated_at,
     ]
-

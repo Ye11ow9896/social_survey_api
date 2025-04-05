@@ -8,14 +8,16 @@ from src.database.models.questionnaire import (
 
 
 class QuestionnaireView(ModelView, model=Questionnaire):
-
     column_list = [
         Questionnaire.id,
         Questionnaire.name,
         Questionnaire.survey,
     ]
     column_formatters = {
-        Questionnaire.survey: lambda m, a: get_value_or_empty(m.survey, "name"),
+        Questionnaire.survey: lambda m, a: get_value_or_empty(
+            m.survey,  # type: ignore[attr-defined]
+            "name",
+        ),
     }
 
 
@@ -30,5 +32,8 @@ class QuestionnaireQuestionView(ModelView, model=QuestionnaireQuestion):
         QuestionnaireQuestion.questionnaire,
     ]
     column_formatters = {
-        QuestionnaireQuestion.questionnaire: lambda m, a: get_value_or_empty(model=m.questionnaire, item="name"),
+        QuestionnaireQuestion.questionnaire: lambda m, a: get_value_or_empty(
+            model=m.questionnaire,  # type: ignore[attr-defined]
+            item="name",
+        ),
     }

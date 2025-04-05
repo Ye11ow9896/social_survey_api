@@ -1,4 +1,6 @@
 from sqladmin import ModelView
+
+from adapters.admin.utils import get_value_or_empty
 from src.database.models import TelegramUser
 
 
@@ -9,5 +11,5 @@ class TelegramUserView(ModelView, model=TelegramUser):
         TelegramUser.role,
     ]
     column_formatters = {
-        TelegramUser.role: lambda m, a: m.role.name,
+        TelegramUser.role: lambda m, a: get_value_or_empty(m.role, "name"),  # type: ignore[attr-defined]
     }
