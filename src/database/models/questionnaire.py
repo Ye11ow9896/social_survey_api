@@ -1,6 +1,8 @@
 from uuid import UUID
 import uuid
 
+from typing import TYPE_CHECKING
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy import String, ARRAY
@@ -8,6 +10,8 @@ from sqlalchemy import String, ARRAY
 from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
 
+if TYPE_CHECKING:
+    from .survey import Survey
 
 class Questionnaire(Base):
     __tablename__ = "questionnaire"
@@ -15,6 +19,7 @@ class Questionnaire(Base):
 
     name: Mapped[str | None]
 
+    survey: Mapped["Survey"] = relationship()
     questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
         relationship()
     )
@@ -44,3 +49,5 @@ class QuestionnaireQuestion(Base):
         comment="Текст вопроса для письменного ответа. Зависит от типа"
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
+
+    questionnaire: Mapped["Questionnaire"] = (relationship())

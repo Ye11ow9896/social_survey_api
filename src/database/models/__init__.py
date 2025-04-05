@@ -1,4 +1,5 @@
 from src.database.models.auth_service import AuthService
+from src.database.models.questionnaire import Questionnaire, QuestionnaireQuestion
 from src.database.models.respondent_survey import RespondentSurvey
 from src.database.models.role import Role
 from src.database.models.survey import Survey
@@ -10,4 +11,6 @@ __all__ = [
     "Role",
     "Survey",
     "TelegramUser",
+    'Questionnaire',
+    'QuestionnaireQuestion',
 ]
