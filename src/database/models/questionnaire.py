@@ -50,4 +50,6 @@ class QuestionnaireQuestion(Base):
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
-    written_answers: Mapped[list["WrittenAnswer"]] = relationship()
+    written_answers: Mapped[list["WrittenAnswer"]] = relationship(
+        back_populates="question"
+    )
