@@ -6,12 +6,12 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy import String, ARRAY
 
-
 from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
 
 if TYPE_CHECKING:
-    from database.models import WrittenAnswer
+    from src.database.models.survey import Survey
+    from src.database.models import WrittenAnswer
 
 
 class Questionnaire(Base):
@@ -19,13 +19,13 @@ class Questionnaire(Base):
     __table_args__ = create_comment("Таблица для хранения анкеты")
 
     name: Mapped[str | None]
-
-    questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
-        relationship()
-    )
-
     survey_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("survey.id")
+    )
+
+    survey: Mapped["Survey"] = relationship(back_populates="questionnaires")
+    questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
+        relationship(back_populates="questionnaire")
     )
 
 
@@ -50,6 +50,9 @@ class QuestionnaireQuestion(Base):
     )
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
+    questionnaire: Mapped["Questionnaire"] = relationship(
+        back_populates="questionnaire_questions"
+    )
     written_answers: Mapped[list["WrittenAnswer"]] = relationship(
         back_populates="question"
     )

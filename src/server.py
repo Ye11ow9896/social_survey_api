@@ -14,7 +14,7 @@ from litestar.logging import LoggingConfig
 from litestar.types import ControllerRouterHandler
 
 
-from adapters.admin.admin import get_admin_plugin
+from src.adapters.admin.admin import get_admin_plugin
 from src.core.di import create_container
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.spec.components import Components
