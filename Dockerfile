@@ -3,9 +3,6 @@ FROM $PYTHON_IMAGE as build
 
 ARG PYTHON_UV_VERSION=>=0.4.4
 
-ARG NEXUS_USERNAME
-ARG NEXUS_PASSWORD
-
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never
@@ -23,7 +20,7 @@ RUN addgroup --gid 2000 app && adduser --gid 2000 --uid 1000 app
 USER app
 
 WORKDIR /app
-ENV PYTHONPATH=$PYTHONPATH:/app/src \
+ENV PYTHONPATH=/app/src \
     PATH=/app/.venv/bin:$PATH \
     PYTHONUNBUFFERED=1
 
