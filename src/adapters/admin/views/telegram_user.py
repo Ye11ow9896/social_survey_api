@@ -1,5 +1,4 @@
 from sqladmin import ModelView
-
 from src.database.models import TelegramUser
 
 
@@ -10,3 +9,6 @@ class TelegramUserView(ModelView, model=TelegramUser):
         TelegramUser.role,
         TelegramUser.surveys,
     ]
+    column_formatters = {
+        TelegramUser.role: lambda m, a: m.role.name,
+    }
