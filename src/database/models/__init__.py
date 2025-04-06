@@ -3,7 +3,7 @@ from src.database.models.questionnaire import (
     QuestionnaireQuestion,
     QuestionText,
 )
-from src.database.models.answer import WrittenAnswer
+from src.database.models.answer import WrittenAnswer, ChoiceAnswer
 from src.database.models.auth_service import AuthService
 
 from src.database.models.respondent_survey import RespondentSurvey
@@ -21,4 +21,5 @@ __all__ = [
     "QuestionnaireQuestion",
     "WrittenAnswer",
     "QuestionText",
+    "ChoiceAnswer",
 ]
