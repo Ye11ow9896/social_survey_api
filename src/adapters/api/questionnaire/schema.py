@@ -4,8 +4,8 @@ from uuid import UUID
 from pydantic import Field
 
 from src.core.domain.questionnaire.dto import (
-    QuestionDTO,
-    QuestionnaireCreateDTO,
+    QuestionCreateDTO,
+    QuestionnaireCreateDTO, QuestionDTO,
 )
 from src.adapters.api.schema import BaseSchema
 
@@ -25,8 +25,8 @@ class CreateQuestionSchema(BaseSchema):
         alias="questionType"
     )
 
-    def to_dto(self) -> QuestionDTO:
-        return QuestionDTO(
+    def to_dto(self) -> QuestionCreateDTO:
+        return QuestionCreateDTO(
             question_text=self.question_text,
             number=self.number,
             written_text=self.written_text,

@@ -23,6 +23,7 @@ class QuestionAnswer(AbstractAnswerModel):
         UniqueConstraint(
             "question_id",
             "telegram_user_id",
+            "question_text_id",
             name="uq_question_id_user_id_question_text_id",
         ),
         create_comment(

@@ -18,7 +18,7 @@ from src.core.domain.questionnaire.exceptions import (
 from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
-    QuestionDTO,
+    QuestionCreateDTO,
     QuestionnaireCreateDTO,
     QuestionTextCreateDTO,
     QuestionnaireDTO,
@@ -94,7 +94,7 @@ class QuestionnaireService:
         )
 
     async def add_question(
-        self, questionnaire_id: UUID, *, dto: QuestionDTO
+        self, questionnaire_id: UUID, *, dto: QuestionCreateDTO
     ) -> Result[
         QuestionnaireQuestion,
         ObjectNotFoundError
@@ -116,7 +116,7 @@ class QuestionnaireService:
         return Ok(question)
 
     async def _questionnaire_question_create(
-        self, questionnaire_id: UUID, *, dto: QuestionDTO
+        self, questionnaire_id: UUID, *, dto: QuestionCreateDTO
     ) -> QuestionnaireQuestion:
         question = (
             await self._questionnaire_question_repository.create_question(
@@ -143,7 +143,7 @@ class QuestionnaireService:
 
     def _question_business_validation(
         self,
-        question: QuestionDTO,
+        question: QuestionCreateDTO,
     ) -> Result[
         None,
         QuestionCreateUpdateQuestionError | QuestionCreateUpdateMismatchError,
@@ -188,7 +188,7 @@ class QuestionnaireService:
             if question.number in exists_numbers:
                 return Err(
                     QuestionnaireCreateUpdateNumberExistsError(
-                        question.question_text
+                        question.id
                     )
                 )
             self._question_business_validation(question=question)

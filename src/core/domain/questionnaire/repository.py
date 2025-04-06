@@ -8,7 +8,7 @@ from sqlalchemy.sql.base import ExecutableOption
 from src.core.domain.questionnaire.dto import (
     QuestionFilterDTO,
     QuestionnaireCreateDTO,
-    QuestionDTO,
+    QuestionCreateDTO,
     QuestionnaireFilterDTO,
     QuestionTextCreateDTO,
 )
@@ -60,7 +60,7 @@ class QuestionnaireQuestionRepository:
     async def create_question(
         self,
         questionnaire_id: UUID,
-        dto: QuestionDTO,
+        dto: QuestionCreateDTO,
     ) -> QuestionnaireQuestion:
         model = self._build_model(dto=dto, questionnaire_id=questionnaire_id)
         self._session.add(model)
@@ -68,7 +68,7 @@ class QuestionnaireQuestionRepository:
         return model
 
     async def create_questions(
-        self, questionnaire_id: UUID, *, dtos: list[QuestionDTO]
+        self, questionnaire_id: UUID, *, dtos: list[QuestionCreateDTO]
     ) -> None:
         models = []
         for dto in dtos:
@@ -81,7 +81,7 @@ class QuestionnaireQuestionRepository:
     def _build_model(
         self,
         questionnaire_id: UUID,
-        dto: QuestionDTO,
+        dto: QuestionCreateDTO,
     ) -> QuestionnaireQuestion:
         return QuestionnaireQuestion(
             questionnaire_id=questionnaire_id,
