@@ -1,6 +1,6 @@
 from typing import TypeVar, Any
 
-from database.models.base import Base
+from src.database.models.base import Base
 
 _TModel = TypeVar("_TModel", bound=Base)
 

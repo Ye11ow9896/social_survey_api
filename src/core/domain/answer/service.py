@@ -1,5 +1,5 @@
 from src.core.domain.answer.exceptions import WrittenAnswerCreateTypeError
-from database.enums import QuestionType
+from src.database.enums import QuestionType
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.core.domain.user.repository import TelegramUserRepository
 from src.database.models import TelegramUser, WrittenAnswer

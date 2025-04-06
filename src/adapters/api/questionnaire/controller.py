@@ -19,6 +19,7 @@ from src.adapters.api.exceptions import (
 from src.adapters.api.questionnaire.schema import (
     CreateQuestionSchema,
     QuestionnaireCreateSchema,
+    QuestionnaireGetSchema,
 )
 from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
@@ -99,6 +100,18 @@ class QuestionnaireController(Controller):
             },
             status_code=HTTPStatus.OK,
         )
+
+    @get("/{id:int}", status_code=200)
+    @inject
+    async def get_questionnaire_id(
+        self,
+        id: UUID,
+        service: Injected[QuestionnaireService],
+    ) -> Any:
+        result = await service.get_questionnaire_by_id(questionnaire_id=id)
+        if isinstance(result, Err):
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
+        return QuestionnaireGetSchema.model_validate(result.ok_value)
 
     @get("/static", exclude_from_auth=True)
     async def get_questionnaire_form(self) -> Template:
