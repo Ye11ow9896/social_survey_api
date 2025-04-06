@@ -49,14 +49,7 @@ class QuestionnaireCreateSchema(BaseSchema):
         )
 
 
-class QuestionnaireGetSchema(BaseSchema):
+class QuestionnaireWithQuestionsSchema(BaseSchema):
     survey_id: UUID
     name: str
-    questions: list[CreateQuestionSchema] | None = None
-
-    def to_dto(self) -> QuestionnaireCreateDTO:
-        return QuestionnaireCreateDTO(
-            survey_id=self.survey_id,
-            name=self.name,
-            questionnaire_questions=self.questions,
-        )
+    questions: list[QuestionDTO]

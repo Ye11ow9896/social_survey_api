@@ -2,7 +2,6 @@ from uuid import UUID
 
 from sqlalchemy.orm import joinedload
 
-from src.adapters.api.questionnaire.schema import QuestionnaireGetSchema
 from src.database.models.questionnaire import Questionnaire
 from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
@@ -18,6 +17,7 @@ from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
     QuestionDTO,
     QuestionnaireCreateDTO,
+    QuestionnaireDTO,
     QuestionnaireFilterDTO,
 )
 from src.core.domain.survey.repository import SurveyRepository
@@ -70,10 +70,7 @@ class QuestionnaireService:
 
     async def get_questionnaire_by_id(
         self, questionnaire_id: UUID
-    ) -> Result[
-        None,
-        ObjectNotFoundError | QuestionnaireGetSchema,
-    ]:
+    ) -> Result[QuestionnaireDTO, ObjectNotFoundError]:
         questionnaire = await self._questionnaire_repository.get(
             filter_=QuestionnaireFilterDTO(id=questionnaire_id),
             options=[joinedload(Questionnaire.questionnaire_questions)],
@@ -81,7 +78,7 @@ class QuestionnaireService:
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
         return Ok(
-            QuestionnaireCreateDTO(
+            QuestionnaireDTO(
                 survey_id=questionnaire.survey_id,
                 name=questionnaire.name,
                 questionnaire_questions=questionnaire.questionnaire_questions,
