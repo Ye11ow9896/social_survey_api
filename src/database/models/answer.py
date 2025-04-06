@@ -43,7 +43,9 @@ class ChoiceAnswer(AbstractAnswerModel):
             "telegram_user_id",
             name="uq_question_id_telegram_user_id_question_text_id",
         ),
-        create_comment("Таблица для хранения ответа с выбором(множественным и единственным из нескольких)"),
+        create_comment(
+            "Таблица для хранения ответа с выбором(множественным и единственным из нескольких)"
+        ),
     )
 
     question_text_id: Mapped[UUID] = mapped_column(
