@@ -27,13 +27,13 @@ class AnswerController(Controller):
 
     @post("/written-answer/create", status_code=200)
     @inject
-    async def create(
+    async def written_answer_create(
         self,
         data: WrittenAnswerCreateSchema,
         service: Injected[AnswerService],
     ) -> Response[Any]:
         dto = data.to_dto()
-        result = await service.create_text_answer(dto=dto)
+        result = await service.written_answer_create(dto=dto)
         if isinstance(result, Err):
             match exc := result.err_value:
                 case ObjectNotFoundError():
@@ -55,3 +55,12 @@ class AnswerController(Controller):
             },
             status_code=HTTPStatus.OK,
         )
+
+
+    @post("/multiple-choice/create", status_code=200)
+    @inject
+    async def multiple_choice_answer_create(
+        self,
+        service: Injected[AnswerService],
+    ):
+        ...

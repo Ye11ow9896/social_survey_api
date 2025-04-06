@@ -41,14 +41,7 @@ class QuestionnaireQuestion(Base):
     number: Mapped[int] = mapped_column(
         comment="Порядковый номер вопроса анкеты"
     )
-    choice_text: Mapped[list[str] | None] = mapped_column(
-        ARRAY(String),
-        default=None,
-        comment="Список вопросов для множественного выбора. Зависит от типа",
-    )
-    written_text: Mapped[str | None] = mapped_column(
-        comment="Текст вопроса для письменного ответа. Зависит от типа"
-    )
+
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
     questionnaire: Mapped["Questionnaire"] = relationship(
@@ -57,3 +50,10 @@ class QuestionnaireQuestion(Base):
     written_answers: Mapped[list["WrittenAnswer"]] = relationship(
         back_populates="question"
     )
+
+class QuestionText(Base):
+    __tablename__ = "question_text"
+    __table_args__ = create_comment("Таблица для хранения текста вопроса анкеты")
+
+    questionnaire_question_id: Mapped[UUID] = mapped_column(ForeignKey("questionnaire_question.id"))
+    text: Mapped[str]

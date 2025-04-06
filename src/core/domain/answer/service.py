@@ -30,7 +30,7 @@ class AnswerService:
         self._telegram_user_repository = telegram_user_repository
         self._question_repository = question_repository
 
-    async def create_text_answer(
+    async def written_answer_create(
         self, dto: WrittenAnswerCreateDTO
     ) -> Result[
         WrittenAnswer,
@@ -78,3 +78,6 @@ class AnswerService:
 
         answer = await self._repository.create(dto=dto)
         return Ok(answer)
+
+    async def multiple_choice_answer_create(self):
+        ...
