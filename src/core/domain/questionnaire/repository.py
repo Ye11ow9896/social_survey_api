@@ -85,7 +85,6 @@ class QuestionnaireQuestionRepository:
     ) -> QuestionnaireQuestion:
         return QuestionnaireQuestion(
             questionnaire_id=questionnaire_id,
-            question_text=dto.question_text,
             number=dto.number,
             question_type=dto.question_type,
         )
