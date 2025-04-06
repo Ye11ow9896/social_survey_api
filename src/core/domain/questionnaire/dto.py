@@ -1,4 +1,5 @@
 import uuid
+from dataclasses import dataclass
 
 from typing import Annotated
 from pydantic import BeforeValidator
@@ -65,3 +66,8 @@ class QuestionFilterDTO(BaseFilter):
         str | Unset,
         FilterField(QuestionnaireQuestion.id, operator=eq),
     ] = UNSET
+
+@dataclass(frozen=True, slots=True)
+class QuestionTextCreateDTO:
+    questionnaire_question_id: uuid.UUID
+    text: str

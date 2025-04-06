@@ -9,11 +9,11 @@ from src.core.domain.questionnaire.dto import (
     QuestionFilterDTO,
     QuestionnaireCreateDTO,
     QuestionDTO,
-    QuestionnaireFilterDTO,
+    QuestionnaireFilterDTO, QuestionTextCreateDTO,
 )
 from src.database.models.questionnaire import (
     Questionnaire,
-    QuestionnaireQuestion,
+    QuestionnaireQuestion, QuestionText,
 )
 
 
@@ -85,7 +85,26 @@ class QuestionnaireQuestionRepository:
             questionnaire_id=questionnaire_id,
             question_text=dto.question_text,
             number=dto.number,
-            choice_text=dto.choice_text,
-            written_text=dto.written_text,
             question_type=dto.question_type,
+        )
+
+
+class QuestionTextRepository:
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def create_one(self, dto: QuestionTextCreateDTO):
+        model = self._build_model(dto=dto)
+        self._session.add(model)
+        await self._session.flush()
+
+    async def create_all(self, dtos: list[QuestionTextCreateDTO]):
+        models = [self._build_model(dto=dto) for dto in dtos]
+        self._session.add_all(models)
+        await self._session.flush()
+
+    def _build_model(self, dto: QuestionTextCreateDTO) -> QuestionText:
+        return QuestionText(
+            questionnaire_question_id=dto.questionnaire_question_id,
+            text=dto.text
         )

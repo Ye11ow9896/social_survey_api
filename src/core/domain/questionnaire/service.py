@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import joinedload
 
-from src.database.models.questionnaire import Questionnaire
+from src.database.models.questionnaire import Questionnaire, QuestionnaireQuestion
 from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
 from src.core.domain.questionnaire.exceptions import (
@@ -17,13 +17,14 @@ from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
     QuestionDTO,
     QuestionnaireCreateDTO,
+    QuestionTextCreateDTO,
     QuestionnaireDTO,
     QuestionnaireFilterDTO,
 )
 from src.core.domain.survey.repository import SurveyRepository
 from src.core.domain.questionnaire.repository import (
     QuestionnaireRepository,
-    QuestionnaireQuestionRepository,
+    QuestionnaireQuestionRepository, QuestionTextRepository,
 )
 from src.core.exceptions import ObjectNotFoundError
 from result import Ok, Result, Err
@@ -35,12 +36,14 @@ class QuestionnaireService:
         questionnaire_repository: QuestionnaireRepository,
         questionnaire_question_repository: QuestionnaireQuestionRepository,
         survey_repository: SurveyRepository,
+        question_text_repository: QuestionTextRepository,
     ) -> None:
         self._questionnaire_repository = questionnaire_repository
         self._questionnaire_question_repository = (
             questionnaire_question_repository
         )
         self._survey_repository = survey_repository
+        self._question_text_repository = question_text_repository
 
     async def create(
         self, *, dto: QuestionnaireCreateDTO
@@ -88,7 +91,7 @@ class QuestionnaireService:
     async def add_question(
         self, questionnaire_id: UUID, *, dto: QuestionDTO
     ) -> Result[
-        None,
+        QuestionnaireQuestion,
         ObjectNotFoundError
         | QuestionCreateUpdateQuestionError
         | QuestionCreateUpdateMismatchError,
@@ -101,10 +104,36 @@ class QuestionnaireService:
         )
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
-        await self._questionnaire_question_repository.create_question(
-            questionnaire.id, dto=dto
+        question = await self._questionnaire_question_create(questionnaire.id, dto=dto)
+
+        return Ok(question)
+
+    async def _questionnaire_question_create(
+        self,
+        questionnaire_id: UUID,
+        *,
+        dto: QuestionDTO
+    ) -> QuestionnaireQuestion:
+        question = await self._questionnaire_question_repository.create_question(
+            questionnaire_id, dto=dto
         )
-        return Ok(None)
+        if dto.question_type == QuestionType.WRITTEN.value:
+            await self._question_text_repository.create_one(
+                dto=QuestionTextCreateDTO(
+                    questionnaire_question_id=question.id,
+                    text=dto.written_text,
+                )
+            )
+        else:
+            dtos = [
+                QuestionTextCreateDTO(
+                    questionnaire_question_id=question.id,
+                    text=text,
+                )
+                for text in dto.choice_text
+            ]
+            await self._question_text_repository.create_all(dtos)
+        return question
 
     def _question_business_validation(
         self,
@@ -159,3 +188,4 @@ class QuestionnaireService:
             self._question_business_validation(question=question)
             exists_numbers.append(question.number)
         return Ok(None)
+

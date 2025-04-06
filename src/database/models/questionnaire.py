@@ -51,6 +51,7 @@ class QuestionnaireQuestion(Base):
         back_populates="question"
     )
 
+
 class QuestionText(Base):
     __tablename__ = "question_text"
     __table_args__ = create_comment("Таблица для хранения текста вопроса анкеты")

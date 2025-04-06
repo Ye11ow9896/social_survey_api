@@ -62,5 +62,5 @@ class AnswerController(Controller):
     async def multiple_choice_answer_create(
         self,
         service: Injected[AnswerService],
-    ):
+    ) -> None:
         ...
