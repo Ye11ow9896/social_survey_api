@@ -4,7 +4,7 @@ from uuid import UUID
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
 
-from database.models import WrittenAnswer
+from src.database.models import WrittenAnswer
 
 
 @dataclass(frozen=True, slots=True)

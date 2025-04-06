@@ -40,6 +40,19 @@ class QuestionnaireCreateDTO(BaseDTO):
     ]
 
 
+class QuestionnaireDTO(BaseDTO):
+    survey_id: uuid.UUID
+    name: str
+    questionnaire_questions: Annotated[
+        list[QuestionDTO],
+        BeforeValidator(
+            lambda models: [
+                QuestionDTO.model_validate(model.as_dict()) for model in models
+            ]
+        ),
+    ]
+
+
 class QuestionnaireFilterDTO(BaseFilter):
     id: Annotated[
         uuid.UUID | Unset,

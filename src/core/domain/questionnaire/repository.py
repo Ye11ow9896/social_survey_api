@@ -29,7 +29,7 @@ class QuestionnaireRepository:
         stmt = select(Questionnaire)
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
-        return (await self._session.scalars(stmt)).one_or_none()
+        return (await self._session.scalars(stmt)).unique().one_or_none()
 
     async def create(self, dto: QuestionnaireCreateDTO) -> Questionnaire:
         model = self._build_model(dto)
@@ -53,7 +53,7 @@ class QuestionnaireQuestionRepository:
         stmt = select(QuestionnaireQuestion)
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
-        return (await self._session.scalars(stmt)).one_or_none()
+        return (await self._session.scalars(stmt)).unique().one_or_none()
 
     async def create_question(
         self,

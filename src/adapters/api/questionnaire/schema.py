@@ -47,3 +47,9 @@ class QuestionnaireCreateSchema(BaseSchema):
             name=self.name,
             questionnaire_questions=self.questionnaire_questions,
         )
+
+
+class QuestionnaireWithQuestionsSchema(BaseSchema):
+    survey_id: UUID
+    name: str
+    questions: list[QuestionDTO]
