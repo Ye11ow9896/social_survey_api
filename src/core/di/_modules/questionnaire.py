@@ -1,7 +1,10 @@
 import aioinject
 
-from src.core.domain.questionnaire.repository import QuestionnaireRepository, QuestionTextRepository, \
-    QuestionnaireQuestionRepository
+from src.core.domain.questionnaire.repository import (
+    QuestionnaireRepository,
+    QuestionTextRepository,
+    QuestionnaireQuestionRepository,
+)
 from src.core.domain.questionnaire.service import QuestionnaireService
 from src.core.di.di import Providers
 

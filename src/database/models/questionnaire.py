@@ -4,7 +4,6 @@ import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy import String, ARRAY
 
 
 from src.database.models.base import Base, create_comment
@@ -54,7 +53,11 @@ class QuestionnaireQuestion(Base):
 
 class QuestionText(Base):
     __tablename__ = "question_text"
-    __table_args__ = create_comment("Таблица для хранения текста вопроса анкеты")
+    __table_args__ = create_comment(
+        "Таблица для хранения текста вопроса анкеты"
+    )
 
-    questionnaire_question_id: Mapped[UUID] = mapped_column(ForeignKey("questionnaire_question.id"))
+    questionnaire_question_id: Mapped[UUID] = mapped_column(
+        ForeignKey("questionnaire_question.id")
+    )
     text: Mapped[str]

@@ -67,6 +67,7 @@ class QuestionFilterDTO(BaseFilter):
         FilterField(QuestionnaireQuestion.id, operator=eq),
     ] = UNSET
 
+
 @dataclass(frozen=True, slots=True)
 class QuestionTextCreateDTO:
     questionnaire_question_id: uuid.UUID

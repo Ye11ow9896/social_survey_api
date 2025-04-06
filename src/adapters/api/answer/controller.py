@@ -56,11 +56,9 @@ class AnswerController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-
     @post("/multiple-choice/create", status_code=200)
     @inject
     async def multiple_choice_answer_create(
         self,
         service: Injected[AnswerService],
-    ) -> None:
-        ...
+    ) -> None: ...

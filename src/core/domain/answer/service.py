@@ -79,5 +79,4 @@ class AnswerService:
         answer = await self._repository.create(dto=dto)
         return Ok(answer)
 
-    async def multiple_choice_answer_create(self):
-        ...
+    async def multiple_choice_answer_create(self) -> None: ...
