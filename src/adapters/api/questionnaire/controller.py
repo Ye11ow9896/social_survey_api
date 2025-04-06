@@ -101,7 +101,7 @@ class QuestionnaireController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @get("/{id:int}", status_code=200)
+    @get("/{id:str}", status_code=200)
     @inject
     async def get_questionnaire_id(
         self,

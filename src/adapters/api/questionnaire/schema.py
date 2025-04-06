@@ -52,7 +52,7 @@ class QuestionnaireCreateSchema(BaseSchema):
 class QuestionnaireGetSchema(BaseSchema):
     survey_id: UUID
     name: str
-    questions: list[CreateQuestionSchema]
+    questions: list[CreateQuestionSchema] | None = None
 
     def to_dto(self) -> QuestionnaireCreateDTO:
         return QuestionnaireCreateDTO(

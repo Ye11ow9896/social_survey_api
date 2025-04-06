@@ -76,7 +76,7 @@ class QuestionnaireService:
     ]:
         questionnaire = await self._questionnaire_repository.get(
             filter_=QuestionnaireFilterDTO(id=questionnaire_id),
-            options=(joinedload(Questionnaire.questionnaire_questions)),
+            options=[joinedload(Questionnaire.questionnaire_questions)],
         )
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
