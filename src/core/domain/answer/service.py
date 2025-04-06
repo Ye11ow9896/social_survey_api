@@ -33,8 +33,7 @@ class AnswerService:
         self, dto: QuestionAnswerCreateDTO
     ) -> Result[
         QuestionAnswer,
-        ObjectNotFoundError
-        | ObjectAlreadyExistsError,
+        ObjectNotFoundError | ObjectAlreadyExistsError,
     ]:
         telegram_user = await self._telegram_user_repository.get(
             filter_=TelegramUserFilterDTO(id=dto.telegram_user_id)
@@ -67,9 +66,3 @@ class AnswerService:
             return Err(ObjectAlreadyExistsError(obj=QuestionAnswer.__name__))
 
         return Ok(await self._repository.create(dto=dto))
-
-
-
-
-
-

@@ -38,4 +38,3 @@ class QuestionAnswerRepository:
             question_text_id=dto.question_text_id,
             text=dto.text,
         )
-

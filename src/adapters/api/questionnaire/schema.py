@@ -5,7 +5,8 @@ from pydantic import Field
 
 from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
-    QuestionnaireCreateDTO, QuestionDTO,
+    QuestionnaireCreateDTO,
+    QuestionDTO,
 )
 from src.adapters.api.schema import BaseSchema
 

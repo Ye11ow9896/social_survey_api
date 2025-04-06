@@ -51,4 +51,3 @@ class AnswerController(Controller):
             },
             status_code=HTTPStatus.OK,
         )
-

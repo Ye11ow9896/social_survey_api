@@ -187,9 +187,7 @@ class QuestionnaireService:
         for question in dto.questionnaire_questions:
             if question.number in exists_numbers:
                 return Err(
-                    QuestionnaireCreateUpdateNumberExistsError(
-                        question.id
-                    )
+                    QuestionnaireCreateUpdateNumberExistsError(question.id)
                 )
             self._question_business_validation(question=question)
             exists_numbers.append(question.number)

@@ -41,14 +41,15 @@ class QuestionnaireQuestion(Base):
     )
 
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
-    question_texts: Mapped[list["QuestionText"]] = relationship(back_populates="question")
+    question_texts: Mapped[list["QuestionText"]] = relationship(
+        back_populates="question"
+    )
     question_answers: Mapped[list["QuestionAnswer"]] = relationship(
         back_populates="question"
     )
     questionnaire: Mapped["Questionnaire"] = relationship(
         back_populates="questionnaire_questions"
     )
-
 
 
 class QuestionText(Base):
@@ -62,4 +63,6 @@ class QuestionText(Base):
     )
     text: Mapped[str]
 
-    question: Mapped[QuestionnaireQuestion] = relationship(back_populates="question_texts")
+    question: Mapped[QuestionnaireQuestion] = relationship(
+        back_populates="question_texts"
+    )
