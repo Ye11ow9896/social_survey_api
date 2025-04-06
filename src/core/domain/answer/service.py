@@ -1,13 +1,12 @@
-from src.core.domain.answer.exceptions import WrittenAnswerCreateTypeError
-from src.database.enums import QuestionType
+from src.core.domain.answer.repository import QuestionAnswerRepository
+from src.database.models import QuestionAnswer
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.core.domain.user.repository import TelegramUserRepository
-from src.database.models import TelegramUser, WrittenAnswer
+from src.database.models import TelegramUser
 from src.core.domain.answer.dto import (
-    WrittenAnswerCreateDTO,
-    WrittenAnswerFilterDTO,
+    QuestionAnswerCreateDTO,
+    QuestionAnswerFilterDTO,
 )
-from src.core.domain.answer.repository import WrittenAnswerRepository
 from src.database.models.questionnaire import QuestionnaireQuestion
 
 from src.core.domain.questionnaire.dto import QuestionFilterDTO
@@ -22,7 +21,7 @@ from result import Ok, Result, Err
 class AnswerService:
     def __init__(
         self,
-        repository: WrittenAnswerRepository,
+        repository: QuestionAnswerRepository,
         telegram_user_repository: TelegramUserRepository,
         question_repository: QuestionnaireQuestionRepository,
     ) -> None:
@@ -30,13 +29,11 @@ class AnswerService:
         self._telegram_user_repository = telegram_user_repository
         self._question_repository = question_repository
 
-    async def create_text_answer(
-        self, dto: WrittenAnswerCreateDTO
+    async def create(
+        self, dto: QuestionAnswerCreateDTO
     ) -> Result[
-        WrittenAnswer,
-        ObjectNotFoundError
-        | ObjectAlreadyExistsError
-        | WrittenAnswerCreateTypeError,
+        QuestionAnswer,
+        ObjectNotFoundError | ObjectAlreadyExistsError,
     ]:
         telegram_user = await self._telegram_user_repository.get(
             filter_=TelegramUserFilterDTO(id=dto.telegram_user_id)
@@ -58,23 +55,14 @@ class AnswerService:
                     field=str(dto.question_id),
                 )
             )
-
-        if question.question_type != QuestionType.WRITTEN.value:
-            return Err(
-                WrittenAnswerCreateTypeError(
-                    question_id=dto.question_id,
-                    current_type=question.question_type,
-                )
-            )
-
         answer_db = await self._repository.get(
-            filter_=WrittenAnswerFilterDTO(
+            filter_=QuestionAnswerFilterDTO(
                 question_id=dto.question_id,
                 telegram_user_id=dto.telegram_user_id,
+                question_text_id=dto.question_text_id,
             )
         )
         if answer_db is not None:
-            return Err(ObjectAlreadyExistsError(obj=WrittenAnswer.__name__))
+            return Err(ObjectAlreadyExistsError(obj=QuestionAnswer.__name__))
 
-        answer = await self._repository.create(dto=dto)
-        return Ok(answer)
+        return Ok(await self._repository.create(dto=dto))

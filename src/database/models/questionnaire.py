@@ -4,15 +4,14 @@ import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy import String, ARRAY
 
 
 from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
 
 if TYPE_CHECKING:
+    from database.models import QuestionAnswer
     from src.database.models.survey import Survey
-    from src.database.models import WrittenAnswer
 
 
 class Questionnaire(Base):
@@ -37,23 +36,33 @@ class QuestionnaireQuestion(Base):
     questionnaire_id: Mapped[UUID | None] = mapped_column(
         ForeignKey("questionnaire.id")
     )
-    question_text: Mapped[str] = mapped_column(comment="Текст вопроса анкеты")
     number: Mapped[int] = mapped_column(
         comment="Порядковый номер вопроса анкеты"
     )
-    choice_text: Mapped[list[str] | None] = mapped_column(
-        ARRAY(String),
-        default=None,
-        comment="Список вопросов для множественного выбора. Зависит от типа",
-    )
-    written_text: Mapped[str | None] = mapped_column(
-        comment="Текст вопроса для письменного ответа. Зависит от типа"
-    )
-    question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
 
+    question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
+    question_texts: Mapped[list["QuestionText"]] = relationship(
+        back_populates="question"
+    )
+    question_answers: Mapped[list["QuestionAnswer"]] = relationship(
+        back_populates="question"
+    )
     questionnaire: Mapped["Questionnaire"] = relationship(
         back_populates="questionnaire_questions"
     )
-    written_answers: Mapped[list["WrittenAnswer"]] = relationship(
-        back_populates="question"
+
+
+class QuestionText(Base):
+    __tablename__ = "question_text"
+    __table_args__ = create_comment(
+        "Таблица для хранения текста вопроса анкеты"
+    )
+
+    questionnaire_question_id: Mapped[UUID] = mapped_column(
+        ForeignKey("questionnaire_question.id")
+    )
+    text: Mapped[str]
+
+    question: Mapped[QuestionnaireQuestion] = relationship(
+        back_populates="question_texts"
     )

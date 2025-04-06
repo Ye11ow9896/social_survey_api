@@ -8,12 +8,14 @@ from sqlalchemy.sql.base import ExecutableOption
 from src.core.domain.questionnaire.dto import (
     QuestionFilterDTO,
     QuestionnaireCreateDTO,
-    QuestionDTO,
+    QuestionCreateDTO,
     QuestionnaireFilterDTO,
+    QuestionTextCreateDTO,
 )
 from src.database.models.questionnaire import (
     Questionnaire,
     QuestionnaireQuestion,
+    QuestionText,
 )
 
 
@@ -58,7 +60,7 @@ class QuestionnaireQuestionRepository:
     async def create_question(
         self,
         questionnaire_id: UUID,
-        dto: QuestionDTO,
+        dto: QuestionCreateDTO,
     ) -> QuestionnaireQuestion:
         model = self._build_model(dto=dto, questionnaire_id=questionnaire_id)
         self._session.add(model)
@@ -66,7 +68,7 @@ class QuestionnaireQuestionRepository:
         return model
 
     async def create_questions(
-        self, questionnaire_id: UUID, *, dtos: list[QuestionDTO]
+        self, questionnaire_id: UUID, *, dtos: list[QuestionCreateDTO]
     ) -> None:
         models = []
         for dto in dtos:
@@ -79,13 +81,32 @@ class QuestionnaireQuestionRepository:
     def _build_model(
         self,
         questionnaire_id: UUID,
-        dto: QuestionDTO,
+        dto: QuestionCreateDTO,
     ) -> QuestionnaireQuestion:
         return QuestionnaireQuestion(
             questionnaire_id=questionnaire_id,
             question_text=dto.question_text,
             number=dto.number,
-            choice_text=dto.choice_text,
-            written_text=dto.written_text,
             question_type=dto.question_type,
+        )
+
+
+class QuestionTextRepository:
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def create_one(self, dto: QuestionTextCreateDTO) -> None:
+        model = self._build_model(dto=dto)
+        self._session.add(model)
+        await self._session.flush()
+
+    async def create_all(self, dtos: list[QuestionTextCreateDTO]) -> None:
+        models = [self._build_model(dto=dto) for dto in dtos]
+        self._session.add_all(models)
+        await self._session.flush()
+
+    def _build_model(self, dto: QuestionTextCreateDTO) -> QuestionText:
+        return QuestionText(
+            questionnaire_question_id=dto.questionnaire_question_id,
+            text=dto.text,
         )

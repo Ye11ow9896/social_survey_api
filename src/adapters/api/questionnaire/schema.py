@@ -4,8 +4,9 @@ from uuid import UUID
 from pydantic import Field
 
 from src.core.domain.questionnaire.dto import (
-    QuestionDTO,
+    QuestionCreateDTO,
     QuestionnaireCreateDTO,
+    QuestionDTO,
 )
 from src.adapters.api.schema import BaseSchema
 
@@ -17,7 +18,6 @@ class CreateQuestionSchema(BaseSchema):
     Если тип вопроса written - заполняем поле text_answer is not None
     """
 
-    survey_id: UUID
     question_text: str = Field(alias="questionText")
     number: int
     written_text: str | None = Field(alias="writtenText", default=None)
@@ -26,8 +26,8 @@ class CreateQuestionSchema(BaseSchema):
         alias="questionType"
     )
 
-    def to_dto(self) -> QuestionDTO:
-        return QuestionDTO(
+    def to_dto(self) -> QuestionCreateDTO:
+        return QuestionCreateDTO(
             question_text=self.question_text,
             number=self.number,
             written_text=self.written_text,

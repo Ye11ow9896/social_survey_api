@@ -1,4 +1,5 @@
 import uuid
+from dataclasses import dataclass
 
 from typing import Annotated
 from pydantic import BeforeValidator
@@ -13,7 +14,7 @@ from src.database.models.questionnaire import (
 )
 
 
-class QuestionDTO(BaseDTO):
+class QuestionCreateDTO(BaseDTO):
     """
     Вопрос.
     Если тип вопроса one_choice или multiple_choice - поле choice_text is not None
@@ -33,10 +34,20 @@ class QuestionnaireCreateDTO(BaseDTO):
     survey_id: uuid.UUID
     name: str
     questionnaire_questions: Annotated[
-        list[QuestionDTO],
+        list[QuestionCreateDTO],
         BeforeValidator(
-            lambda dtos: [QuestionDTO.model_validate(dto) for dto in dtos]
+            lambda dtos: [
+                QuestionCreateDTO.model_validate(dto) for dto in dtos
+            ]
         ),
+    ]
+
+
+class QuestionDTO(BaseDTO):
+    id: uuid.UUID
+    number: int
+    question_type: Annotated[
+        QuestionType, BeforeValidator(lambda type_: QuestionType(type_))
     ]
 
 
@@ -65,3 +76,9 @@ class QuestionFilterDTO(BaseFilter):
         str | Unset,
         FilterField(QuestionnaireQuestion.id, operator=eq),
     ] = UNSET
+
+
+@dataclass(frozen=True, slots=True)
+class QuestionTextCreateDTO:
+    questionnaire_question_id: uuid.UUID
+    text: str

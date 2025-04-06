@@ -24,10 +24,7 @@ class QuestionnaireView(ModelView, model=Questionnaire):
 class QuestionnaireQuestionView(ModelView, model=QuestionnaireQuestion):
     column_list = [
         QuestionnaireQuestion.id,
-        QuestionnaireQuestion.question_text,
         QuestionnaireQuestion.number,
-        QuestionnaireQuestion.choice_text,
-        QuestionnaireQuestion.written_text,
         QuestionnaireQuestion.question_type,
         QuestionnaireQuestion.questionnaire,
     ]
