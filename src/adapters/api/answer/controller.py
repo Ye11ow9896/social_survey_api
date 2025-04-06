@@ -1,10 +1,8 @@
 from http import HTTPStatus
 from typing import Any, assert_never
 
-from src.adapters.api.answer.exceptions import WrittenAnswerCreateTypeHTTPError
-from src.core.domain.answer.exceptions import WrittenAnswerCreateTypeError
 from src.core.domain.answer.service import AnswerService
-from src.adapters.api.answer.schema import WrittenAnswerCreateSchema
+from src.adapters.api.answer.schema import QuestionAnswerCreateSchema
 from src.adapters.api.exceptions import (
     ObjectNotFoundHTTPError,
     ObjectAlreadyExistsHTTPError,
@@ -25,23 +23,21 @@ class AnswerController(Controller):
     tags = ("Answer endpoints",)
     middleware = [CheckAccessTokenMiddleware]
 
-    @post("/written-answer/create", status_code=200)
+    @post("/question-answer/create", status_code=200)
     @inject
     async def written_answer_create(
         self,
-        data: WrittenAnswerCreateSchema,
+        data: QuestionAnswerCreateSchema,
         service: Injected[AnswerService],
     ) -> Response[Any]:
         dto = data.to_dto()
-        result = await service.written_answer_create(dto=dto)
+        result = await service.create(dto=dto)
         if isinstance(result, Err):
             match exc := result.err_value:
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
                 case ObjectAlreadyExistsError():
                     raise ObjectAlreadyExistsHTTPError(message=exc.message)
-                case WrittenAnswerCreateTypeError():
-                    raise WrittenAnswerCreateTypeHTTPError(message=exc.message)
                 case _ as never:
                     assert_never(never)
 
@@ -56,9 +52,3 @@ class AnswerController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @post("/multiple-choice/create", status_code=200)
-    @inject
-    async def multiple_choice_answer_create(
-        self,
-        service: Injected[AnswerService],
-    ) -> None: ...

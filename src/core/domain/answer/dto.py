@@ -4,26 +4,31 @@ from uuid import UUID
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
 
-from src.database.models import WrittenAnswer
+from src.database.models import QuestionAnswer
 
 
 @dataclass(frozen=True, slots=True)
-class WrittenAnswerCreateDTO:
+class QuestionAnswerCreateDTO:
     question_id: UUID
     telegram_user_id: UUID
+    question_text_id: UUID
     text: str
 
 
-class WrittenAnswerFilterDTO(BaseFilter):
+class QuestionAnswerFilterDTO(BaseFilter):
     id: Annotated[
         str | Unset,
-        FilterField(WrittenAnswer.id, operator=eq),
+        FilterField(QuestionAnswer.id, operator=eq),
     ] = UNSET
     question_id: Annotated[
         UUID | Unset,
-        FilterField(WrittenAnswer.question_id, operator=eq),
+        FilterField(QuestionAnswer.question_id, operator=eq),
     ] = UNSET
     telegram_user_id: Annotated[
         UUID | Unset,
-        FilterField(WrittenAnswer.telegram_user_id, operator=eq),
+        FilterField(QuestionAnswer.telegram_user_id, operator=eq),
+    ] = UNSET
+    question_text_id: Annotated[
+        UUID | Unset,
+        FilterField(QuestionAnswer.question_text_id, operator=eq),
     ] = UNSET
