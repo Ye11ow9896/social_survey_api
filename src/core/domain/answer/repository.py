@@ -35,6 +35,7 @@ class QuestionAnswerRepository:
         return QuestionAnswer(
             question_id=dto.question_id,
             telegram_user_id=dto.telegram_user_id,
+            question_text_id=dto.question_text_id,
             text=dto.text,
         )
 

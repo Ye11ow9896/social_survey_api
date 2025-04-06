@@ -10,7 +10,7 @@ class QuestionAnswerCreateSchema(BaseSchema):
     question_id: UUID = Field(alias="questionId")
     telegram_user_id: UUID = Field(alias="telegramUserId")
     question_text_id: UUID = Field(alias="questionTextId")
-    text: str
+    text: str | None
 
     def to_dto(self) -> QuestionAnswerCreateDTO:
         return QuestionAnswerCreateDTO(

@@ -12,7 +12,7 @@ class QuestionAnswerCreateDTO:
     question_id: UUID
     telegram_user_id: UUID
     question_text_id: UUID
-    text: str
+    text: str | None
 
 
 class QuestionAnswerFilterDTO(BaseFilter):
