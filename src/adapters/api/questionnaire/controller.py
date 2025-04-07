@@ -117,8 +117,8 @@ class QuestionnaireController(Controller):
             questions=result.ok_value.questionnaire_questions,
         )
 
-    @get("/static", exclude_from_auth=True)
-    async def get_questionnaire_form(self) -> Template:
+    @get("/static/{questionnaire_id:str}", exclude_from_auth=True)
+    async def get_questionnaire_form(self, id: UUID,) -> Template:
         return HTMXTemplate(
             template_name="index.html",
         )
