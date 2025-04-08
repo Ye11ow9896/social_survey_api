@@ -2,6 +2,7 @@ from http import HTTPStatus
 from typing import Any
 from uuid import UUID
 
+from src.core.domain.questionnaire.command import GetQuestionnaireFormCommand
 from src.adapters.api.questionnaire.exceptions import (
     QuestionCreateUpdateHTTPError,
     QuestionnaireCreateUpdateHTTPError,
@@ -117,8 +118,11 @@ class QuestionnaireController(Controller):
             questions=result.ok_value.questionnaire_questions,
         )
 
-    @get("/static/{questionnaire_id:str}", exclude_from_auth=True)
-    async def get_questionnaire_form(self, id: UUID,) -> Template:
-        return HTMXTemplate(
-            template_name="index.html",
-        )
+    @get("/static/{id:str}", exclude_from_auth=True)
+    @inject
+    async def get_questionnaire_form(
+        self,
+        id: UUID,
+        command: Injected[GetQuestionnaireFormCommand],
+        ) -> str:
+        return await command.get_questionnaire_form(id)

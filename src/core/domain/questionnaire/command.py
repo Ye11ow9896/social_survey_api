@@ -22,22 +22,14 @@ class GetQuestionnaireFormCommand:
 
     async def get_questionnaire_form(
             self, 
-            questionnaire_id: UUID
+            questionnaire_id: UUID,
+            questions: list,        
         ):
         # questionnaire = self._questionnaire_servive.get_questionnaire_by_id(questionnaire_id)
 
         # Пока тестовые данные
-        questions = {
-    1: {
-        "name": "name",
-        "label": "Ваше имя:",
-        "question_type": "WRITTEN"
-    },
-        }   
-
-        rendered_page = template.render()
-
-        return rendered_page
-
+        
+        # questions = [question for i in range(15)]   
+        return template.render(questions=questions)
 
 
