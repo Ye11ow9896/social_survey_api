@@ -125,4 +125,15 @@ class QuestionnaireController(Controller):
         id: UUID,
         command: Injected[GetQuestionnaireFormCommand],
         ) -> str:
-        return await command.get_questionnaire_form(id)
+        question = [{
+                "name": "no_name",
+                "label": "Тестовый вопрос 1:",
+                "question_type": "written"
+            },
+            {
+                "name": "no_name2",
+                "label": "Тестовый вопрос 2:",
+                "question_type": "written"
+            },]
+        questions = [question[0] for i in range(15)]  
+        return await command.get_questionnaire_form(id, questions)
