@@ -1,6 +1,10 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from uuid import UUID
 
+from result import Err, Ok, Result
+
+from src.database.models.questionnaire import Questionnaire
+from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
 
 # вынести в отдельный файл?
@@ -22,14 +26,11 @@ class GetQuestionnaireFormCommand:
 
     async def get_questionnaire_form(
             self, 
-            questionnaire_id: UUID,
-            questions: list,        
-        ):
-        # questionnaire = self._questionnaire_servive.get_questionnaire_by_id(questionnaire_id)
-
-        # Пока тестовые данные
-        
-        # questions = [question for i in range(15)]   
-        return template.render(questions=questions)
+            questionnaire_id: UUID,      
+        ) -> Result[str, ObjectNotFoundError]:
+        questionnaire = await self._questionnaire_servive.get_questionnaire_by_id(questionnaire_id)
+        if questionnaire is None:
+            raise Err(ObjectNotFoundError(obj=Questionnaire.__name__))
+        return Ok(template.render(questions=questionnaire.ok_value.questionnaire_questions))
 
 

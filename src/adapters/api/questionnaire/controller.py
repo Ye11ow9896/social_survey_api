@@ -125,15 +125,7 @@ class QuestionnaireController(Controller):
         id: UUID,
         command: Injected[GetQuestionnaireFormCommand],
         ) -> str:
-        question = [{
-                "name": "no_name",
-                "label": "Тестовый вопрос 1:",
-                "question_type": "written"
-            },
-            {
-                "name": "no_name2",
-                "label": "Тестовый вопрос 2:",
-                "question_type": "written"
-            },]
-        questions = [question[0] for i in range(15)]  
-        return await command.get_questionnaire_form(id, questions)
+        result = await command.get_questionnaire_form(id)
+        if isinstance(result, Err):
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
+        return result.ok_value
