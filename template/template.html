@@ -54,16 +54,20 @@
         <form action="/questionnaire/answer/create" method="post">
             {% for question in questions %}
                 <label for="{{ question.id }}">{{ question.label }}</label>
+
                 {% if question.question_type == 'written' %}
                     <input type="text" name="{{ question.name }}" required>
+
                 {% elif question.question_type == 'one_choice' %}
                     <input type="number" name="{{ question.name }}" required>
+
                 {% elif question.question_type == 'multiple_choice' %}
                     <select name="{{ question.name }}">
                         {% for option in question.options %}
                             <option value="{{ option.value }}">{{ option.label }}</option>
                         {% endfor %}
                     </select>
+                    
                 {% elif question.question_type == '??' %}
                     <textarea name="{{ question.name }}" rows="4" required></textarea>
                 {% endif %}

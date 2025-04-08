@@ -49,7 +49,7 @@ class QuestionDTO(BaseDTO):
     question_type: Annotated[
         QuestionType, BeforeValidator(lambda type_: QuestionType(type_))
     ]
-
+    text: list[str]
 
 class QuestionnaireDTO(BaseDTO):
     survey_id: uuid.UUID
@@ -58,7 +58,7 @@ class QuestionnaireDTO(BaseDTO):
         list[QuestionDTO],
         BeforeValidator(
             lambda models: [
-                QuestionDTO.model_validate(model.as_dict()) for model in models
+                QuestionDTO.model_validate(model.dict()) for model in models
             ]
         ),
     ]

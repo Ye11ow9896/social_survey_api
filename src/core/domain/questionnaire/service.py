@@ -19,6 +19,7 @@ from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
+    QuestionDTO,
     QuestionnaireCreateDTO,
     QuestionTextCreateDTO,
     QuestionnaireDTO,
@@ -86,14 +87,23 @@ class QuestionnaireService:
         ))
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
+        questionnaire_questions = [
+            QuestionDTO(
+                id=question.id,
+                number=question.number,
+                question_type=question.question_type,
+                text=[qt.text for qt in question.question_texts]
+            )
+            for question in questionnaire.questionnaire_questions
+        ]
+
         return Ok(
             QuestionnaireDTO(
                 survey_id=questionnaire.survey_id,
                 name=questionnaire.name,
-                questionnaire_questions=questionnaire.questionnaire_questions,
+                questionnaire_questions=questionnaire_questions,
             )
         )
-
     async def add_question(
         self, questionnaire_id: UUID, *, dto: QuestionCreateDTO
     ) -> Result[
