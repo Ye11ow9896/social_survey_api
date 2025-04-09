@@ -51,6 +51,10 @@ class QuestionnaireQuestion(Base):
         back_populates="questionnaire_questions"
     )
 
+    @property
+    def get_text_list(self) -> list[str]:
+        return [question_text.text for question_text in self.question_texts]
+
 
 class QuestionText(Base):
     __tablename__ = "question_text"

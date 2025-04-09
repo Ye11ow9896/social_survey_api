@@ -28,11 +28,10 @@ from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from litestar import Response, post, get
 from litestar.controller import Controller
+from litestar.response import Template
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from result import Err
-from litestar.plugins.htmx import HTMXTemplate
-from litestar.response import Template
 
 
 class QuestionnaireController(Controller):
@@ -124,8 +123,10 @@ class QuestionnaireController(Controller):
         self,
         id: UUID,
         command: Injected[GetQuestionnaireFormCommand],
-        ) -> str:
+    ) -> Template:
         result = await command.get_questionnaire_form(id)
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
-        return result.ok_value
+        return Template(
+            template_str=result.ok_value,
+        )
