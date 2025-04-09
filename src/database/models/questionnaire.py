@@ -41,6 +41,8 @@ class QuestionnaireQuestion(Base):
     )
 
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
+    question_text: Mapped[str]
+    # Переименовать в text
     question_texts: Mapped[list["QuestionText"]] = relationship(
         back_populates="question"
     )

@@ -38,6 +38,7 @@ class GetQuestionnaireFormCommand:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
         return Ok(
             template.render(
-                questions=questionnaire.ok_value.questionnaire_questions
+                questionnaire=questionnaire.ok_value,
+                questions=questionnaire.ok_value.questionnaire_questions,
             )
         )

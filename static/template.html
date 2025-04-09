@@ -50,26 +50,26 @@
 </head>
 <body>
     <div class="container">
-        <h1>Анкета социальных исследований</h1>
+        <h1>{{ questionnaire.name }}</h1>
         <form action="/questionnaire/answer/create" method="post">
             {% for question in questions %}
-                <label for="{{ question.id }}">{{ question.label }}</label>
+                <label for="{{ question.id }}">{{ question.question_text }}</label>
 
                 {% if question.question_type == 'written' %}
-                    <input type="text" name="{{ question.name }}" required>
+                    <input type="text" required>
 
                 {% elif question.question_type == 'one_choice' %}
-                    <input type="number" name="{{ question.name }}" required>
+                    <input type="number" required>
 
                 {% elif question.question_type == 'multiple_choice' %}
-                    <select name="{{ question.name }}">
-                        {% for option in question.options %}
-                            <option value="{{ option.value }}">{{ option.label }}</option>
+                    <select>
+                        {% for option in question.question_texts %}
+                            <option value="{{ option }}">{{ option }}</option>
                         {% endfor %}
                     </select>
                     
                 {% elif question.question_type == '??' %}
-                    <textarea name="{{ question.name }}" rows="4" required></textarea>
+                    <textarea rows="4" required></textarea>
                 {% endif %}
             {% endfor %}
             <button type="submit">Отправить</button>
