@@ -1,5 +1,6 @@
 import aioinject
 
+from src.core.domain.questionnaire.command import GetQuestionnaireFormCommand
 from src.core.domain.questionnaire.repository import (
     QuestionnaireRepository,
     QuestionTextRepository,
@@ -14,4 +15,5 @@ PROVIDERS: Providers = [
     aioinject.Scoped(QuestionnaireRepository),
     aioinject.Scoped(QuestionnaireQuestionRepository),
     aioinject.Scoped(QuestionTextRepository),
+    aioinject.Scoped(GetQuestionnaireFormCommand),
 ]

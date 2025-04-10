@@ -81,17 +81,16 @@ class QuestionnaireService:
     ) -> Result[QuestionnaireDTO, ObjectNotFoundError]:
         questionnaire = await self._questionnaire_repository.get(
             filter_=QuestionnaireFilterDTO(id=questionnaire_id),
-            options=(joinedload(Questionnaire.questionnaire_questions),),
+            options=(
+                joinedload(Questionnaire.questionnaire_questions).options(
+                    joinedload(QuestionnaireQuestion.question_texts),
+                ),
+            ),
         )
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
-        return Ok(
-            QuestionnaireDTO(
-                survey_id=questionnaire.survey_id,
-                name=questionnaire.name,
-                questionnaire_questions=questionnaire.questionnaire_questions,
-            )
-        )
+
+        return Ok(QuestionnaireDTO.model_validate(questionnaire))
 
     async def add_question(
         self, questionnaire_id: UUID, *, dto: QuestionCreateDTO

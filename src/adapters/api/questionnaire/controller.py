@@ -2,6 +2,7 @@ from http import HTTPStatus
 from typing import Any
 from uuid import UUID
 
+from src.core.domain.questionnaire.command import GetQuestionnaireFormCommand
 from src.adapters.api.questionnaire.exceptions import (
     QuestionCreateUpdateHTTPError,
     QuestionnaireCreateUpdateHTTPError,
@@ -27,11 +28,10 @@ from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from litestar import Response, post, get
 from litestar.controller import Controller
+from litestar.response import Template
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from result import Err
-from litestar.plugins.htmx import HTMXTemplate
-from litestar.response import Template
 
 
 class QuestionnaireController(Controller):
@@ -117,8 +117,16 @@ class QuestionnaireController(Controller):
             questions=result.ok_value.questionnaire_questions,
         )
 
-    @get("/static", exclude_from_auth=True)
-    async def get_questionnaire_form(self) -> Template:
-        return HTMXTemplate(
-            template_name="index.html",
+    @get("/static/{id:str}", exclude_from_auth=True)
+    @inject
+    async def get_questionnaire_form(
+        self,
+        id: UUID,
+        command: Injected[GetQuestionnaireFormCommand],
+    ) -> Template:
+        result = await command.execute(id)
+        if isinstance(result, Err):
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
+        return Template(
+            template_str=result.ok_value,
         )

@@ -41,6 +41,7 @@ class QuestionnaireQuestion(Base):
     )
 
     question_type: Mapped[QuestionType] = mapped_column(comment="Тип вопроса")
+    question_text: Mapped[str]
     question_texts: Mapped[list["QuestionText"]] = relationship(
         back_populates="question"
     )
@@ -50,6 +51,10 @@ class QuestionnaireQuestion(Base):
     questionnaire: Mapped["Questionnaire"] = relationship(
         back_populates="questionnaire_questions"
     )
+
+    @property
+    def get_text_list(self) -> list[str]:
+        return [question_text.text for question_text in self.question_texts]
 
 
 class QuestionText(Base):
