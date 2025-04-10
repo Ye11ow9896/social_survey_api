@@ -25,7 +25,7 @@ class GetQuestionnaireFormCommand:
     ) -> None:
         self._questionnaire_servive = questionnaire_servive
 
-    async def get_questionnaire_form(
+    async def execute(
         self,
         questionnaire_id: UUID,
     ) -> Result[str, ObjectNotFoundError]:

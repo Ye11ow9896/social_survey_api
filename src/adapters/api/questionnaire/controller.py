@@ -124,7 +124,7 @@ class QuestionnaireController(Controller):
         id: UUID,
         command: Injected[GetQuestionnaireFormCommand],
     ) -> Template:
-        result = await command.get_questionnaire_form(id)
+        result = await command.execute(id)
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return Template(
