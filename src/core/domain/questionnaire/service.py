@@ -13,7 +13,6 @@ from src.core.domain.questionnaire.exceptions import (
     QuestionCreateUpdateQuestionError,
     QuestionnaireCreateUpdateMismatchError,
     QuestionnaireCreateUpdateQuestionError,
-    QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
@@ -57,7 +56,6 @@ class QuestionnaireService:
         ObjectNotFoundError
         | QuestionnaireCreateUpdateQuestionError
         | QuestionnaireCreateUpdateMismatchError
-        | QuestionnaireCreateUpdateNumberExistsError,
     ]:
         validation_result = self._business_validation(dto)
         if isinstance(validation_result, Err):
@@ -190,14 +188,7 @@ class QuestionnaireService:
         None,
         QuestionnaireCreateUpdateQuestionError
         | QuestionnaireCreateUpdateMismatchError
-        | QuestionnaireCreateUpdateNumberExistsError,
     ]:
-        exists_numbers = []
         for question in dto.questionnaire_questions:
-            if question.number in exists_numbers:
-                return Err(
-                    QuestionnaireCreateUpdateNumberExistsError(question.id)
-                )
             self._question_business_validation(question=question)
-            exists_numbers.append(question.number)
         return Ok(None)

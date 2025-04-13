@@ -33,7 +33,6 @@ class QuestionCreateDTO(BaseDTO):
 class QuestionnaireCreateDTO(BaseDTO):
     survey_id: uuid.UUID
     name: str
-    question_text: str
     questionnaire_questions: Annotated[
         list[QuestionCreateDTO],
         BeforeValidator(
