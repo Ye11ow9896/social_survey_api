@@ -1,7 +1,7 @@
 from uuid import UUID
 from typing import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.base import ExecutableOption
 
@@ -57,6 +57,16 @@ class QuestionnaireQuestionRepository:
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).unique().one_or_none()
 
+    async def get_max_number(
+        self,
+        filter_: QuestionFilterDTO,
+        options: Sequence[ExecutableOption] | None = None,
+    ) -> int | None:
+        stmt = select(func.max(QuestionnaireQuestion.number))
+        stmt = filter_.apply(stmt)
+        stmt = stmt.options(*options or ())
+        return (await self._session.scalars(stmt)).unique().one_or_none()
+
     async def create_question(
         self,
         questionnaire_id: UUID,
@@ -85,6 +95,7 @@ class QuestionnaireQuestionRepository:
     ) -> QuestionnaireQuestion:
         return QuestionnaireQuestion(
             questionnaire_id=questionnaire_id,
+            question_text=dto.question_text,
             number=dto.number,
             question_type=dto.question_type,
         )

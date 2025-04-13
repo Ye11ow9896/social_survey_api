@@ -19,7 +19,6 @@ class CreateQuestionSchema(BaseSchema):
     """
 
     question_text: str = Field(alias="questionText")
-    number: int
     written_text: str | None = Field(alias="writtenText", default=None)
     choice_text: list[str] | None = Field(alias="choiceText", default=None)
     question_type: Literal["written", "multiple_choice", "one_choice"] = Field(
@@ -29,7 +28,6 @@ class CreateQuestionSchema(BaseSchema):
     def to_dto(self) -> QuestionCreateDTO:
         return QuestionCreateDTO(
             question_text=self.question_text,
-            number=self.number,
             written_text=self.written_text,
             choice_text=self.choice_text,
             question_type=self.question_type,
