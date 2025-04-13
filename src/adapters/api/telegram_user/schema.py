@@ -23,7 +23,7 @@ class TelegramUserCreateSchema(BaseSchema):
             role_id=role_id,
             url=self.url,
             is_bot=self.is_bot,
-            is_premium=self.is_premium,
+            is_premium=self.is_premium or False,
             age=self.age,
             sex=self.sex,
             real_first_name=self.real_first_name,
