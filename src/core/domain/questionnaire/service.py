@@ -13,12 +13,12 @@ from src.core.domain.questionnaire.exceptions import (
     QuestionCreateUpdateQuestionError,
     QuestionnaireCreateUpdateMismatchError,
     QuestionnaireCreateUpdateQuestionError,
-    QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
+    QuestionFilterDTO,
     QuestionnaireCreateDTO,
     QuestionTextCreateDTO,
     QuestionnaireDTO,
@@ -55,8 +55,7 @@ class QuestionnaireService:
         None,
         ObjectNotFoundError
         | QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError
-        | QuestionnaireCreateUpdateNumberExistsError,
+        | QuestionnaireCreateUpdateMismatchError,
     ]:
         validation_result = self._business_validation(dto)
         if isinstance(validation_result, Err):
@@ -69,10 +68,13 @@ class QuestionnaireService:
         if survey is None:
             return Err(ObjectNotFoundError(obj=Survey.__name__))
         questionnaire = await self._questionnaire_repository.create(dto)
+        number = 1
         for question in dto.questionnaire_questions:
+            question.number = number
             await self._questionnaire_question_create(
                 questionnaire.id, dto=question
             )
+            number += 1
         await self._survey_repository.update(survey, dto=SurveyUpdateDTO())
         return Ok(None)
 
@@ -108,14 +110,24 @@ class QuestionnaireService:
         )
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
+        max_question_number = (
+            await self._questionnaire_question_repository.get_max_number(
+                QuestionFilterDTO(questionnaire_id=questionnaire_id)
+            )
+        )
+        dto.number = max_question_number or 0
         question = await self._questionnaire_question_create(
-            questionnaire.id, dto=dto
+            questionnaire.id,
+            dto=dto,
         )
 
         return Ok(question)
 
     async def _questionnaire_question_create(
-        self, questionnaire_id: UUID, *, dto: QuestionCreateDTO
+        self,
+        questionnaire_id: UUID,
+        *,
+        dto: QuestionCreateDTO,
     ) -> QuestionnaireQuestion:
         question = (
             await self._questionnaire_question_repository.create_question(
@@ -179,15 +191,8 @@ class QuestionnaireService:
     ) -> Result[
         None,
         QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError
-        | QuestionnaireCreateUpdateNumberExistsError,
+        | QuestionnaireCreateUpdateMismatchError,
     ]:
-        exists_numbers = []
         for question in dto.questionnaire_questions:
-            if question.number in exists_numbers:
-                return Err(
-                    QuestionnaireCreateUpdateNumberExistsError(question.id)
-                )
             self._question_business_validation(question=question)
-            exists_numbers.append(question.number)
         return Ok(None)

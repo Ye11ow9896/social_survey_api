@@ -12,7 +12,6 @@ from src.core.domain.questionnaire.exceptions import (
     QuestionCreateUpdateQuestionError,
     QuestionnaireCreateUpdateQuestionError,
     QuestionnaireCreateUpdateMismatchError,
-    QuestionnaireCreateUpdateNumberExistsError,
 )
 from src.adapters.api.exceptions import (
     ObjectNotFoundHTTPError,
@@ -55,7 +54,6 @@ class QuestionnaireController(Controller):
                 case (
                     QuestionnaireCreateUpdateQuestionError()
                     | QuestionnaireCreateUpdateMismatchError()
-                    | QuestionnaireCreateUpdateNumberExistsError()
                 ):
                     raise QuestionnaireCreateUpdateHTTPError(
                         message=exc.message
