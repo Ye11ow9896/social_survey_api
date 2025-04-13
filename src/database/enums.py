@@ -15,6 +15,8 @@ class RoleCodeEnum(str, enum.Enum):
                 return RoleIdConstant.ADMIN
             case self.RESPONDENT:
                 return RoleIdConstant.RESPONDENT
+            case self.OWNER:
+                return RoleIdConstant.OWNER
 
 
 class SexEnum(str, enum.Enum):
