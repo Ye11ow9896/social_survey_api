@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Annotated
+from uuid import UUID
 
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq, icontains_op
@@ -9,6 +10,7 @@ from src.database.models import Survey
 
 
 class SurveyDTO(AppBaseModel):
+    id: UUID
     name: str | None
     created_at: datetime
     description: str | None
