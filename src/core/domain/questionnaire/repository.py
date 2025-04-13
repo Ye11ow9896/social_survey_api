@@ -56,16 +56,17 @@ class QuestionnaireQuestionRepository:
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).unique().one_or_none()
-    
+
     async def get_max_number(
-            self,
-            filter_: QuestionFilterDTO,
-            options: Sequence[ExecutableOption] | None = None,
+        self,
+        filter_: QuestionFilterDTO,
+        options: Sequence[ExecutableOption] | None = None,
     ) -> int | None:
         stmt = select(func.max(QuestionnaireQuestion.number))
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).unique().one_or_none()
+
     async def create_question(
         self,
         questionnaire_id: UUID,

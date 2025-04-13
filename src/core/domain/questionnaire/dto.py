@@ -80,7 +80,7 @@ class QuestionFilterDTO(BaseFilter):
         str | Unset,
         FilterField(QuestionnaireQuestion.id, operator=eq),
     ] = UNSET
-    questionnaire_id:Annotated[
+    questionnaire_id: Annotated[
         uuid.UUID | Unset,
         FilterField(QuestionnaireQuestion.questionnaire_id, operator=eq),
     ] = UNSET
