@@ -55,7 +55,7 @@ class QuestionnaireService:
         None,
         ObjectNotFoundError
         | QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError
+        | QuestionnaireCreateUpdateMismatchError,
     ]:
         validation_result = self._business_validation(dto)
         if isinstance(validation_result, Err):
@@ -129,7 +129,11 @@ class QuestionnaireService:
         *,
         dto: QuestionCreateDTO,
     ) -> QuestionnaireQuestion:
-        question = await self._questionnaire_question_repository.create_question(questionnaire_id, dto=dto)
+        question = (
+            await self._questionnaire_question_repository.create_question(
+                questionnaire_id, dto=dto
+            )
+        )
         if dto.question_type == QuestionType.WRITTEN.value:
             await self._question_text_repository.create_one(
                 dto=QuestionTextCreateDTO(
@@ -187,7 +191,7 @@ class QuestionnaireService:
     ) -> Result[
         None,
         QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError
+        | QuestionnaireCreateUpdateMismatchError,
     ]:
         for question in dto.questionnaire_questions:
             self._question_business_validation(question=question)
