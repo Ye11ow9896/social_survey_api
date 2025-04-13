@@ -22,7 +22,7 @@ class QuestionCreateDTO(BaseDTO):
     """
 
     question_text: str
-    number: int
+    number: int | None
     written_text: str | None
     choice_text: list[str] | None
     question_type: Annotated[
@@ -79,6 +79,10 @@ class QuestionFilterDTO(BaseFilter):
     id: Annotated[
         str | Unset,
         FilterField(QuestionnaireQuestion.id, operator=eq),
+    ] = UNSET
+    questionnaire_id:Annotated[
+        uuid.UUID | Unset,
+        FilterField(QuestionnaireQuestion.questionnaire_id, operator=eq),
     ] = UNSET
 
 

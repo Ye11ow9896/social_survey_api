@@ -19,6 +19,7 @@ from src.core.domain.survey.dto import SurveyFilterDTO
 from src.database.models import Survey
 from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
+    QuestionFilterDTO,
     QuestionnaireCreateDTO,
     QuestionTextCreateDTO,
     QuestionnaireDTO,
@@ -108,18 +109,30 @@ class QuestionnaireService:
         )
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
+        max_question_number= await self._questionnaire_question_repository.get_max_number(
+            QuestionFilterDTO(questionnaire_id=questionnaire_id)
+        )
+        if max_question_number is None:
+            max_question_number = 0
         question = await self._questionnaire_question_create(
-            questionnaire.id, dto=dto
+            questionnaire.id, dto=dto, max_question_number=max_question_number,
         )
 
         return Ok(question)
 
     async def _questionnaire_question_create(
-        self, questionnaire_id: UUID, *, dto: QuestionCreateDTO
+        self, questionnaire_id: UUID, *, dto: QuestionCreateDTO, max_question_number:int,
     ) -> QuestionnaireQuestion:
         question = (
             await self._questionnaire_question_repository.create_question(
-                questionnaire_id, dto=dto
+                questionnaire_id, 
+                dto=QuestionCreateDTO(
+                    question_text=dto.question_text,
+                    number=max_question_number+1,
+                    written_text=dto.written_text,
+                    choice_text=dto.choice_text,
+                    question_type=dto.question_type
+                )
             )
         )
         if dto.question_type == QuestionType.WRITTEN.value:
