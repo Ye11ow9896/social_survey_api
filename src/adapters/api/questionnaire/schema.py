@@ -29,7 +29,6 @@ class CreateQuestionSchema(BaseSchema):
         return QuestionCreateDTO(
             question_text=self.question_text,
             written_text=self.written_text,
-            number=None,
             choice_text=self.choice_text,
             question_type=self.question_type,
         )

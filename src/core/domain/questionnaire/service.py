@@ -70,10 +70,13 @@ class QuestionnaireService:
         if survey is None:
             return Err(ObjectNotFoundError(obj=Survey.__name__))
         questionnaire = await self._questionnaire_repository.create(dto)
+        number = 1
         for question in dto.questionnaire_questions:
+            question.number = number
             await self._questionnaire_question_create(
-                questionnaire.id, dto=question, max_question_number=0
+                questionnaire.id, dto=question
             )
+            number += 1
         await self._survey_repository.update(survey, dto=SurveyUpdateDTO())
         return Ok(None)
 
@@ -114,12 +117,10 @@ class QuestionnaireService:
                 QuestionFilterDTO(questionnaire_id=questionnaire_id)
             )
         )
-        if max_question_number is None:
-            max_question_number = 0
+        dto.number = max_question_number or 0
         question = await self._questionnaire_question_create(
             questionnaire.id,
             dto=dto,
-            max_question_number=max_question_number,
         )
 
         return Ok(question)
@@ -129,20 +130,8 @@ class QuestionnaireService:
         questionnaire_id: UUID,
         *,
         dto: QuestionCreateDTO,
-        max_question_number: int,
     ) -> QuestionnaireQuestion:
-        question = (
-            await self._questionnaire_question_repository.create_question(
-                questionnaire_id,
-                dto=QuestionCreateDTO(
-                    question_text=dto.question_text,
-                    number=max_question_number + 1,
-                    written_text=dto.written_text,
-                    choice_text=dto.choice_text,
-                    question_type=dto.question_type,
-                ),
-            )
-        )
+        question = await self._questionnaire_question_repository.create_question(questionnaire_id, dto=dto)
         if dto.question_type == QuestionType.WRITTEN.value:
             await self._question_text_repository.create_one(
                 dto=QuestionTextCreateDTO(

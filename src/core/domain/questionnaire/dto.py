@@ -22,7 +22,7 @@ class QuestionCreateDTO(BaseDTO):
     """
 
     question_text: str
-    number: int | None
+    number: int | None = None
     written_text: str | None
     choice_text: list[str] | None
     question_type: Annotated[
