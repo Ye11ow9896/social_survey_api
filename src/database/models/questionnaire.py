@@ -10,7 +10,7 @@ from src.database.models.base import Base, create_comment
 from src.database.enums import QuestionType
 
 if TYPE_CHECKING:
-    from database.models import QuestionAnswer
+    from database.models import QuestionAnswer, TelegramUser
     from src.database.models.survey import Survey
 
 
@@ -26,6 +26,10 @@ class Questionnaire(Base):
     survey: Mapped["Survey"] = relationship(back_populates="questionnaires")
     questionnaire_questions: Mapped[list["QuestionnaireQuestion"] | None] = (
         relationship(back_populates="questionnaire")
+    )
+    respondents: Mapped["TelegramUser"] = relationship(
+        viewonly=True,
+        secondary="telegram_respondent__questionnaire",
     )
 
 
