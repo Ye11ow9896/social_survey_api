@@ -27,8 +27,6 @@ class SurveyService:
         pagination: PaginationDTO,
         name: str | None,
     ) -> Result[PaginationResultDTO[SurveyDTO], ObjectNotFoundError]:
-        if name is not None:
-            name = "%" + name + "%"
         filter_dto = SurveyFilterDTO(
             name=or_unset(name),
         )

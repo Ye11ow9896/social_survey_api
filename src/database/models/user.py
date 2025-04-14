@@ -14,7 +14,7 @@ from src.lib.utils import utc_now
 from src.database.models.role import Role
 
 if TYPE_CHECKING:
-    from database.models import Survey
+    from database.models import Survey, Questionnaire
 
 
 class AbstractUserModel(Base):
@@ -70,4 +70,8 @@ class TelegramUser(AbstractUserModel):
     surveys: Mapped[list["Survey"] | None] = relationship(
         viewonly=True,
         secondary="telegram_respondent__survey",
+    )
+    questionnaires: Mapped["Questionnaire"] = relationship(
+        viewonly=True,
+        secondary="telegram_respondent__questionnaire",
     )
