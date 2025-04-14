@@ -10,7 +10,9 @@ from src.lib.utils import utc_now
 
 class RespondentQuestionnaire(Base):
     __tablename__ = "telegram_respondent__questionnaire"
-    __table_args__ = create_comment("Таблица для хранения назначенных анкет на респондентов")
+    __table_args__ = create_comment(
+        "Таблица для хранения назначенных анкет на респондентов"
+    )
 
     telegram_user_id: Mapped[UUID] = mapped_column(
         ForeignKey("telegram_user.id", ondelete="CASCADE"),

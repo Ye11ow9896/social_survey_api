@@ -1,4 +1,6 @@
-from src.database.models.respondent_questionnaire import RespondentQuestionnaire
+from src.database.models.respondent_questionnaire import (
+    RespondentQuestionnaire,
+)
 from src.database.models.questionnaire import (
     Questionnaire,
     QuestionnaireQuestion,
