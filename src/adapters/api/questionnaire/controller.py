@@ -129,7 +129,7 @@ class QuestionnaireController(Controller):
         return Template(
             template_str=result.ok_value,
         )
-    
+
     @put("question/{id:str}/update", status_code=200)
     @inject
     async def update_qestionnaire_question(
@@ -141,7 +141,7 @@ class QuestionnaireController(Controller):
         dto = data.to_dto()
         result = await service.update_question(question_id=id, dto=dto)
         if isinstance(result, Err):
-             raise ObjectNotFoundHTTPError(message=result.err_value.message)
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return Response(
             content={
                 "detail": APIDetailSchema(

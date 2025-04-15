@@ -33,7 +33,7 @@ class CreateQuestionSchema(BaseSchema):
             choice_text=self.choice_text,
             question_type=self.question_type,
         )
-    
+
 
 class UpdateQuestionSchema(BaseSchema):
     # Немного сомневаюсь в правильности написания классов. Может использовать
@@ -46,6 +46,7 @@ class UpdateQuestionSchema(BaseSchema):
             question_text=self.question_text,
             number=self.number,
         )
+
 
 class QuestionnaireCreateSchema(BaseSchema):
     survey_id: UUID
