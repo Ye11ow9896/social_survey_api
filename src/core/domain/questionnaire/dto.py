@@ -6,6 +6,7 @@ from pydantic import BeforeValidator
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
 
+from src.database.models import RespondentQuestionnaire
 from src.core.dto import BaseDTO
 from src.database.enums import QuestionType
 from src.database.models.questionnaire import (
@@ -94,3 +95,14 @@ class QuestionFilterDTO(BaseFilter):
 class QuestionTextCreateDTO:
     questionnaire_question_id: uuid.UUID
     text: str
+
+
+class RespondentQuestionnaireFilterDTO(BaseFilter):
+    telegram_user_id: Annotated[
+        uuid.UUID | Unset,
+        FilterField(RespondentQuestionnaire.telegram_user_id, operator=eq),
+    ] = UNSET
+    is_active: Annotated[
+        bool | Unset,
+        FilterField(RespondentQuestionnaire.is_active, operator=eq),
+    ] = UNSET

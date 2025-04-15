@@ -1,10 +1,12 @@
 from uuid import UUID
 from typing import Sequence
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.base import ExecutableOption
+from sqlalchemy.orm import joinedload
 
+from database.models import RespondentQuestionnaire
 from src.core.domain.questionnaire.dto import (
     QuestionFilterDTO,
     QuestionUpdateDTO,
@@ -12,6 +14,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
     QuestionnaireFilterDTO,
     QuestionTextCreateDTO,
+    RespondentQuestionnaireFilterDTO,
 )
 from src.database.models.questionnaire import (
     Questionnaire,
@@ -39,6 +42,20 @@ class QuestionnaireRepository:
         self._session.add(model)
         await self._session.flush()
         return model
+
+    async def get_assign_list_stmt(
+        self, filter_: RespondentQuestionnaireFilterDTO
+    ) -> Select[tuple[Questionnaire]]:
+        stmt = select(Questionnaire).join(
+            RespondentQuestionnaire,
+            RespondentQuestionnaire.questionnaire_id == Questionnaire.id,
+        )
+        stmt = filter_.apply(stmt)
+        return stmt.options(
+            joinedload(Questionnaire.questionnaire_questions).options(
+                joinedload(QuestionnaireQuestion.question_texts)
+            )
+        )
 
     def _build_model(self, dto: QuestionnaireCreateDTO) -> Questionnaire:
         return Questionnaire(name=dto.name, survey_id=dto.survey_id)

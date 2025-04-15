@@ -1,7 +1,9 @@
 from http import HTTPStatus
-from typing import Any
+from typing import Any, Annotated
 from uuid import UUID
 
+from src.core.domain.questionnaire.dto import QuestionnaireDTO
+from src.adapters.api.questionnaire.dto import AssignQuestionnaireDTO
 from src.core.domain.questionnaire.command import GetQuestionnaireFormCommand
 from src.adapters.api.questionnaire.exceptions import (
     QuestionCreateUpdateHTTPError,
@@ -22,6 +24,7 @@ from src.adapters.api.questionnaire.schema import (
     QuestionnaireWithQuestionsSchema,
     UpdateQuestionSchema,
 )
+from src.lib.paginator import PaginationDTO, PaginationResultDTO
 from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
 from src.adapters.api.schema import APIDetailSchema
@@ -29,6 +32,7 @@ from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from litestar import Response, post, get, put
 from litestar.controller import Controller
 from litestar.response import Template
+from litestar.params import Parameter
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from result import Err
@@ -151,4 +155,28 @@ class QuestionnaireController(Controller):
                 )
             },
             status_code=HTTPStatus.OK,
+        )
+
+    @get("/assign/all")
+    @inject
+    async def get_questionnaire_assign_list(
+        self,
+        service: Injected[QuestionnaireService],
+        tg_id: Annotated[int | None, Parameter(query="tgId")] = None,
+        is_active: Annotated[bool | None, Parameter(query="isActive")] = None,
+        page_size: Annotated[
+            int, Parameter(ge=1, le=1_000, query="pageSize")
+        ] = 100,
+        page: Annotated[int, Parameter(ge=1)] = 1,
+    ) -> PaginationResultDTO[QuestionnaireDTO]:
+        pagination_dto = PaginationDTO(
+            page_size=page_size,
+            page=page,
+        )
+        return await service.get_assign_list(
+            pagination_dto,
+            dto=AssignQuestionnaireDTO(
+                tg_id=tg_id,
+                is_active=is_active,
+            ),
         )
