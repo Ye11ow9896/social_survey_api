@@ -11,6 +11,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
     QuestionnaireFilterDTO,
     QuestionTextCreateDTO,
+    UpdateQuestionCreateDTO,
 )
 from src.database.models.questionnaire import (
     Questionnaire,
@@ -65,7 +66,7 @@ class QuestionnaireQuestionRepository:
         stmt = select(func.max(QuestionnaireQuestion.number))
         stmt = filter_.apply(stmt)
         stmt = stmt.options(*options or ())
-        return (await self._session.scalars(stmt)).unique().one_or_none()
+        return (await self._session.scalars(stmt)).one_or_none()
 
     async def create_question(
         self,
@@ -88,6 +89,20 @@ class QuestionnaireQuestionRepository:
         self._session.add_all(models)
         await self._session.flush()
 
+    async def update_question(self, model: QuestionnaireQuestion, dto: UpdateQuestionCreateDTO):
+        assigned_model = self._assign_model(model=model, dto=dto)
+        self._session.add(assigned_model)
+        await self._session.flush()
+        return assigned_model
+
+    @staticmethod
+    def _assign_model(model: QuestionnaireQuestion, dto: UpdateQuestionCreateDTO) -> QuestionnaireQuestion:
+        if dto.question_text is not None:
+            model.question_text = dto.question_text
+        if dto.number is not None:
+            model.number = dto.number
+        return model
+        
     def _build_model(
         self,
         questionnaire_id: UUID,

@@ -7,6 +7,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
     QuestionnaireCreateDTO,
     QuestionDTO,
+    UpdateQuestionCreateDTO,
 )
 from src.adapters.api.schema import BaseSchema
 
@@ -32,7 +33,19 @@ class CreateQuestionSchema(BaseSchema):
             choice_text=self.choice_text,
             question_type=self.question_type,
         )
+    
 
+class UpdateQuestionSchema(BaseSchema):
+    # Немного сомневаюсь в правильности написания классов. Может использовать
+    # Field для number? И в UpdateQuestionCreateDTO нужно ли "= None" в полях?
+    question_text: str | None = Field(alias="questionText", default=None)
+    number: int | None = None
+
+    def to_dto(self) -> UpdateQuestionCreateDTO:
+        return UpdateQuestionCreateDTO(
+            question_text=self.question_text,
+            number=self.number,
+        )
 
 class QuestionnaireCreateSchema(BaseSchema):
     survey_id: UUID

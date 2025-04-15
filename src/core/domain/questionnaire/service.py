@@ -23,6 +23,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionTextCreateDTO,
     QuestionnaireDTO,
     QuestionnaireFilterDTO,
+    UpdateQuestionCreateDTO,
 )
 from src.core.domain.survey.repository import SurveyRepository
 from src.core.domain.questionnaire.repository import (
@@ -122,6 +123,26 @@ class QuestionnaireService:
         )
 
         return Ok(question)
+    
+    async def update_question(
+            self, 
+            question_id: UUID,
+            dto: UpdateQuestionCreateDTO,
+    ) -> Result[
+        QuestionnaireQuestion,
+        ObjectNotFoundError,
+    ]:
+        question = await self._questionnaire_question_repository.get(
+            QuestionFilterDTO(id=question_id),
+            options=(joinedload(QuestionnaireQuestion.question_texts),)
+        )
+        if question is None:
+            return Err(ObjectNotFoundError(obj=QuestionnaireQuestion.__name__))
+        await self._questionnaire_question_repository.update_question(
+              model=question, dto=dto
+            )
+        return Ok(question)
+        
 
     async def _questionnaire_question_create(
         self,
