@@ -30,9 +30,9 @@ class QuestionCreateDTO(BaseDTO):
     ]
 
 
-class UpdateQuestionCreateDTO(BaseDTO):
-    question_text: str | None = None
-    number: int | None = None
+class QuestionUpdateDTO(BaseDTO):
+    question_text: str | None
+    number: int | None
 
 
 class QuestionnaireCreateDTO(BaseDTO):

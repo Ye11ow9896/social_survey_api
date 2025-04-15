@@ -7,11 +7,11 @@ from sqlalchemy.sql.base import ExecutableOption
 
 from src.core.domain.questionnaire.dto import (
     QuestionFilterDTO,
+    QuestionUpdateDTO,
     QuestionnaireCreateDTO,
     QuestionCreateDTO,
     QuestionnaireFilterDTO,
     QuestionTextCreateDTO,
-    UpdateQuestionCreateDTO,
 )
 from src.database.models.questionnaire import (
     Questionnaire,
@@ -90,7 +90,7 @@ class QuestionnaireQuestionRepository:
         await self._session.flush()
 
     async def update_question(
-        self, model: QuestionnaireQuestion, dto: UpdateQuestionCreateDTO
+        self, model: QuestionnaireQuestion, dto: QuestionUpdateDTO
     ) -> QuestionnaireQuestion:
         assigned_model = self._assign_model(model=model, dto=dto)
         self._session.add(assigned_model)
@@ -99,7 +99,7 @@ class QuestionnaireQuestionRepository:
 
     @staticmethod
     def _assign_model(
-        model: QuestionnaireQuestion, dto: UpdateQuestionCreateDTO
+        model: QuestionnaireQuestion, dto: QuestionUpdateDTO
     ) -> QuestionnaireQuestion:
         if dto.question_text is not None:
             model.question_text = dto.question_text

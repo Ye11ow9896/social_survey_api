@@ -5,9 +5,9 @@ from pydantic import Field
 
 from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
+    QuestionUpdateDTO,
     QuestionnaireCreateDTO,
     QuestionDTO,
-    UpdateQuestionCreateDTO,
 )
 from src.adapters.api.schema import BaseSchema
 
@@ -36,13 +36,11 @@ class CreateQuestionSchema(BaseSchema):
 
 
 class UpdateQuestionSchema(BaseSchema):
-    # Немного сомневаюсь в правильности написания классов. Может использовать
-    # Field для number? И в UpdateQuestionCreateDTO нужно ли "= None" в полях?
     question_text: str | None = Field(alias="questionText", default=None)
     number: int | None = None
 
-    def to_dto(self) -> UpdateQuestionCreateDTO:
-        return UpdateQuestionCreateDTO(
+    def to_dto(self) -> QuestionUpdateDTO:
+        return QuestionUpdateDTO(
             question_text=self.question_text,
             number=self.number,
         )

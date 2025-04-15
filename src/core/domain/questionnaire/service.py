@@ -23,7 +23,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionTextCreateDTO,
     QuestionnaireDTO,
     QuestionnaireFilterDTO,
-    UpdateQuestionCreateDTO,
+    QuestionUpdateDTO,
 )
 from src.core.domain.survey.repository import SurveyRepository
 from src.core.domain.questionnaire.repository import (
@@ -127,7 +127,7 @@ class QuestionnaireService:
     async def update_question(
         self,
         question_id: UUID,
-        dto: UpdateQuestionCreateDTO,
+        dto: QuestionUpdateDTO,
     ) -> Result[
         QuestionnaireQuestion,
         ObjectNotFoundError,
