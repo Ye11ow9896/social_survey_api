@@ -52,7 +52,7 @@ class PagePaginator:
         )
         items = (await self._session.scalars(paginated)).unique().all()
         return PaginationResultDTO(
-            items=dto_model.sqlalchemy_model_validate_list(items),
+            items=dto_model.model_validate_list(items),
             has_next_page=pagination.page * pagination.page_size < count,
             count=count,
         )

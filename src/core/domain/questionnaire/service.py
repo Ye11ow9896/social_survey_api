@@ -2,10 +2,15 @@ from uuid import UUID
 
 from sqlalchemy.orm import joinedload
 
+from src.core.domain.user.dto import TelegramUserFilterDTO
+from src.adapters.api.questionnaire.dto import AssignQuestionnaireDTO
+from src.core.domain.user.repository import TelegramUserRepository
+from src.lib.paginator import PaginationDTO, PagePaginator, PaginationResultDTO
 from src.database.models.questionnaire import (
     Questionnaire,
     QuestionnaireQuestion,
 )
+from sqla_filter import or_unset
 from src.database.enums import QuestionType
 from src.adapters.api.survey.dto import SurveyUpdateDTO
 from src.core.domain.questionnaire.exceptions import (
@@ -23,6 +28,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionTextCreateDTO,
     QuestionnaireDTO,
     QuestionnaireFilterDTO,
+    RespondentQuestionnaireFilterDTO,
     QuestionUpdateDTO,
 )
 from src.core.domain.survey.repository import SurveyRepository
@@ -42,6 +48,8 @@ class QuestionnaireService:
         questionnaire_question_repository: QuestionnaireQuestionRepository,
         survey_repository: SurveyRepository,
         question_text_repository: QuestionTextRepository,
+        telegram_user_repository: TelegramUserRepository,
+        paginator: PagePaginator,
     ) -> None:
         self._questionnaire_repository = questionnaire_repository
         self._questionnaire_question_repository = (
@@ -49,6 +57,8 @@ class QuestionnaireService:
         )
         self._survey_repository = survey_repository
         self._question_text_repository = question_text_repository
+        self._telegram_user_repository = telegram_user_repository
+        self._paginator = paginator
 
     async def create(
         self, *, dto: QuestionnaireCreateDTO
@@ -142,6 +152,25 @@ class QuestionnaireService:
             model=question, dto=dto
         )
         return Ok(question)
+
+    async def get_assign_list(
+        self, pagination_dto: PaginationDTO, *, dto: AssignQuestionnaireDTO
+    ) -> PaginationResultDTO[QuestionnaireDTO]:
+        user = await self._telegram_user_repository.get(
+            filter_=TelegramUserFilterDTO(
+                tg_id=dto.tg_id,
+            )
+        )
+
+        stmt = await self._questionnaire_repository.get_assign_list_stmt(
+            filter_=RespondentQuestionnaireFilterDTO(
+                telegram_user_id=or_unset(user.id if user else None),
+                is_active=or_unset(dto.is_active),
+            )
+        )
+        return await self._paginator.paginate(
+            stmt, dto_model=QuestionnaireDTO, pagination=pagination_dto
+        )
 
     async def _questionnaire_question_create(
         self,
