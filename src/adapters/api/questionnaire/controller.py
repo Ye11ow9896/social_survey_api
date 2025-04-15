@@ -20,12 +20,13 @@ from src.adapters.api.questionnaire.schema import (
     CreateQuestionSchema,
     QuestionnaireCreateSchema,
     QuestionnaireWithQuestionsSchema,
+    UpdateQuestionSchema,
 )
 from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
 from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
-from litestar import Response, post, get
+from litestar import Response, post, get, put
 from litestar.controller import Controller
 from litestar.response import Template
 from aioinject import Injected
@@ -127,4 +128,27 @@ class QuestionnaireController(Controller):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return Template(
             template_str=result.ok_value,
+        )
+
+    @put("question/{id:str}/update", status_code=200)
+    @inject
+    async def update_qestionnaire_question(
+        self,
+        id: UUID,
+        data: UpdateQuestionSchema,
+        service: Injected[QuestionnaireService],
+    ) -> Response[Any]:
+        dto = data.to_dto()
+        result = await service.update_question(question_id=id, dto=dto)
+        if isinstance(result, Err):
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
+        return Response(
+            content={
+                "detail": APIDetailSchema(
+                    status_code=HTTPStatus.OK,
+                    code="questionnaire_update_success",
+                    message=f"Вопрос `{result.ok_value.id}` успешно обновлен",
+                )
+            },
+            status_code=HTTPStatus.OK,
         )

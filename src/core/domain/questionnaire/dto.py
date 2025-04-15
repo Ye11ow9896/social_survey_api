@@ -30,6 +30,11 @@ class QuestionCreateDTO(BaseDTO):
     ]
 
 
+class QuestionUpdateDTO(BaseDTO):
+    question_text: str | None
+    number: int | None
+
+
 class QuestionnaireCreateDTO(BaseDTO):
     survey_id: uuid.UUID
     name: str

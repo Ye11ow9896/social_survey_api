@@ -5,6 +5,7 @@ from pydantic import Field
 
 from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
+    QuestionUpdateDTO,
     QuestionnaireCreateDTO,
     QuestionDTO,
 )
@@ -31,6 +32,17 @@ class CreateQuestionSchema(BaseSchema):
             written_text=self.written_text,
             choice_text=self.choice_text,
             question_type=self.question_type,
+        )
+
+
+class UpdateQuestionSchema(BaseSchema):
+    question_text: str | None = Field(alias="questionText", default=None)
+    number: int | None = None
+
+    def to_dto(self) -> QuestionUpdateDTO:
+        return QuestionUpdateDTO(
+            question_text=self.question_text,
+            number=self.number,
         )
 
 
