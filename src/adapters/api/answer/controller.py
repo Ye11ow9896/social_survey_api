@@ -23,7 +23,11 @@ class AnswerController(Controller):
     tags = ("Answer endpoints",)
     middleware = [CheckAccessTokenMiddleware]
 
-    @post("/question-answer/create", status_code=200)
+    @post(
+        "/question-answer/create",
+        status_code=200,
+        description="Создать вопрос анкеты",
+    )
     @inject
     async def written_answer_create(
         self,

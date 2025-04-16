@@ -31,7 +31,11 @@ class TelegramUserController(Controller):
     tags = ("Telegram user endpoints",)
     middleware = [CheckAccessTokenMiddleware]
 
-    @post("/create", status_code=200)
+    @post(
+        "/create",
+        status_code=200,
+        description="Добавить нового пользователя",
+    )
     @inject
     async def create(
         self,
@@ -54,7 +58,11 @@ class TelegramUserController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @get("/all", status_code=200)
+    @get(
+        "/all",
+        status_code=200,
+        description="Вернуть список пользователей",
+    )
     @inject
     async def get_all(
         self,
@@ -77,7 +85,11 @@ class TelegramUserController(Controller):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return result.ok()
 
-    @get("/role/{tg_id:int}", status_code=200)
+    @get(
+        "/role/{tg_id:int}",
+        status_code=200,
+        description="Получить роль пользователя",
+    )
     @inject
     async def get_user_role(
         self,

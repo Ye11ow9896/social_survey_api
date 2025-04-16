@@ -43,7 +43,11 @@ class QuestionnaireController(Controller):
     tags = ("Questionnaire endpoints",)
     middleware = [CheckAccessTokenMiddleware]
 
-    @post("/create", status_code=200)
+    @post(
+        "/create",
+        status_code=200,
+        description="Создание анкеты с вопросами",
+    )
     @inject
     async def create(
         self,
@@ -74,7 +78,11 @@ class QuestionnaireController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @post("/add_question", status_code=200)
+    @post(
+        "/add_question",
+        status_code=200,
+        description="Добавить вопрос к анкете",
+    )
     @inject
     async def add_question(
         self,
@@ -104,7 +112,11 @@ class QuestionnaireController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @get("/{id:str}", status_code=200)
+    @get(
+        "/{id:str}",
+        status_code=200,
+        description="Получить анкету со списком вопросов",
+    )
     @inject
     async def get_questionnaire_id(
         self,
@@ -120,7 +132,11 @@ class QuestionnaireController(Controller):
             questions=result.ok_value.questionnaire_questions,
         )
 
-    @get("/static/{id:str}", exclude_from_auth=True)
+    @get(
+        "/static/{id:str}",
+        exclude_from_auth=True,
+        description="Вывеси форму анкеты",
+    )
     @inject
     async def get_questionnaire_form(
         self,
@@ -134,7 +150,11 @@ class QuestionnaireController(Controller):
             template_str=result.ok_value,
         )
 
-    @put("question/{id:str}/update", status_code=200)
+    @put(
+        "question/{id:str}/update",
+        status_code=200,
+        description="Обновить вопрос анкеты",
+    )
     @inject
     async def update_qestionnaire_question(
         self,
@@ -157,7 +177,11 @@ class QuestionnaireController(Controller):
             status_code=HTTPStatus.OK,
         )
 
-    @get("/assign/all")
+    @get(
+        "/assign/all",
+        status_code=200,
+        description="Получить список назначенных на респондентов анкет с вопросами",
+    )
     @inject
     async def get_questionnaire_assign_list(
         self,
