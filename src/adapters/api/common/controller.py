@@ -13,7 +13,12 @@ class CommonController(Controller):
     tags = ("Common endpoints",)
     middleware = [CheckAccessTokenMiddleware]
 
-    @get("/health-check", status_code=200, exclude_from_auth=True)
+    @get(
+        "/health-check",
+        status_code=200,
+        exclude_from_auth=True,
+        description="Проверка работоспособности системы",
+    )
     async def health_check(self) -> Response[Any]:
         return Response(
             content={

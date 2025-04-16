@@ -23,7 +23,12 @@ class AuthController(Controller):
     path = ""
     tags = ("Auth endpoints",)
 
-    @post("/auth/login", status_code=200, exclude_from_auth=True)
+    @post(
+        "/auth/login",
+        status_code=200,
+        exclude_from_auth=True,
+        description="Авторизация в системе",
+    )
     @inject
     async def login(
         self,

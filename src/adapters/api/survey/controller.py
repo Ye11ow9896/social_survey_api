@@ -22,7 +22,11 @@ class SurveyController(Controller):
     tags = ("Survey endpoints",)
     middleware = [CheckAccessTokenMiddleware]
 
-    @get("/all", status_code=200)
+    @get(
+        "/all",
+        status_code=200,
+        description="Получить список исследований",
+    )
     @inject
     async def get_all(
         self,
@@ -42,7 +46,11 @@ class SurveyController(Controller):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return result.ok()
 
-    @post("/create", status_code=200)
+    @post(
+        "/create",
+        status_code=200,
+        description="Создать исследование",
+    )
     @inject
     async def create(
         self,
