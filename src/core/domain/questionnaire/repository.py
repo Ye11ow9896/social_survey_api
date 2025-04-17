@@ -16,6 +16,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionTextCreateDTO,
     RespondentQuestionnaireFilterDTO,
 )
+from src.database.models import RespondentQuestionnaire
 from src.database.models.questionnaire import (
     Questionnaire,
     QuestionnaireQuestion,

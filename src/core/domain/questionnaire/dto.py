@@ -63,6 +63,7 @@ class QuestionDTO(BaseDTO):
 
 
 class QuestionnaireDTO(BaseDTO):
+    id: uuid.UUID
     survey_id: uuid.UUID
     name: str
     questionnaire_questions: Annotated[

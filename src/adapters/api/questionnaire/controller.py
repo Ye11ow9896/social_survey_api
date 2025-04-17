@@ -178,7 +178,7 @@ class QuestionnaireController(Controller):
         )
 
     @get(
-        "/assign/all",
+        "/assigned/all",
         status_code=200,
         description="Получить список назначенных на респондентов анкет с вопросами",
     )
