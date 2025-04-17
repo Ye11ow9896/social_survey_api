@@ -1,5 +1,6 @@
 from http import HTTPStatus
 from typing import Any, Annotated
+from uuid import UUID
 from result import Err
 from litestar import Response
 from litestar import post, get
@@ -100,3 +101,27 @@ class TelegramUserController(Controller):
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return TelegramUserRoleSchema.model_validate(result.ok_value)
+
+    @post("/assign-questionnaire/{tg_id:int}")
+    @inject
+    async def user_questionnaire_relations(
+        self,
+        tg_id: int,
+        questionnaire_id: UUID,
+        service: Injected[TelegramUserService],
+    ) -> Response[Any]:
+        result = await service.appoint_questionnaire_to_user(
+            tg_id, questionnaire_id
+        )
+        if isinstance(result, Err):
+            raise ObjectNotFoundHTTPError(message=result.err_value.message)
+        return Response(
+            content={
+                "detail": APIDetailSchema(
+                    status_code=HTTPStatus.OK,
+                    code="telegram_respondent_questionnaire_create_success",
+                    message=f"Анкета {questionnaire_id} успешно назначена на респондента {tg_id}",
+                )
+            },
+            status_code=HTTPStatus.OK,
+        )
