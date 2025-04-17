@@ -89,7 +89,7 @@ class TelegramUserController(Controller):
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return TelegramUserRoleSchema.model_validate(result.ok_value)
-    
+
     @post("/assign-questionnaire/{tg_id:int}")
     @inject
     async def user_questionnaire_relations(
@@ -98,7 +98,9 @@ class TelegramUserController(Controller):
         questionnaire_id: UUID,
         service: Injected[TelegramUserService],
     ) -> Response[Any]:
-        result = await service.appoint_questionnaire_to_user(tg_id, questionnaire_id)
+        result = await service.appoint_questionnaire_to_user(
+            tg_id, questionnaire_id
+        )
         if isinstance(result, Err):
             raise ObjectNotFoundHTTPError(message=result.err_value.message)
         return Response(

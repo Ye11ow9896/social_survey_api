@@ -10,7 +10,10 @@ from src.core.domain.questionnaire.dto import QuestionnaireFilterDTO
 from src.core.domain.questionnaire.repository import QuestionnaireRepository
 from src.database.models.questionnaire import Questionnaire
 from src.core.domain.user.dto import TelegramUserDTO, TelegramUserFilterDTO
-from src.core.domain.user.repository import RespondentQuestionnaireRepository, TelegramUserRepository
+from src.core.domain.user.repository import (
+    RespondentQuestionnaireRepository,
+    TelegramUserRepository,
+)
 from src.database.models import TelegramUser
 from src.lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
 
@@ -25,7 +28,9 @@ class TelegramUserService:
     ) -> None:
         self._user_repository = user_repository
         self._questionnaire_repository = questionnaire_repository
-        self._respondent_questionnaire_repository = respondent_questionnaire_repository
+        self._respondent_questionnaire_repository = (
+            respondent_questionnaire_repository
+        )
         self._paginator = paginator
 
     async def create(
@@ -61,7 +66,7 @@ class TelegramUserService:
     async def appoint_questionnaire_to_user(
         self,
         tg_id: int,
-        questionnaire_id:UUID,
+        questionnaire_id: UUID,
     ) -> Result[None, ObjectNotFoundError]:
         user = await self._user_repository.get(
             filter_=TelegramUserFilterDTO(tg_id=tg_id)
@@ -73,5 +78,9 @@ class TelegramUserService:
             return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
         if questionnaire is None:
             return Err(ObjectNotFoundError(obj=Questionnaire.__name__))
-        created_resp_quest = await self._respondent_questionnaire_repository.create(user.id, questionnaire_id)
+        created_resp_quest = (
+            await self._respondent_questionnaire_repository.create(
+                user.id, questionnaire_id
+            )
+        )
         return Ok(created_resp_quest)

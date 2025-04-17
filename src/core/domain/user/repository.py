@@ -3,10 +3,11 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Select
 
-from src.database.models.respondent_questionnaire import RespondentQuestionnaire
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.adapters.api.telegram_user.dto import TelegramUserCreateDTO
-from src.database.models.respondent_questionnaire import RespondentQuestionnaire
+from src.database.models.respondent_questionnaire import (
+    RespondentQuestionnaire,
+)
 from src.database.models import TelegramUser
 
 
@@ -54,13 +55,15 @@ class RespondentQuestionnaireRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def create(self, id: UUID, questionnaire_id:UUID) -> RespondentQuestionnaire:
+    async def create(
+        self, id: UUID, questionnaire_id: UUID
+    ) -> RespondentQuestionnaire:
         model = self._build_model(id, questionnaire_id)
         self._session.add(model)
         await self._session.flush()
         return model
-    
-    def _build_model(self, id: UUID, questionnaire_id:UUID) -> TelegramUser:
+
+    def _build_model(self, id: UUID, questionnaire_id: UUID) -> TelegramUser:
         return RespondentQuestionnaire(
             telegram_user_id=id,
             questionnaire_id=questionnaire_id,
