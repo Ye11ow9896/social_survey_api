@@ -24,10 +24,10 @@ from src.adapters.api.questionnaire.schema import (
     QuestionnaireWithQuestionsSchema,
     UpdateQuestionSchema,
 )
-from src.lib.paginator import PaginationDTO, PaginationResultDTO
+from src.lib.paginator import PaginationDTO
 from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.questionnaire.service import QuestionnaireService
-from src.adapters.api.schema import APIDetailSchema
+from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from litestar import Response, post, get, put
 from litestar.controller import Controller
@@ -192,15 +192,18 @@ class QuestionnaireController(Controller):
             int, Parameter(ge=1, le=1_000, query="pageSize")
         ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
-    ) -> PaginationResultDTO[QuestionnaireDTO]:
+    ) -> PaginationResponseSchema[QuestionnaireDTO]:
         pagination_dto = PaginationDTO(
             page_size=page_size,
             page=page,
         )
-        return await service.get_assign_list(
+        result = await service.get_assign_list(
             pagination_dto,
             dto=AssignQuestionnaireDTO(
                 tg_id=tg_id,
                 is_active=is_active,
             ),
+        )
+        return PaginationResponseSchema[QuestionnaireDTO].model_validate(
+            result
         )

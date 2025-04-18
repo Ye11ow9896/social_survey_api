@@ -9,7 +9,7 @@ from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
 from src.core.domain.questionnaire.dto import QuestionnaireFilterDTO
 from src.core.domain.questionnaire.repository import QuestionnaireRepository
 from src.database.models.questionnaire import Questionnaire
-from src.core.domain.user.dto import TelegramUserDTO, TelegramUserFilterDTO
+from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.core.domain.user.repository import (
     RespondentQuestionnaireRepository,
     TelegramUserRepository,
@@ -50,18 +50,13 @@ class TelegramUserService:
         *,
         tg_id: int | None,
         is_bot: bool | None,
-    ) -> Result[PaginationResultDTO[TelegramUserDTO], ObjectNotFoundError]:
+    ) -> PaginationResultDTO:
         filter_dto = TelegramUserFilterDTO(
             tg_id=or_unset(tg_id),
             is_bot=or_unset(is_bot),
         )
         stmt = await self._user_repository.get_all_stmt(filter_=filter_dto)
-        result = await self._paginator.paginate(
-            stmt, dto_model=TelegramUserDTO, pagination=pagination
-        )
-        if not result.items:
-            return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
-        return Ok(result)
+        return await self._paginator.paginate(stmt, pagination=pagination)
 
     async def appoint_questionnaire_to_user(
         self,

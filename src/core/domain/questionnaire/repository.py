@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.base import ExecutableOption
 from sqlalchemy.orm import joinedload
 
-from src.database.models import RespondentQuestionnaire
 from src.core.domain.questionnaire.dto import (
     QuestionFilterDTO,
     QuestionUpdateDTO,
