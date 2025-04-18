@@ -126,7 +126,9 @@ class QuestionnaireService:
                 QuestionFilterDTO(questionnaire_id=questionnaire_id)
             )
         )
-        dto.number = max_question_number + 1 or 1
+        dto.number = (
+            max_question_number + 1 if max_question_number is not None else 1
+        )
         question = await self._questionnaire_question_create(
             questionnaire.id,
             dto=dto,
