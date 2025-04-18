@@ -34,7 +34,7 @@ class SurveyController(Controller):
             int, Parameter(ge=1, le=1_000, query="pageSize")
         ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
-    ) -> PaginationResultDTO[SurveyDTO]:
+    ) -> PaginationResponseSchema[SurveyDTO]:
         pagination_dto = PaginationDTO(
             page_size=page_size,
             page=page,
