@@ -7,7 +7,7 @@ from litestar.params import Parameter
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 
-from src.lib.paginator import PaginationDTO, PaginationResultDTO
+from src.lib.paginator import PaginationDTO
 from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.adapters.api.survey.schema import SurveyCreateSchema
 from src.core.domain.survey.dto import SurveyDTO
