@@ -155,7 +155,7 @@ class QuestionnaireService:
 
     async def get_assign_list(
         self, pagination_dto: PaginationDTO, *, dto: AssignQuestionnaireDTO
-    ) -> PaginationResultDTO[QuestionnaireDTO]:
+    ) -> PaginationResultDTO:
         user = await self._telegram_user_repository.get(
             filter_=TelegramUserFilterDTO(
                 tg_id=dto.tg_id,
@@ -168,9 +168,7 @@ class QuestionnaireService:
                 is_active=or_unset(dto.is_active),
             )
         )
-        return await self._paginator.paginate(
-            stmt, dto_model=QuestionnaireDTO, pagination=pagination_dto
-        )
+        return await self._paginator.paginate(stmt, pagination=pagination_dto)
 
     async def _questionnaire_question_create(
         self,

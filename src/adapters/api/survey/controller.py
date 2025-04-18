@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Annotated, Any
-from result import Err
 
 from litestar import Response, get, post
 from litestar.controller import Controller
@@ -9,9 +8,8 @@ from aioinject import Injected
 from aioinject.ext.litestar import inject
 
 from src.lib.paginator import PaginationDTO, PaginationResultDTO
-from src.adapters.api.schema import APIDetailSchema
+from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.adapters.api.survey.schema import SurveyCreateSchema
-from src.adapters.api.exceptions import ObjectNotFoundHTTPError
 from src.core.domain.survey.dto import SurveyDTO
 from src.core.domain.survey.service import SurveyService
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
@@ -42,9 +40,11 @@ class SurveyController(Controller):
             page=page,
         )
         result = await service.get_all(pagination_dto, name)
-        if isinstance(result, Err):
-            raise ObjectNotFoundHTTPError(message=result.err_value.message)
-        return result.ok()
+        return PaginationResponseSchema(
+            items=SurveyDTO.sqlalchemy_model_validate_list(result.items),
+            has_next_page=result.has_next_page,
+            count=result.count,
+        )
 
     @post(
         "/create",

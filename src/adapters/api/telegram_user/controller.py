@@ -7,7 +7,7 @@ from litestar import post, get
 from litestar.params import Parameter
 from litestar.controller import Controller
 
-from src.adapters.api.schema import APIDetailSchema
+from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.adapters.api.exceptions import (
     ObjectNotFoundHTTPError,
     ObjectAlreadyExistsHTTPError,
@@ -24,7 +24,7 @@ from src.core.domain.user.service import TelegramUserService
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 from src.database.enums import RoleCodeEnum
-from src.lib.paginator import PaginationResultDTO, PaginationDTO
+from src.lib.paginator import PaginationDTO
 
 
 class TelegramUserController(Controller):
@@ -74,7 +74,7 @@ class TelegramUserController(Controller):
             int, Parameter(ge=1, le=1_000, query="pageSize")
         ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
-    ) -> PaginationResultDTO[TelegramUserDTO]:
+    ) -> PaginationResponseSchema[TelegramUserDTO]:
         pagination_dto = PaginationDTO(
             page_size=page_size,
             page=page,
@@ -82,9 +82,7 @@ class TelegramUserController(Controller):
         result = await service.get_all(
             pagination_dto, tg_id=tg_id, is_bot=is_bot
         )
-        if isinstance(result, Err):
-            raise ObjectNotFoundHTTPError(message=result.err_value.message)
-        return result.ok()
+        return PaginationResponseSchema[TelegramUserDTO].model_validate(result)
 
     @get(
         "/role/{tg_id:int}",
