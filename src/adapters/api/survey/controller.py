@@ -7,7 +7,7 @@ from litestar.params import Parameter
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 
-from src.lib.paginator import PaginationDTO, PaginationResultDTO
+from src.lib.paginator import PaginationDTO
 from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.adapters.api.survey.schema import SurveyCreateSchema
 from src.core.domain.survey.dto import SurveyDTO
@@ -34,7 +34,7 @@ class SurveyController(Controller):
             int, Parameter(ge=1, le=1_000, query="pageSize")
         ] = 100,
         page: Annotated[int, Parameter(ge=1)] = 1,
-    ) -> PaginationResultDTO[SurveyDTO]:
+    ) -> PaginationResponseSchema[SurveyDTO]:
         pagination_dto = PaginationDTO(
             page_size=page_size,
             page=page,
