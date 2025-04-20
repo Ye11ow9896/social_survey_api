@@ -72,7 +72,7 @@ class QuestionnaireController(Controller):
                 "detail": APIDetailSchema(
                     status_code=HTTPStatus.OK,
                     code="questionnaire_create_success",
-                    message=f"Анкета опроса `{dto.survey_id}` успешно создана",
+                    message=f"Анкета `{result.ok_value.id}` успешно создана",
                 )
             },
             status_code=HTTPStatus.OK,
