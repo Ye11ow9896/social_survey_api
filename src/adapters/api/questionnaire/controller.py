@@ -12,8 +12,6 @@ from src.adapters.api.questionnaire.exceptions import (
 from src.core.domain.questionnaire.exceptions import (
     QuestionCreateUpdateMismatchError,
     QuestionCreateUpdateQuestionError,
-    QuestionnaireCreateUpdateQuestionError,
-    QuestionnaireCreateUpdateMismatchError,
 )
 from src.adapters.api.exceptions import (
     ObjectNotFoundHTTPError,
@@ -61,8 +59,8 @@ class QuestionnaireController(Controller):
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
                 case (
-                    QuestionnaireCreateUpdateQuestionError()
-                    | QuestionnaireCreateUpdateMismatchError()
+                    QuestionCreateUpdateQuestionError()
+                    | QuestionCreateUpdateMismatchError()
                 ):
                     raise QuestionnaireCreateUpdateHTTPError(
                         message=exc.message

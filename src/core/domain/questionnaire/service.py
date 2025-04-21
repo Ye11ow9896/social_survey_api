@@ -65,8 +65,8 @@ class QuestionnaireService:
     ) -> Result[
         None,
         ObjectNotFoundError
-        | QuestionnaireCreateUpdateQuestionError
-        | QuestionnaireCreateUpdateMismatchError,
+        | QuestionCreateUpdateQuestionError
+        | QuestionCreateUpdateMismatchError,
     ]:
         validation_result = self._business_validation(dto)
         if isinstance(validation_result, Err):
@@ -243,5 +243,7 @@ class QuestionnaireService:
         | QuestionnaireCreateUpdateMismatchError,
     ]:
         for question in dto.questionnaire_questions:
-            self._question_business_validation(question=question)
+            result = self._question_business_validation(question=question)
+            if isinstance(result, Err):
+                return result
         return Ok(None)
