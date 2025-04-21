@@ -96,7 +96,10 @@ class QuestionnaireQuestionRepository:
         return model
 
     async def create_questions(
-        self, questionnaire_id: UUID, *, dtos: list[QuestionCreateDTO]
+        self,
+        questionnaire_id: UUID,
+        *,
+        dtos: list[QuestionCreateDTO]
     ) -> None:
         models = []
         for dto in dtos:

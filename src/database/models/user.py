@@ -69,7 +69,7 @@ class TelegramUser(AbstractUserModel):
     role: Mapped["Role"] = relationship()
     surveys: Mapped[list["Survey"] | None] = relationship(
         viewonly=True,
-        secondary="telegram_respondent__survey",
+        secondary="telegram_owner__survey",
     )
     questionnaires: Mapped["Questionnaire"] = relationship(
         viewonly=True,
