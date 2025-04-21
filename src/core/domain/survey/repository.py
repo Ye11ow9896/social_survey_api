@@ -42,7 +42,6 @@ class SurveyRepository:
         await self._session.flush()
         return assigned_model
 
-
     def _build_model(self, dto: SurveyCreateDTO) -> Survey:
         return Survey(
             name=dto.name,

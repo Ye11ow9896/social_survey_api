@@ -4,7 +4,10 @@ from src.core.domain.survey.exceptions import PermissionDeniedForRoleError
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.database.enums import RoleCodeEnum
 from src.database.models import TelegramUser
-from src.core.domain.user.repository import TelegramUserRepository, OwnerSurveyRepository
+from src.core.domain.user.repository import (
+    TelegramUserRepository,
+    OwnerSurveyRepository,
+)
 from src.lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
 from src.core.domain.survey.dto import SurveyFilterDTO
 from src.core.domain.survey.repository import SurveyRepository
@@ -29,21 +32,22 @@ class SurveyService:
         self._owner_survey_repository = owner_survey_repository
 
     async def create(
-        self,
-        dto: SurveyCreateDTO
+        self, dto: SurveyCreateDTO
     ) -> Result[Survey, ObjectNotFoundError | PermissionDeniedForRoleError]:
         user = await self._user_repository.get(
-            filter_=TelegramUserFilterDTO(
-                tg_id=dto.tg_id
-            ),
-            options=(joinedload(TelegramUser.role),)
+            filter_=TelegramUserFilterDTO(tg_id=dto.tg_id),
+            options=(joinedload(TelegramUser.role),),
         )
         if user is None:
             return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
-        if user.role.code != RoleCodeEnum.OWNER.value:
-            return Err(PermissionDeniedForRoleError(current_role=user.role.code))
+        if user.role.code != RoleCodeEnum.OWNER:
+            return Err(
+                PermissionDeniedForRoleError(current_role=user.role.code)
+            )
         survey = await self._survey_repository.create(dto=dto)
-        await self._owner_survey_repository.create(id=user.id, survey_id=survey.id)
+        await self._owner_survey_repository.create(
+            id=user.id, survey_id=survey.id
+        )
         return Ok(survey)
 
     async def get_all(

@@ -9,7 +9,6 @@ from src.lib.utils import utc_now
 from sqlalchemy import DateTime
 
 
-
 class RespondentQuestionnaire(Base):
     __tablename__ = "telegram_respondent__questionnaire"
     __table_args__ = create_comment(

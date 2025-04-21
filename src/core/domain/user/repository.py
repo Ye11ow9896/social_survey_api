@@ -71,7 +71,9 @@ class RespondentQuestionnaireRepository:
         await self._session.flush()
         return model
 
-    def _build_model(self, id: UUID, questionnaire_id: UUID) -> RespondentQuestionnaire:
+    def _build_model(
+        self, id: UUID, questionnaire_id: UUID
+    ) -> RespondentQuestionnaire:
         return RespondentQuestionnaire(
             telegram_user_id=id,
             questionnaire_id=questionnaire_id,
@@ -79,15 +81,12 @@ class RespondentQuestionnaireRepository:
             is_active=True,
         )
 
+
 class OwnerSurveyRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def create(
-        self,
-        id: UUID,
-        survey_id: UUID
-    ) -> OwnerSurvey:
+    async def create(self, id: UUID, survey_id: UUID) -> OwnerSurvey:
         model = self._build_model(id, survey_id)
         self._session.add(model)
         await self._session.flush()
