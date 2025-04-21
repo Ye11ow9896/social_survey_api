@@ -8,8 +8,8 @@ from .base import Base, create_comment
 from src.lib.utils import utc_now
 
 
-class RespondentSurvey(Base):
-    __tablename__ = "telegram_respondent__survey"
+class OwnerSurvey(Base):
+    __tablename__ = "telegram_owner__survey"
     __table_args__ = create_comment("Таблица для хранения респондентов")
 
     telegram_user_id: Mapped[UUID] = mapped_column(
