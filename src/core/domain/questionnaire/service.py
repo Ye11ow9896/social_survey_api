@@ -87,7 +87,7 @@ class QuestionnaireService:
             )
             number += 1
         await self._survey_repository.update(survey, dto=SurveyUpdateDTO())
-        return Ok(None)
+        return Ok(questionnaire)
 
     async def get_questionnaire_by_id(
         self, questionnaire_id: UUID
