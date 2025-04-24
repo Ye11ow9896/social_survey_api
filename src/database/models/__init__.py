@@ -16,7 +16,7 @@ from src.database.models.user import TelegramUser
 
 __all__ = [
     "AuthService",
-    "RespondentSurvey",
+    "OwnerSurvey",
     "Role",
     "Survey",
     "TelegramUser",

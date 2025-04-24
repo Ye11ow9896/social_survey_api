@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models.questionnaire import Questionnaire
 
-from src.database.models.owner_survey import RespondentSurvey
+from src.database.models.owner_survey import OwnerSurvey
 from src.database.models.base import Base, create_comment
 from src.lib.utils import utc_now
 from sqlalchemy import DateTime
@@ -35,5 +35,5 @@ class Survey(Base):
     )
     telegram_respondents: Mapped[list["TelegramUser"] | None] = relationship(
         viewonly=True,
-        secondary=RespondentSurvey.__table__,
+        secondary=OwnerSurvey.__table__,
     )

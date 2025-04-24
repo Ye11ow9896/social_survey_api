@@ -7,12 +7,19 @@ from litestar.params import Parameter
 from aioinject import Injected
 from aioinject.ext.litestar import inject
 
+from src.adapters.api.exceptions import (
+    ObjectNotFoundHTTPError,
+    PermissionDeniedForRoleHTTPError,
+)
+from src.core.domain.survey.exceptions import PermissionDeniedForRoleError
+from src.core.exceptions import ObjectNotFoundError
 from src.lib.paginator import PaginationDTO
 from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.adapters.api.survey.schema import SurveyCreateSchema
 from src.core.domain.survey.dto import AssingSurveyDTO, SurveyDTO
 from src.core.domain.survey.service import SurveyService
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
+from result import Err
 
 
 class SurveyController(Controller):
@@ -63,7 +70,13 @@ class SurveyController(Controller):
         service: Injected[SurveyService],
     ) -> Response[Any]:
         dto = data.to_dto()
-        await service.create(dto)
+        result = await service.create(dto)
+        if isinstance(result, Err):
+            match exc := result.err_value:
+                case ObjectNotFoundError():
+                    raise ObjectNotFoundHTTPError(message=exc.message)
+                case PermissionDeniedForRoleError():
+                    raise PermissionDeniedForRoleHTTPError(message=exc.message)
         return Response(
             content={
                 "detail": APIDetailSchema(

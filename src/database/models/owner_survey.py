@@ -6,10 +6,11 @@ from sqlalchemy.sql.schema import ForeignKey
 
 from .base import Base, create_comment
 from src.lib.utils import utc_now
+from sqlalchemy import DateTime
 
 
-class RespondentSurvey(Base):
-    __tablename__ = "telegram_respondent__survey"
+class OwnerSurvey(Base):
+    __tablename__ = "telegram_owner__survey"
     __table_args__ = create_comment("Таблица для хранения респондентов")
 
     telegram_user_id: Mapped[UUID] = mapped_column(
@@ -23,6 +24,7 @@ class RespondentSurvey(Base):
         comment="Ключ таблицы исследования",
     )
     created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
         default=utc_now,
         onupdate=utc_now,
         comment="Дата назначения респондента на исследование",
