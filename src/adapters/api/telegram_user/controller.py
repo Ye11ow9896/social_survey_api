@@ -82,7 +82,11 @@ class TelegramUserController(Controller):
         result = await service.get_all(
             pagination_dto, tg_id=tg_id, is_bot=is_bot
         )
-        return PaginationResponseSchema[TelegramUserDTO].model_validate(result)
+        return PaginationResponseSchema(
+            items=TelegramUserDTO.sqlalchemy_model_validate_list(result.items),
+            has_next_page=result.has_next_page,
+            count=result.count,
+        )
 
     @get(
         "/role/{tg_id:int}",
