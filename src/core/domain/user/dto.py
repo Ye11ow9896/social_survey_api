@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Annotated
 from uuid import UUID
 
+from src.database.models.role import Role
 from src.database.models import TelegramUser
 from src.database.enums import RoleCodeEnum, SexEnum
 from src.lib.base_model import AppBaseModel
@@ -41,5 +42,5 @@ class TelegramUserFilterDTO(BaseFilter):
     ] = UNSET
     role: Annotated[
         RoleCodeEnum | Unset,
-        FilterField(TelegramUser.id, operator=eq),
+        FilterField(Role.code, operator=eq),
     ] = UNSET
