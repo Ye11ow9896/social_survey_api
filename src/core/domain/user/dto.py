@@ -3,7 +3,7 @@ from typing import Annotated
 from uuid import UUID
 
 from src.database.models import TelegramUser
-from src.database.enums import SexEnum
+from src.database.enums import RoleCodeEnum, SexEnum
 from src.lib.base_model import AppBaseModel
 from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq
@@ -37,5 +37,9 @@ class TelegramUserFilterDTO(BaseFilter):
     ] = UNSET
     id: Annotated[
         UUID | Unset,
+        FilterField(TelegramUser.id, operator=eq),
+    ] = UNSET
+    role: Annotated[
+        RoleCodeEnum | Unset,
         FilterField(TelegramUser.id, operator=eq),
     ] = UNSET

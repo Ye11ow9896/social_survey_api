@@ -8,12 +8,13 @@ from src.adapters.api.telegram_user.dto import (
 from src.core.exceptions import ObjectAlreadyExistsError, ObjectNotFoundError
 from src.core.domain.questionnaire.dto import QuestionnaireFilterDTO
 from src.core.domain.questionnaire.repository import QuestionnaireRepository
-from src.database.models.questionnaire import Questionnaire
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.core.domain.user.repository import (
     RespondentQuestionnaireRepository,
     TelegramUserRepository,
 )
+from src.database.enums import RoleCodeEnum
+from src.database.models.questionnaire import Questionnaire
 from src.database.models import TelegramUser
 from src.lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
 
@@ -50,10 +51,12 @@ class TelegramUserService:
         *,
         tg_id: int | None,
         is_bot: bool | None,
+        role: RoleCodeEnum | None,
     ) -> PaginationResultDTO:
         filter_dto = TelegramUserFilterDTO(
             tg_id=or_unset(tg_id),
             is_bot=or_unset(is_bot),
+            role=or_unset(role),
         )
         stmt = await self._user_repository.get_all_stmt(filter_=filter_dto)
         return await self._paginator.paginate(stmt, pagination=pagination)

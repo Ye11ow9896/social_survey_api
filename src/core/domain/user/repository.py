@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Select
 from sqlalchemy.sql.base import ExecutableOption
 
+from src.database.models.role import Role
 from src.database.models import OwnerSurvey
 from src.core.domain.user.dto import TelegramUserFilterDTO
 from src.adapters.api.telegram_user.dto import TelegramUserCreateDTO
@@ -37,7 +38,10 @@ class TelegramUserRepository:
     async def get_all_stmt(
         self, filter_: TelegramUserFilterDTO
     ) -> Select[tuple[TelegramUser]]:
-        stmt = select(TelegramUser)
+        stmt = select(TelegramUser).join(
+            Role,
+            Role.id == TelegramUser.role_id,
+        )
         stmt = filter_.apply(stmt)
         return stmt
 

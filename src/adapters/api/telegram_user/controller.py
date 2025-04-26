@@ -69,6 +69,7 @@ class TelegramUserController(Controller):
         self,
         tg_id: Annotated[int | None, Parameter(query="tgId")],
         is_bot: Annotated[bool | None, Parameter(query="isBot")],
+        role: RoleCodeEnum | None,
         service: Injected[TelegramUserService],
         page_size: Annotated[
             int, Parameter(ge=1, le=1_000, query="pageSize")
@@ -80,7 +81,7 @@ class TelegramUserController(Controller):
             page=page,
         )
         result = await service.get_all(
-            pagination_dto, tg_id=tg_id, is_bot=is_bot
+            pagination_dto, tg_id=tg_id, is_bot=is_bot, role=role
         )
         return PaginationResponseSchema[TelegramUserDTO].model_validate(result)
 
