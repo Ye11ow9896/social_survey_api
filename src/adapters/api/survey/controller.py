@@ -52,10 +52,20 @@ class SurveyController(Controller):
             dto=AssingSurveyDTO(
                 tg_id=tg_id,
                 name=name,
-            ) 
+            ),
         )
-        return PaginationResponseSchema[SurveyDTO].model_validate(
-            result
+        if isinstance(result, Err):
+            match exc := result.err_value:
+                case ObjectNotFoundError():
+                    raise ObjectNotFoundHTTPError(message=exc.message)
+                case PermissionDeniedForRoleError():
+                    raise PermissionDeniedForRoleHTTPError(message=exc.message)
+        return PaginationResponseSchema(
+            items=SurveyDTO.sqlalchemy_model_validate_list(
+                result.ok_value.items
+            ),
+            has_next_page=result.ok_value.has_next_page,
+            count=result.ok_value.count,
         )
 
     @post(

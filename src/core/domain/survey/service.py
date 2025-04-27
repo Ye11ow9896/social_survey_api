@@ -1,6 +1,7 @@
-from result import Result
+from result import Err, Ok, Result
 from sqla_filter import or_unset
 
+from src.adapters.api.survey.dto import SurveyCreateDTO
 from src.core.exceptions import ObjectNotFoundError
 from src.core.domain.survey.exceptions import PermissionDeniedForRoleError
 from src.core.domain.user.dto import TelegramUserFilterDTO
@@ -13,11 +14,8 @@ from src.core.domain.user.repository import (
 from src.lib.paginator import PagePaginator, PaginationResultDTO, PaginationDTO
 from src.core.domain.survey.dto import AssingSurveyDTO, SurveyFilterDTO
 from src.core.domain.survey.repository import SurveyRepository
-from src.adapters.api.survey.dto import SurveyCreateDTO
 from src.database.models import Survey
-from src.core.exceptions import ObjectNotFoundError
 from sqlalchemy.orm import joinedload
-from result import Err, Ok, Result
 
 
 class SurveyService:
@@ -58,15 +56,24 @@ class SurveyService:
         pagination: PaginationDTO,
         *,
         dto: AssingSurveyDTO,
-    ) -> PaginationResultDTO:
+    ) -> Result[PaginationResultDTO, ObjectNotFoundError]:
         user = await self._telegram_user_repository.get(
             filter_=TelegramUserFilterDTO(
                 tg_id=dto.tg_id,
-            )
+            ),
+            options=(joinedload(TelegramUser.role),),
         )
+        if user is None:
+            return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
+        elif user.role.code != RoleCodeEnum.OWNER:
+            return Err(
+                PermissionDeniedForRoleError(current_role=user.role.code)
+            )
         filter_dto = SurveyFilterDTO(
             telegram_user_id=or_unset(user.id if user else None),
             name=or_unset(dto.name),
         )
-        stmt = await self._survey_repository.get_assign_list_stmt(filter_=filter_dto)
-        return await self._paginator.paginate(stmt, pagination=pagination)
+        stmt = await self._survey_repository.get_assign_list_stmt(
+            filter_=filter_dto
+        )
+        return Ok(await self._paginator.paginate(stmt, pagination=pagination))
