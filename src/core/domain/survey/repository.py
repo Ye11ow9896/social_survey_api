@@ -5,6 +5,7 @@ from sqlalchemy import Select, select
 from sqlalchemy.sql.base import ExecutableOption
 
 from src.core.domain.survey.dto import SurveyFilterDTO
+from src.database.models.owner_survey import OwnerSurvey
 from src.database.models.survey import Survey
 from src.adapters.api.survey.dto import SurveyCreateDTO, SurveyUpdateDTO
 
@@ -23,10 +24,13 @@ class SurveyRepository:
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).one_or_none()
 
-    async def get_all_stmt(
+    async def get_assign_list_stmt(
         self, filter_: SurveyFilterDTO
     ) -> Select[tuple[Survey]]:
-        stmt = select(Survey)
+        stmt = select(Survey).join(
+            OwnerSurvey,
+            OwnerSurvey.survey_id == Survey.id,
+        )
         stmt = filter_.apply(stmt)
         return stmt
 

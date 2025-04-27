@@ -7,7 +7,7 @@ from sqla_filter import UNSET, BaseFilter, FilterField, Unset
 from sqlalchemy.sql.operators import eq, icontains_op
 
 from src.lib.base_model import AppBaseModel
-from src.database.models.owner_survey import RespondentSurvey
+from src.database.models.owner_survey import OwnerSurvey
 from src.database.models import Survey
 
 
@@ -24,9 +24,9 @@ class SurveyFilterDTO(BaseFilter):
         str | Unset,
         FilterField(Survey.id, operator=eq),
     ] = UNSET
-    tg_uuid: Annotated[
+    telegram_user_id: Annotated[
         str | Unset,
-        FilterField(RespondentSurvey.telegram_user_id, operator=eq),
+        FilterField(OwnerSurvey.telegram_user_id, operator=eq),
     ] = UNSET
     name: Annotated[
         str | Unset,
