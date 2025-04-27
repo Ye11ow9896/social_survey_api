@@ -63,12 +63,13 @@ class SurveyService:
             ),
             options=(joinedload(TelegramUser.role),),
         )
-        if user is None:
-            return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
-        elif user.role.code != RoleCodeEnum.OWNER:
-            return Err(
-                PermissionDeniedForRoleError(current_role=user.role.code)
-            )
+        if dto.tg_id is not None:
+            if user is None:
+                return Err(ObjectNotFoundError(obj=TelegramUser.__name__))
+            elif user.role.code != RoleCodeEnum.OWNER:
+                return Err(
+                    PermissionDeniedForRoleError(current_role=user.role.code)
+                )
         filter_dto = SurveyFilterDTO(
             telegram_user_id=or_unset(user.id if user else None),
             name=or_unset(dto.name),
