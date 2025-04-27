@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models.questionnaire import Questionnaire
 
-from src.database.models.respondent_survey import OwnerSurvey
+from src.database.models.owner_survey import OwnerSurvey
 from src.database.models.base import Base, create_comment
 from src.lib.utils import utc_now
 from sqlalchemy import DateTime

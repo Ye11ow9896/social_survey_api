@@ -16,7 +16,7 @@ from src.core.exceptions import ObjectNotFoundError
 from src.lib.paginator import PaginationDTO
 from src.adapters.api.schema import APIDetailSchema, PaginationResponseSchema
 from src.adapters.api.survey.schema import SurveyCreateSchema
-from src.core.domain.survey.dto import SurveyDTO
+from src.core.domain.survey.dto import AssingSurveyDTO, SurveyDTO
 from src.core.domain.survey.service import SurveyService
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from result import Err
@@ -28,15 +28,16 @@ class SurveyController(Controller):
     middleware = [CheckAccessTokenMiddleware]
 
     @get(
-        "/all",
+        "/assingned/all",
         status_code=200,
         description="Получить список исследований",
     )
     @inject
-    async def get_all(
+    async def get_survey_assign_list(
         self,
-        name: str | None,
         service: Injected[SurveyService],
+        tg_id: Annotated[int | None, Parameter(query="tgId")] = None,
+        name: str | None = None,
         page_size: Annotated[
             int, Parameter(ge=1, le=1_000, query="pageSize")
         ] = 100,
@@ -46,11 +47,25 @@ class SurveyController(Controller):
             page_size=page_size,
             page=page,
         )
-        result = await service.get_all(pagination_dto, name)
+        result = await service.get_assign_list(
+            pagination_dto,
+            dto=AssingSurveyDTO(
+                tg_id=tg_id,
+                name=name,
+            ),
+        )
+        if isinstance(result, Err):
+            match exc := result.err_value:
+                case ObjectNotFoundError():
+                    raise ObjectNotFoundHTTPError(message=exc.message)
+                case PermissionDeniedForRoleError():
+                    raise PermissionDeniedForRoleHTTPError(message=exc.message)
         return PaginationResponseSchema(
-            items=SurveyDTO.sqlalchemy_model_validate_list(result.items),
-            has_next_page=result.has_next_page,
-            count=result.count,
+            items=SurveyDTO.sqlalchemy_model_validate_list(
+                result.ok_value.items
+            ),
+            has_next_page=result.ok_value.has_next_page,
+            count=result.ok_value.count,
         )
 
     @post(
