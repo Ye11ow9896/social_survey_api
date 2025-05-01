@@ -61,6 +61,7 @@ class QuestionDTO(BaseDTO):
         BeforeValidator(lambda models: [model.text for model in models]),
     ]
 
+
 class QuestionWithAnswerDTO(BaseDTO):
     id: uuid.UUID
     number: int
@@ -74,7 +75,9 @@ class QuestionWithAnswerDTO(BaseDTO):
     ]
     question_answers: Annotated[
         list[str],
-        BeforeValidator(lambda models: [model.text for model in models if model.text]),
+        BeforeValidator(
+            lambda models: [model.text for model in models if model.text]
+        ),
     ]
 
 

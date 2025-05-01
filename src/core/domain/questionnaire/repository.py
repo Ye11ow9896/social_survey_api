@@ -46,11 +46,9 @@ class QuestionnaireRepository:
     async def get_assign_list_stmt(
         self, filter_: RespondentQuestionnaireFilterDTO
     ) -> Select[tuple[Questionnaire]]:
-        stmt = (select(Questionnaire).
-        join(
+        stmt = select(Questionnaire).join(
             RespondentQuestionnaire,
             RespondentQuestionnaire.questionnaire_id == Questionnaire.id,
-            )
         )
         stmt = filter_.apply(stmt)
         return stmt.options(

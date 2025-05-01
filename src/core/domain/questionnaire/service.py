@@ -169,7 +169,7 @@ class QuestionnaireService:
             filter_=RespondentQuestionnaireFilterDTO(
                 telegram_user_id=or_unset(user.id if user else None),
                 is_active=or_unset(dto.is_active),
-                questionnaire_id=or_unset(dto.questionnaire_id)
+                questionnaire_id=or_unset(dto.questionnaire_id),
             )
         )
         return await self._paginator.paginate(stmt, pagination=pagination_dto)
