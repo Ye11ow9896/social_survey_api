@@ -61,15 +61,31 @@ class QuestionDTO(BaseDTO):
         BeforeValidator(lambda models: [model.text for model in models]),
     ]
 
+class QuestionWithAnswerDTO(BaseDTO):
+    id: uuid.UUID
+    number: int
+    question_type: Annotated[
+        QuestionType, BeforeValidator(lambda type_: QuestionType(type_))
+    ]
+    question_text: str
+    question_texts: Annotated[
+        list[str],
+        BeforeValidator(lambda models: [model.text for model in models]),
+    ]
+    question_answers: Annotated[
+        list[str],
+        BeforeValidator(lambda models: [model.text for model in models if model.text]),
+    ]
+
 
 class QuestionnaireDTO(BaseDTO):
     id: uuid.UUID
     survey_id: uuid.UUID
     name: str
     questionnaire_questions: Annotated[
-        list[QuestionDTO],
+        list[QuestionWithAnswerDTO],
         BeforeValidator(
-            lambda models: QuestionDTO.model_validate_list(models)
+            lambda models: QuestionWithAnswerDTO.model_validate_list(models)
         ),
     ]
 
@@ -106,4 +122,8 @@ class RespondentQuestionnaireFilterDTO(BaseFilter):
     is_active: Annotated[
         bool | Unset,
         FilterField(RespondentQuestionnaire.is_active, operator=eq),
+    ] = UNSET
+    questionnaire_id: Annotated[
+        uuid.UUID | Unset,
+        FilterField(RespondentQuestionnaire.questionnaire_id, operator=eq),
     ] = UNSET

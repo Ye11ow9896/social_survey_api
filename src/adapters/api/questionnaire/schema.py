@@ -7,7 +7,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
     QuestionUpdateDTO,
     QuestionnaireCreateDTO,
-    QuestionDTO,
+    QuestionWithAnswerDTO,
 )
 from src.adapters.api.schema import BaseSchema
 
@@ -62,4 +62,4 @@ class QuestionnaireCreateSchema(BaseSchema):
 class QuestionnaireWithQuestionsSchema(BaseSchema):
     survey_id: UUID
     name: str
-    questions: list[QuestionDTO]
+    questions: list[QuestionWithAnswerDTO]
