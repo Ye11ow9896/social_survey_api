@@ -156,7 +156,7 @@ class QuestionnaireController(Controller):
         description="Обновить вопрос анкеты",
     )
     @inject
-    async def update_qestionnaire_question(
+    async def update_questionnaire_question(
         self,
         id: UUID,
         data: UpdateQuestionSchema,
@@ -186,6 +186,9 @@ class QuestionnaireController(Controller):
     async def get_questionnaire_assign_list(
         self,
         service: Injected[QuestionnaireService],
+        questionnaire_id: Annotated[
+            UUID | None, Parameter(query="questionnaireId")
+        ] = None,
         tg_id: Annotated[int | None, Parameter(query="tgId")] = None,
         is_active: Annotated[bool | None, Parameter(query="isActive")] = None,
         page_size: Annotated[
@@ -202,6 +205,7 @@ class QuestionnaireController(Controller):
             dto=AssignQuestionnaireDTO(
                 tg_id=tg_id,
                 is_active=is_active,
+                questionnaire_id=questionnaire_id,
             ),
         )
         return PaginationResponseSchema[QuestionnaireDTO].model_validate(

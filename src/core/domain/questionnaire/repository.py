@@ -53,7 +53,8 @@ class QuestionnaireRepository:
         stmt = filter_.apply(stmt)
         return stmt.options(
             joinedload(Questionnaire.questionnaire_questions).options(
-                joinedload(QuestionnaireQuestion.question_texts)
+                joinedload(QuestionnaireQuestion.question_texts),
+                joinedload(QuestionnaireQuestion.question_answers),
             )
         )
 
