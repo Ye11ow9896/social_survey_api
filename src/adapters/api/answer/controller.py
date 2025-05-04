@@ -5,10 +5,9 @@ from src.core.domain.answer.service import AnswerService
 from src.adapters.api.answer.schema import QuestionAnswerCreateSchema
 from src.adapters.api.exceptions import (
     ObjectNotFoundHTTPError,
-    ObjectAlreadyExistsHTTPError,
 )
 
-from src.core.exceptions import ObjectNotFoundError, ObjectAlreadyExistsError
+from src.core.exceptions import ObjectNotFoundError
 from src.adapters.api.schema import APIDetailSchema
 from src.core.domain.auth.middleware import CheckAccessTokenMiddleware
 from litestar import Response, post

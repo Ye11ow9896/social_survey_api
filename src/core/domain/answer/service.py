@@ -48,7 +48,7 @@ class AnswerService:
 
         question = await self._question_repository.get(
             filter_=QuestionFilterDTO(id=dto.question_id),
-            options=(joinedload(QuestionAnswer.question_text),)
+            options=(joinedload(QuestionAnswer.question_text),),
         )
         if question is None:
             return Err(
