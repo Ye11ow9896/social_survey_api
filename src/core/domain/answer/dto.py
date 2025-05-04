@@ -8,10 +8,9 @@ from src.database.models import QuestionAnswer
 
 
 @dataclass(frozen=True, slots=True)
-class QuestionAnswerCreateDTO:
+class QuestionAnswerCreateUpdateDTO:
     question_id: UUID
-    telegram_user_id: UUID
-    question_text_id: UUID
+    tg_id: int
     text: str | None
 
 

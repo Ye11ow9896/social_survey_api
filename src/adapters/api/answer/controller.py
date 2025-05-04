@@ -24,9 +24,9 @@ class AnswerController(Controller):
     middleware = [CheckAccessTokenMiddleware]
 
     @post(
-        "/question-answer/create",
+        "/question-answer/create-update",
         status_code=200,
-        description="Создать вопрос анкеты",
+        description="Создать или обновить вопрос анкеты",
     )
     @inject
     async def written_answer_create(
@@ -35,13 +35,11 @@ class AnswerController(Controller):
         service: Injected[AnswerService],
     ) -> Response[Any]:
         dto = data.to_dto()
-        result = await service.create(dto=dto)
+        result = await service.create_update(dto=dto)
         if isinstance(result, Err):
             match exc := result.err_value:
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
-                case ObjectAlreadyExistsError():
-                    raise ObjectAlreadyExistsHTTPError(message=exc.message)
                 case _ as never:
                     assert_never(never)
 

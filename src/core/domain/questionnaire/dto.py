@@ -61,6 +61,10 @@ class QuestionDTO(BaseDTO):
         BeforeValidator(lambda models: [model.text for model in models]),
     ]
 
+class QuestionTextDTO(BaseDTO):
+    id: uuid.UUID
+    questionnaire_question_id: uuid.UUID
+    text: str
 
 class QuestionWithAnswerDTO(BaseDTO):
     id: uuid.UUID
@@ -70,8 +74,8 @@ class QuestionWithAnswerDTO(BaseDTO):
     ]
     question_text: str
     question_texts: Annotated[
-        list[str],
-        BeforeValidator(lambda models: [model.text for model in models]),
+        list[QuestionTextDTO],
+        BeforeValidator(lambda models: QuestionTextDTO.model_validate_list(models)),
     ]
     question_answers: Annotated[
         list[str],
@@ -115,7 +119,6 @@ class QuestionFilterDTO(BaseFilter):
 class QuestionTextCreateDTO:
     questionnaire_question_id: uuid.UUID
     text: str
-
 
 class RespondentQuestionnaireFilterDTO(BaseFilter):
     telegram_user_id: Annotated[
