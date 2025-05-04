@@ -6,8 +6,9 @@ from sqlalchemy import select
 
 from src.database.models import QuestionAnswer
 from src.core.domain.answer.dto import (
-    QuestionAnswerCreateDTO,
+    QuestionAnswerCreateUpdateDTO,
     QuestionAnswerFilterDTO,
+    QuestionAnswerCreateDTO,
 )
 
 
@@ -31,7 +32,15 @@ class QuestionAnswerRepository:
         await self._session.flush()
         return model
 
-    def _build_model(self, dto: QuestionAnswerCreateDTO) -> QuestionAnswer:
+    async def update(self, model: QuestionAnswer, text: str) -> QuestionAnswer:
+        model.text = text
+        self._session.add(model)
+        await self._session.flush()
+        return model
+
+    def _build_model(
+        self, dto: QuestionAnswerCreateUpdateDTO
+    ) -> QuestionAnswer:
         return QuestionAnswer(
             question_id=dto.question_id,
             telegram_user_id=dto.telegram_user_id,

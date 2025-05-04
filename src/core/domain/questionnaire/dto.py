@@ -12,6 +12,7 @@ from src.database.enums import QuestionType
 from src.database.models.questionnaire import (
     Questionnaire,
     QuestionnaireQuestion,
+    QuestionText,
 )
 
 
@@ -62,6 +63,12 @@ class QuestionDTO(BaseDTO):
     ]
 
 
+class QuestionTextDTO(BaseDTO):
+    id: uuid.UUID
+    questionnaire_question_id: uuid.UUID
+    text: str
+
+
 class QuestionWithAnswerDTO(BaseDTO):
     id: uuid.UUID
     number: int
@@ -70,8 +77,10 @@ class QuestionWithAnswerDTO(BaseDTO):
     ]
     question_text: str
     question_texts: Annotated[
-        list[str],
-        BeforeValidator(lambda models: [model.text for model in models]),
+        list[QuestionTextDTO],
+        BeforeValidator(
+            lambda models: QuestionTextDTO.model_validate_list(models)
+        ),
     ]
     question_answers: Annotated[
         list[str],
@@ -129,4 +138,11 @@ class RespondentQuestionnaireFilterDTO(BaseFilter):
     questionnaire_id: Annotated[
         uuid.UUID | Unset,
         FilterField(RespondentQuestionnaire.questionnaire_id, operator=eq),
+    ] = UNSET
+
+
+class QuestionTextFilterDTO(BaseFilter):
+    id: Annotated[
+        uuid.UUID | Unset,
+        FilterField(QuestionText.id, operator=eq),
     ] = UNSET

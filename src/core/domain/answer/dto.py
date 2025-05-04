@@ -8,11 +8,19 @@ from src.database.models import QuestionAnswer
 
 
 @dataclass(frozen=True, slots=True)
+class QuestionAnswerCreateUpdateDTO:
+    question_id: UUID
+    tg_id: int
+    question_text_id: UUID
+    text: str
+
+
+@dataclass(frozen=True, slots=True)
 class QuestionAnswerCreateDTO:
     question_id: UUID
-    telegram_user_id: UUID
+    telegram_user_id: int
     question_text_id: UUID
-    text: str | None
+    text: str
 
 
 class QuestionAnswerFilterDTO(BaseFilter):
