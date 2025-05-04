@@ -13,7 +13,7 @@ from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
     QuestionnaireFilterDTO,
     QuestionTextCreateDTO,
-    RespondentQuestionnaireFilterDTO,
+    RespondentQuestionnaireFilterDTO, QuestionTextFilterDTO,
 )
 from src.database.models import RespondentQuestionnaire
 from src.database.models.questionnaire import (
@@ -141,6 +141,16 @@ class QuestionnaireQuestionRepository:
 class QuestionTextRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
+
+    async def get(
+        self,
+        filter_: QuestionTextFilterDTO,
+        options: Sequence[ExecutableOption] | None = None,
+    ) -> QuestionText:
+        stmt = select(QuestionText)
+        stmt = filter_.apply(stmt)
+        stmt = stmt.options(options or ())
+        return (await self._session.scalars(stmt)).one_or_none()
 
     async def create_one(self, dto: QuestionTextCreateDTO) -> None:
         model = self._build_model(dto=dto)

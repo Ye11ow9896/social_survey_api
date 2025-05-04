@@ -11,8 +11,15 @@ from src.database.models import QuestionAnswer
 class QuestionAnswerCreateUpdateDTO:
     question_id: UUID
     tg_id: int
-    text: str | None
+    question_text_id: UUID
+    text: str
 
+@dataclass(frozen=True, slots=True)
+class QuestionAnswerCreateDTO:
+    question_id: UUID
+    telegram_user_id: int
+    question_text_id: UUID
+    text: str
 
 class QuestionAnswerFilterDTO(BaseFilter):
     id: Annotated[

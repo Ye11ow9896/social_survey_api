@@ -11,7 +11,7 @@ from src.core.dto import BaseDTO
 from src.database.enums import QuestionType
 from src.database.models.questionnaire import (
     Questionnaire,
-    QuestionnaireQuestion,
+    QuestionnaireQuestion, QuestionText,
 )
 
 
@@ -138,3 +138,11 @@ class RespondentQuestionnaireFilterDTO(BaseFilter):
         uuid.UUID | Unset,
         FilterField(RespondentQuestionnaire.questionnaire_id, operator=eq),
     ] = UNSET
+
+
+class QuestionTextFilterDTO(BaseFilter):
+    id: Annotated[
+        uuid.UUID | Unset,
+        FilterField(QuestionText.id, operator=eq),
+    ] = UNSET
+

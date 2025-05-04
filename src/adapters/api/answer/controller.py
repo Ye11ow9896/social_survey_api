@@ -1,6 +1,8 @@
 from http import HTTPStatus
 from typing import Any, assert_never
 
+from src.adapters.api.answer.exceptions import AnswerOneChoiceCreateHTTPError
+from src.core.domain.answer.exceptions import AnswerOneChoiceCreateError
 from src.core.domain.answer.service import AnswerService
 from src.adapters.api.answer.schema import QuestionAnswerCreateSchema
 from src.adapters.api.exceptions import (
@@ -28,7 +30,7 @@ class AnswerController(Controller):
         description="Создать или обновить вопрос анкеты",
     )
     @inject
-    async def written_answer_create(
+    async def answer_create(
         self,
         data: QuestionAnswerCreateSchema,
         service: Injected[AnswerService],
@@ -39,6 +41,8 @@ class AnswerController(Controller):
             match exc := result.err_value:
                 case ObjectNotFoundError():
                     raise ObjectNotFoundHTTPError(message=exc.message)
+                case AnswerOneChoiceCreateError():
+                    raise AnswerOneChoiceCreateHTTPError(message=exc.message)
                 case _ as never:
                     assert_never(never)
 
@@ -47,7 +51,7 @@ class AnswerController(Controller):
                 "detail": APIDetailSchema(
                     status_code=HTTPStatus.OK,
                     code="written_answer_create_success",
-                    message=f"Ответ на вопрос `{dto.question_id}` успешно создан",
+                    message=f"Ответ на вопрос `{dto.question_id}` успешно добавлен",
                 )
             },
             status_code=HTTPStatus.OK,
