@@ -7,7 +7,8 @@ from sqlalchemy import select
 from src.database.models import QuestionAnswer
 from src.core.domain.answer.dto import (
     QuestionAnswerCreateUpdateDTO,
-    QuestionAnswerFilterDTO, QuestionAnswerCreateDTO,
+    QuestionAnswerFilterDTO,
+    QuestionAnswerCreateDTO,
 )
 
 
@@ -25,17 +26,13 @@ class QuestionAnswerRepository:
         stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).one_or_none()
 
-    async def create(
-        self, dto: QuestionAnswerCreateDTO
-    ) -> QuestionAnswer:
+    async def create(self, dto: QuestionAnswerCreateDTO) -> QuestionAnswer:
         model = self._build_model(dto)
         self._session.add(model)
         await self._session.flush()
         return model
 
-    async def update(
-        self, model: QuestionAnswer, text: str
-    ) -> QuestionAnswer:
+    async def update(self, model: QuestionAnswer, text: str) -> QuestionAnswer:
         model.text = text
         self._session.add(model)
         await self._session.flush()

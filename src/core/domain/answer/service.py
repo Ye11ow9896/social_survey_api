@@ -9,14 +9,22 @@ from src.core.domain.user.repository import TelegramUserRepository
 from src.database.models import TelegramUser
 from src.core.domain.answer.dto import (
     QuestionAnswerCreateUpdateDTO,
-    QuestionAnswerFilterDTO, QuestionAnswerCreateDTO,
+    QuestionAnswerFilterDTO,
+    QuestionAnswerCreateDTO,
 )
-from src.database.models.questionnaire import QuestionnaireQuestion, QuestionText
+from src.database.models.questionnaire import (
+    QuestionnaireQuestion,
+    QuestionText,
+)
 
-from src.core.domain.questionnaire.dto import QuestionFilterDTO, QuestionTextFilterDTO
+from src.core.domain.questionnaire.dto import (
+    QuestionFilterDTO,
+    QuestionTextFilterDTO,
+)
 
 from src.core.domain.questionnaire.repository import (
-    QuestionnaireQuestionRepository, QuestionTextRepository,
+    QuestionnaireQuestionRepository,
+    QuestionTextRepository,
 )
 from src.core.exceptions import ObjectNotFoundError
 from result import Ok, Result, Err
@@ -39,8 +47,7 @@ class AnswerService:
         self, dto: QuestionAnswerCreateUpdateDTO
     ) -> Result[
         QuestionAnswer,
-        ObjectNotFoundError
-        | AnswerOneChoiceCreateError,
+        ObjectNotFoundError | AnswerOneChoiceCreateError,
     ]:
         telegram_user = await self._telegram_user_repository.get(
             filter_=TelegramUserFilterDTO(tg_id=dto.tg_id)
@@ -54,7 +61,7 @@ class AnswerService:
 
         question = await self._question_repository.get(
             filter_=QuestionFilterDTO(id=dto.question_id),
-            options=(joinedload(QuestionnaireQuestion.question_answers),)
+            options=(joinedload(QuestionnaireQuestion.question_answers),),
         )
         if question is None:
             return Err(
@@ -78,20 +85,23 @@ class AnswerService:
             filter_=QuestionAnswerFilterDTO(
                 question_id=dto.question_id,
                 telegram_user_id=telegram_user.id,
-                question_text_id=dto.question_text_id
+                question_text_id=dto.question_text_id,
             )
         )
         if answer_db is not None:
             return Ok(await self._repository.update(answer_db, text=dto.text))
         else:
-            if question.question_type == QuestionType.ONE_CHOICE and question.question_answers:
+            if (
+                question.question_type == QuestionType.ONE_CHOICE
+                and question.question_answers
+            ):
                 return Err(AnswerOneChoiceCreateError())
             result = await self._repository.create(
                 dto=QuestionAnswerCreateDTO(
                     question_id=dto.question_id,
                     telegram_user_id=telegram_user.id,
                     question_text_id=dto.question_text_id,
-                    text=dto.text
+                    text=dto.text,
                 )
             )
             return Ok(result)

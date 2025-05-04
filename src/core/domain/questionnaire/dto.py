@@ -11,7 +11,8 @@ from src.core.dto import BaseDTO
 from src.database.enums import QuestionType
 from src.database.models.questionnaire import (
     Questionnaire,
-    QuestionnaireQuestion, QuestionText,
+    QuestionnaireQuestion,
+    QuestionText,
 )
 
 
@@ -145,4 +146,3 @@ class QuestionTextFilterDTO(BaseFilter):
         uuid.UUID | Unset,
         FilterField(QuestionText.id, operator=eq),
     ] = UNSET
-

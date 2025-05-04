@@ -13,7 +13,8 @@ from src.core.domain.questionnaire.dto import (
     QuestionCreateDTO,
     QuestionnaireFilterDTO,
     QuestionTextCreateDTO,
-    RespondentQuestionnaireFilterDTO, QuestionTextFilterDTO,
+    RespondentQuestionnaireFilterDTO,
+    QuestionTextFilterDTO,
 )
 from src.database.models import RespondentQuestionnaire
 from src.database.models.questionnaire import (
@@ -149,7 +150,7 @@ class QuestionTextRepository:
     ) -> QuestionText:
         stmt = select(QuestionText)
         stmt = filter_.apply(stmt)
-        stmt = stmt.options(options or ())
+        stmt = stmt.options(*options or ())
         return (await self._session.scalars(stmt)).one_or_none()
 
     async def create_one(self, dto: QuestionTextCreateDTO) -> None:
